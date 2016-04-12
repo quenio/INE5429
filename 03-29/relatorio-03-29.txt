@@ -1,0 +1,35 @@
+Aluno: Quenio Cesar Machado dos Santos
+Matricula: 14100868
+Disciplina: INE5429 - Segurança em Computadores
+
+a) o conteúdo de cada um dos arquivos: os dois números e a soma. Ao lado da soma, indicar quem fez a soma;
+
+Arquivos recebidos:
+
+Nome, Arquivo, Numero 1, Numero 2, Soma
+Guilherme, 3984.txt, 17917, 9643, 27560
+Jaime, 13.gpg, 525984012, 226672658, 752656670
+
+Arquivo Enviado:
+Nome, Arquivo, Numero 1, Numero 2, Quem Respondeu, ...
+2n.txt, 12, 21, Jaime, Guilherme, Ana, Giovani
+
+
+b) quais foram as dificuldades que você teve para realizar esta atividade? Cite todas as dificuldades;
+
+- Definir uma senha para cada individio não é viável.
+- Entrar em acordo com cada aluno sobre a forma de compartilhar a senha exige muito esforço.
+- Compartilhar uma única senha com todos não faz sentido, porque perde-se a privacidade.
+- Compartilhar a senha junto com o arquivo não faz sentido, porque qualquer um que tiver acesso ao email vai conseguir descriptografa-lo.
+- Além da senha, é preciso entrar em acordo sobre o algoritmo a ser usado.
+- Não há garantia de quem enviou a resposta é realmente quem se desejava que a receba.
+- Não havia formato padrão para envio do conteudo criptografado.
+- Não havia formato padrão do nome dos arquivos.
+
+c) da próxima vez que tiver que fazer a mesma tarefa, como você faria de forma que fosse mais eficiente e tivesse menos "caos" na turma?
+
+- Usar a chave pública do individuo para enviar mensagens.
+- Usar minha chave privada para receber mensagens.
+- Usar um banco de dados compartilhado com as chaves públicas de cada invididuo.
+- Definir um formato de arquivo e nome de arquivo padrao.
+- Utilizar um diretorio comparitlhado com todos.
