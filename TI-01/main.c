@@ -9,26 +9,29 @@ const int base = 10;
 
 int main()
 {
-    for (int i = 0; i < 10; i++)
+    for (int64_t i = 0; i < UINT64_C(1000000); i++)
     {
-        mpz_t bn;
-        random_mpz(bn, 128);
+        mpz_t bn1, bn2;
+        random_mpz(bn1, 2048);
+        random_mpz(bn2, 2048);
 
-        uint64_t m[2];
-        size_t new_count;
-        mpz_export_int64(m, &new_count, bn);
+        if (mpz_cmp(bn1, bn2) == 0) {
+            printf("equals = ");
+            mpz_out_str(NULL, base, bn1);
+            printf("\n");
+            return 1;
+        }
 
-        printf("bn = ");
-        mpz_out_str(NULL, base, bn);
-        printf("\n");
-        printf("m  = ");
-        for (int j = 0; j < 2; j++) printf("%llu ", m[j]);
-        printf("\n");
-
-        printf("count  = %lu\n", new_count);
-
-        mpz_clear(bn);
+        mpz_clear(bn1);
+        mpz_clear(bn2);
     }
+
+    mpz_t bn1;
+    random_mpz(bn1, 2048);
+    mpz_out_str(NULL, base, bn1);
+    printf("\n");
+
+    printf("No repeats");
 
     return 0;
 }

@@ -61,10 +61,6 @@ void random_mpz(mpz_t rop, size_t bit_count)
     size_t size = mod_ceiling(bit_count, byte_bit_count);
     size_t count = mod_ceiling(size, sizeof(int64_t));
     uint64_t n[count];
-    for (int i = 0; i < count; i++)
-    {
-        n[i] = random_int64();
-        printf(" %llu\n", n[i]);
-    }
+    for (int i = 0; i < count; i++) n[i] = random_int64();
     mpz_init_set_int64(rop, count, n);
 }
