@@ -3,6 +3,6 @@ project(png)
 
 set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -std=c11 -Wall -Werror")
 
-set(SOURCE_FILES main.c)
+set(SOURCE_FILES main.c random.c random.c random.h mpz_int64.c mpz_int64.h)
 add_executable(png ${SOURCE_FILES})
 target_link_libraries(png gmp)
