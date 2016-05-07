@@ -9,3 +9,5 @@
 uint64_t random_int64();
 
 void random_mpz(mpz_t rop, size_t bit_count);
+
+void random_mpz_interval(mpz_t rop, mpz_t min, mpz_t max);

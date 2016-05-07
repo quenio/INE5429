@@ -4,8 +4,7 @@
 
 #include <time.h>
 
-static const size_t byte_bit_count = 8;
-static const uint64_t multiplier = UINT64_C(7553082465351805142);
+static const uint64_t multiplier = UINT64_C(7553082465351805141);
 static const size_t s_size = 16;
 static const uint64_t seed[s_size] = {
     UINT64_C(3176816624292027912),
@@ -58,9 +57,39 @@ static size_t mod_ceiling(size_t op1, size_t op2)
 
 void random_mpz(mpz_t rop, size_t bit_count)
 {
+    static const size_t byte_bit_count = 8;
+
     size_t size = mod_ceiling(bit_count, byte_bit_count);
     size_t count = mod_ceiling(size, sizeof(int64_t));
     uint64_t n[count];
     for (int i = 0; i < count; i++) n[i] = random_int64();
-    mpz_init_set_int64(rop, count, n);
+
+    static const size_t int64_bit_count = (sizeof(int64_t) * byte_bit_count);
+    if (bit_count >= int64_bit_count)
+    {
+        mpz_init_set_int64(rop, count, n);
+//        printf("bignum: ");
+//        mpz_out_str(NULL, 10, rop);
+//        printf("\n");
+    }
+    else
+    {
+        const size_t ignored_bits = (int64_bit_count - bit_count);
+        mpz_init_set_ui(rop, n[0] >> ignored_bits);
+    }
+}
+
+void random_mpz_interval(mpz_t rop, mpz_t min, mpz_t max)
+{
+    static const int base = 2;
+
+    const size_t bit_count = mpz_sizeinbase(max, base);
+
+    mpz_init(rop);
+    do
+    {
+        mpz_clear(rop);
+        random_mpz(rop, bit_count);
+    }
+    while ((mpz_cmp(rop, min) < 0) || (mpz_cmp(rop, max) > 0));
 }
