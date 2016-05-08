@@ -23,7 +23,7 @@ bool is_probably_prime(mpz_t op)
     mpz_init_set(exp, n);
     mpz_sub_ui(exp, exp, 1);
 
-    static const int k = 1000;
+    static const int k = 5;
     for (int i = 0; i < k; i++)
     {
         mpz_t a;
@@ -37,4 +37,14 @@ bool is_probably_prime(mpz_t op)
     }
 
     return true;
+}
+
+void find_prime(mpz_t rop, size_t bit_count)
+{
+    do
+    {
+        random_mpz(rop, bit_count);
+        if (mpz_even_p(rop)) mpz_sub_ui(rop, rop, 1);
+    }
+    while (!is_probably_prime(rop));
 }

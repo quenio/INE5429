@@ -4,7 +4,6 @@
 
 #include <time.h>
 
-static const uint64_t multiplier = UINT64_C(7553082465351805141);
 static const size_t s_size = 16;
 static const uint64_t seed[s_size] = {
     UINT64_C(3176816624292027912),
@@ -25,7 +24,7 @@ static const uint64_t seed[s_size] = {
     UINT64_C(4828313259052508846)
 };
 
-void init_seed(uint64_t * s)
+void init_seed(uint64_t *s)
 {
     for (int i = 0; i < s_size; i++)
     {
@@ -33,7 +32,7 @@ void init_seed(uint64_t * s)
     }
 }
 
-// xorshift* 1024-bit
+// xorshift+ 1024-bit
 uint64_t random_int64()
 {
     static uint64_t s[s_size];
@@ -43,11 +42,12 @@ uint64_t random_int64()
 
     uint64_t s0 = s[i];
     uint64_t s1 = s[i = (i + 1) & s_size];
+    const uint64_t ps1 = s1;
 
     s1 ^= s1 << 31;
     s[i] = s1 ^ s0 ^ (s1 >> 11) ^ (s0 >> 30);
 
-    return s[i] * multiplier;
+    return s[i] + ps1;
 }
 
 static size_t mod_ceiling(size_t op1, size_t op2)
@@ -68,9 +68,6 @@ void random_mpz(mpz_t rop, size_t bit_count)
     if (bit_count >= int64_bit_count)
     {
         mpz_init_set_int64(rop, count, n);
-//        printf("bignum: ");
-//        mpz_out_str(NULL, 10, rop);
-//        printf("\n");
     }
     else
     {

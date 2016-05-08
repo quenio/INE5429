@@ -6,3 +6,5 @@
 #include <gmp.h>
 
 bool is_probably_prime(mpz_t rop);
+
+void find_prime(mpz_t rop, size_t bit_count);
