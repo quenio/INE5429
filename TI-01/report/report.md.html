@@ -391,6 +391,20 @@ A função geradora de números aleatórios também tem um efeito no desempenho.
 
 ## *Miller-Rabin*
 
+*Miller-Rabin* é uma extensão do método de *Fermat* que adiciona mais uma verificação:
+
+$a^{2^rd} \equiv -1\pmod{n}$ para todo *r* no intervalo 0 ≤ r ≤ s − 1, onde *s* e *r* são positivos e *r* é impar.
+
+Se *n* passa esta igualdade para todos os valores de *r*, então *n* é certamente um primo.
+
+Devido a maior certeza do que no método de *Fermat*, este método é mais confiável para aplicações de criptografia.
+
+# Conclusão
+
+Os algoritmos de geração de números primos exigem muito computacionalmente do processador. Quanto maior o número a ser gerado, maior a quantidade de ciclos necessários para se encontrar um número primo. A escolha adequada do método pode aumentar a confiabilidade do número encontrado e também diminuir o tempo de processamento necessário.
+
+Uma continuação interessante deste trabalho seria comparar os diferentes métodos e verificar seu desempenho e confiabilidade. Por exemplo, com a implementação de *Miller-Rabin* e também com a implementação de outros métodos de geração de números aleatórios.
+
 <!-- Markdeep: -->
 <style class="fallback">body{visibility:hidden}</style>
 <script src="markdeep.js"></script>
