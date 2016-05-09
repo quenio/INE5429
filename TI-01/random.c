@@ -28,29 +28,34 @@ void init_seed(uint64_t *s)
 {
     for (int i = 0; i < s_size; i++)
     {
-        if (s[i] == 0) s[i] = clock() + seed[i];
+        s[i] = clock() + seed[i];
     }
 }
 
 // xorshift+ 1024-bit
 uint64_t random_int64()
 {
-    static uint64_t s[s_size];
-    init_seed(s);
-
+    // Posição atual no vetor de sementes:
     static size_t i = 0;
 
+    // Inicializa sementes somente na primeira execução desta função:
+    static uint64_t s[s_size];
+    if (s[i] == 0) init_seed(s);
+
+    // Estabelece os valores de semente a serem usados nesta geração:
     uint64_t s0 = s[i];
-    uint64_t s1 = s[i = (i + 1) & s_size];
+    uint64_t s1 = s[i = (i + 1) & (s_size - 1)];
     const uint64_t ps1 = s1;
 
+    // Gera o novo número usando shifts e xor:
     s1 ^= s1 << 31;
     s[i] = s1 ^ s0 ^ (s1 >> 11) ^ (s0 >> 30);
 
+    // Usa a soma para aumentar a aleatoriedade desta função:
     return s[i] + ps1;
 }
 
-static size_t mod_ceiling(size_t op1, size_t op2)
+static inline size_t div_ceiling(size_t op1, size_t op2)
 {
     return 1 + ((op1 - 1) / op2);
 }
@@ -59,11 +64,13 @@ void random_mpz(mpz_t rop, size_t bit_count)
 {
     static const size_t byte_bit_count = 8;
 
-    size_t size = mod_ceiling(bit_count, byte_bit_count);
-    size_t count = mod_ceiling(size, sizeof(int64_t));
+    // Geração dos componentes do número:
+    size_t size = div_ceiling(bit_count, byte_bit_count);
+    size_t count = div_ceiling(size, sizeof(int64_t));
     uint64_t n[count];
     for (int i = 0; i < count; i++) n[i] = random_int64();
 
+    // Se o número for maior que 64 bits, precisamos do vetor inteiro:
     static const size_t int64_bit_count = (sizeof(int64_t) * byte_bit_count);
     if (bit_count >= int64_bit_count)
     {
@@ -71,6 +78,7 @@ void random_mpz(mpz_t rop, size_t bit_count)
     }
     else
     {
+        // Caso seja menos de 64 bits, capturamos apenas parte do número gerado:
         const size_t ignored_bits = (int64_bit_count - bit_count);
         mpz_init_set_ui(rop, n[0] >> ignored_bits);
     }
