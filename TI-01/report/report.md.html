@@ -385,7 +385,9 @@ Abaixo, temos a execução do código listado acima:
 2432 (t =  20.020598) -> 177911582052621635507615742933484046921160102889711116715428486093984556180804168464833233488461705397588809505648640926498738916656283944317830666586730423383388373383020261915822138925332278800557349595100229782208749795107919134678786095194343333985022823827131329868854809591620966239027171690690992963630621016230144839848184727347581568870008691893477269023821881734183351966527906050081969008671407193342180557029820661196957750698320343783568543794904766437552366287744449390276858361345016682710936309464570040490089044575829458357859329076008414151527825413472535428130930096803872829285096846436755670936720499109819422966176152279086061006208065344060511866373444158477339526556993527621585659853250223415420565829637531
 ~~~~~~~~~~~~~~~
 
-Observe na saída acima que o maior número de bits impresso foi 2432; não foi 4096. Isto ocorre porque o número, menor a probablidade de se encontrar um número primo, portanto mais iterações são necessárias, o que leva mais tempo.
+Observe na saída acima que o maior número de bits impresso foi 2432; não foi 4096. Isto ocorre porque quanto maior o número, menor a probablidade de se encontrar um número primo, portanto mais iterações são necessárias, o que leva mais tempo.
+
+A função geradora de números aleatórios também tem um efeito no desempenho. Observe que alguns números menores foram mais custosos que outros números maiores. Acreditamos que isto ocorra porque o gerador de números não é tão aleatório, dependendo do número de bits, o que torna mais difícil achar primos em determinadas sequencias. Seria interessante verificar o desempenho de outros métodos de geração de números, ou variações do mesmo método.
 
 ## *Miller-Rabin*
 
