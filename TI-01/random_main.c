@@ -4,25 +4,26 @@
 #include <gmp.h>
 #include <time.h>
 
-#include "prime.h"
+#include "random.h"
+#include "timer.h"
 
 int main()
 {
     static const int base = 10;
+    static const size_t max_bit_count = 4096;
+    static const size_t bit_count_inc = 128;
 
     const clock_t start = clock();
-    const size_t max_bit_count = 4096;
-    const size_t bit_count_inc = 128;
 
     size_t bit_count = bit_count_inc;
     while (bit_count <= max_bit_count)
     {
         const clock_t s = clock();
-        mpz_t n;
-        find_prime(n, bit_count);
-        const double t = (double) (clock() - s);
 
-        printf("%-4lu (t = %10.6lf)", bit_count, t / CLOCKS_PER_SEC);
+        mpz_t n;
+        random_mpz(n, bit_count);
+
+        printf("%-4lu (t = %10.6lf)", bit_count, elapsed_secs(s));
         printf(" -> ");
         mpz_out_str(NULL, base, n);
         printf("\n");
@@ -30,8 +31,7 @@ int main()
         bit_count += bit_count_inc;
     }
 
-    const double time = (double) (clock() - start);
-    printf("\nTotal Time: %lf\n", time / CLOCKS_PER_SEC);
+    printf("\nTotal Time: %lf\n", elapsed_secs(start));
 
     return 0;
 }
