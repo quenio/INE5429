@@ -1,0 +1,45 @@
+<meta charset="utf-8" lang="pt">
+
+                                    **Geração de Números Primos**
+                                **INE5429 - Segurança em Computadores**
+                                        Trabalho Individual #1
+                                *Quenio Cesar Machado dos Santos (14100868)*
+                                        Florianópolis, 08/05/2016
+
+# Números Pseudo-Aleatórios
+
+Uma sequência de números aleatórios pode ser gerada automaticamente por um computador. Existem algoritmos desenvolvidos para esta finalidade que são chamados de *geradores de números pseudo-aleatórios*.
+
+As sequências resultantes destes geradores não são verdadeiramente aleatórias. Estas são geradas a partir de um grupo pequeno de valores iniciais - chamados sementes. Porém, alguns dos valores sementes podem ser verdadeiramente aleatórios. Por exemplo, eles podem originar-se do relógio do próprio computador ou ainda de ruídos da câmera de vídeo e do microfone.
+
+O *período* dos algoritmos - o tamanho da sequência gerada sem repetição - também são normalmente muito longos. O que na prática permite a utilização destes algoritmos em aplicações que necessitam de uma fonte geradora de números aleatórios, tais como *criptografia*.
+
+Existem vários métodos disponíveis para a implementação de geradores de números pseudo-aleatórios. Nas próximas seções, vamos utilizar um dos métodos para implementar um gerador na linguagem *C*, que permite a manipulação de números de precisão variável através da biblioteca *GMP*.
+
+## Método
+
+O método escolhido para a geração de números pseudo-aleatórios é `xorshift`. Este utiliza operações `XOR` e *bit-shift* para gerar novos números a partir de números anteriores.
+
+Algoritmos implementados com `xorshift` executam muito rapidamente, pois utilizam operações implementadas em instruções do próprio processador do computador. Entretanto, os parâmetros - valores sementes e constantes usadas nas operações -  precisam ser escolhidos com cuidado para permitir longos períodos sem repetição de números.
+
+Na sua forma original, `xorshift` não é adequado para uso em criptografia, mas pode facilmente ser melhorado com o uso de uma operação de soma ou multiplicação. Estas variações são denominadas respectivamente de `xorshift+` e `xorshift*`.
+
+## Código-Fonte
+
+## Execução
+
+# Números Primos
+
+## Método
+
+## Fermat versus Miller-Rabin
+
+## Código-Fonte
+
+## Execução
+
+<!-- Markdeep: -->
+<style class="fallback">body{visibility:hidden}</style>
+<script src="markdeep.js"></script>
+<script>window.alreadyProcessedMarkdeep||(document.body.style.visibility="visible")</script>
+
