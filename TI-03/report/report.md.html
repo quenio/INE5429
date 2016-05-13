@@ -1,0 +1,31 @@
+<meta charset="utf-8" lang="pt">
+
+                                        **Protocolo de Diffie-Hellman**
+                                **INE5429 - Segurança em Computadores**
+                                        Trabalho Individual #3
+                                *Quênio César Machado dos Santos (14100868)*
+                                        Florianópolis, 10/05/2016
+
+# Protocolo de *Diffie-Hellman*
+
+Este protocolo permite estabelecer uma chave secreta entre duas partes.
+
+Este funciona da seguinte forma:
+1. As partes compartilham publicamente um número primo (*n*) e sua raiz primitiva (*g*).
+1. A seguir, compartilham o resultado (representado pela variável *a*) da operação $g^k \equiv a\pmod{n}$, tendo como:
+    - o expoente (*k*): um número aleatório secreto, normalmente um valor muito grande para impedir exploração por um *man-in-the-middle*;
+    - a base (*g*): a raiz primitiva compartilhada no passo 1, normalmente um valor pequeno;
+    - o valor de módulo (*n*): o número primo compartilhado no passo 1, normalmente um valor muito grande para impedir busca exaustiva da chave compartilhada.
+1. Usando o resultado - variável *a* - enviado pela outra parte no passo 2, calcula-se então a chave secreta (representado pela variável *s*) com a operação $a^k \equiv s\pmod{n}$.
+
+Ambas as partes agora possuem a chave secreta *s*. Ninguém mais porém possui esta chave, pois esta foi calculada a partir de *k*, um número aleatório muito grande gerado por cada uma das partes secretamente.
+
+
+
+
+
+<!-- Markdeep: -->
+<style class="fallback">body{visibility:hidden}</style>
+<script src="markdeep.js"></script>
+<script>window.alreadyProcessedMarkdeep||(document.body.style.visibility="visible")</script>
+
