@@ -8,15 +8,22 @@
 
 # Raízes Primitivas
 
-Um número inteiro *g* é raiz primitiva de um número primo *n* se para todo número inteiro *a* co-primo de *n*:
+Um número inteiro $g$ é raiz primitiva de um número primo *n* se para todo número inteiro $a$ co-primo de *n*:
 
-$g^k \equiv a\pmod{n}, k \ge 1$
+$$g^k \equiv a\pmod{n}, k \ge 1$$
 
-Raizes primitivas são usadas pelo protocolo de *Diffie–Hellman* para estabelecer uma chave secreta entre duas partes.
-
-
+Raizes primitivas são usadas pelo protocolo de *Diffie–Hellman* para estabelecer uma chave secreta entre duas partes através de um meio de comunicação público.
 
 
+## Encontrando Raízes Primitivas
+
+Para encontrar uma raiz primitiva de um número primo $n$, é preciso escolher um número inteiro candidato $g \ge 2$ e verificar se este é uma raiz primitiva usando algum método, como o descrito a seguir:
+
+1. Faça $g_i = 2$, o candidato inicial.
+1. Para cada fator primo $f_j$ de $n - 1$, calcular: $$g_i^\frac{n - 1}{f_j}\equiv a_j\pmod{n}$$
+1. Se $a_j\not\equiv 1$ para todo $f_j$, então $g_i$ é uma raiz primitiva de $n$.
+1. Caso contrário, encontrar o próximo candidato $g_{i+1}$ tal que: $$g_{i+1} > g_i \;\;\text{e}\;\; g_{i+1}\not= 2^{2l}, l \in \mathbb N$$
+1. Repetir os passos 2, 3 e 4 até encontrar uma raiz primitiva.
 
 <!-- Markdeep: -->
 <style class="fallback">body{visibility:hidden}</style>
