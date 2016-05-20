@@ -22,7 +22,7 @@ Para encontrar uma raiz primitiva de um número primo $n$, é preciso escolher u
 1. Faça $g_i = 2$, o candidato inicial.
 1. Para cada fator primo $f_j$ de $n - 1$, calcular: $$g_i^\frac{n - 1}{f_j}\equiv a_j\pmod{n}$$
 1. Se $a_j\not\equiv 1$ para todo $f_j$, então $g_i$ é uma raiz primitiva de $n$.
-1. Caso contrário, encontrar o próximo candidato $g_{i+1}$ tal que: $$g_{i+1} > g_i \;\;\text{e}\;\; g_{i+1}\not= 2^{2l}, l \in \mathbb N$$
+1. Caso contrário, encontrar o próximo candidato $g_{i+1}$ tal que: $$g_{i+1} > g_i \;\;\text{e}\;\; g_{i+1}\not= g_{1,..,i}^{2l}, l \in \mathbb N$$
 1. Repetir os passos 2, 3 e 4 até encontrar uma raiz primitiva.
 
 <!-- Markdeep: -->
