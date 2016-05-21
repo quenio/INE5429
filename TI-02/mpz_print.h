@@ -2,4 +2,6 @@
 
 #pragma once
 
+#include <stdio.h>
+
 void print_var(const char * varName, const mpz_t var);
