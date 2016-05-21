@@ -22,7 +22,7 @@ bool is_primitive_root(mpz_t n, mpz_t g)
     mpz_init_set_ui(f, 1);
 
     // f = 2, 3, 5, ...
-    while (next_prime_factor(f, f, q))
+    while (next_prime_divisor(f, q, q))
     {
         printf("f = ");
         mpz_out_str(NULL, 10, f);

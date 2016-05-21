@@ -9,9 +9,11 @@ bool is_probably_prime(mpz_t rop);
 
 void find_prime(mpz_t rop, size_t bit_count);
 
-void next_prime(mpz_t rop, mpz_t n);
+void next_prime(mpz_t rop, const mpz_t n);
 
-bool next_prime_factor(mpz_t rop, const mpz_t f, const mpz_t n);
+bool next_prime_divisor(mpz_t rop, const mpz_t dividend, const mpz_t divisor);
 
-bool next_dividend(mpz_t rop, const mpz_t p, const mpz_t d);
+bool next_dividend(mpz_t rop, const mpz_t dividend, const mpz_t divisor);
+
+
 

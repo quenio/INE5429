@@ -53,13 +53,13 @@ void find_prime(mpz_t rop, size_t bit_count)
     while (!is_probably_prime(rop));
 }
 
-void next_odd(mpz_t rop, mpz_t n)
+void next_odd(mpz_t rop, const mpz_t n)
 {
     if (rop != n) mpz_init_set(rop, n);
     mpz_add_ui(rop, rop, (mpz_even_p(rop) || mpz_cmp_ui(rop, 2) <= 0) ? 1 : 2);
 }
 
-void next_prime(mpz_t rop, mpz_t n)
+void next_prime(mpz_t rop, const mpz_t n)
 {
     next_odd(rop, n);
 
@@ -69,7 +69,7 @@ void next_prime(mpz_t rop, mpz_t n)
     }
 }
 
-bool next_dividend(mpz_t rop, const mpz_t p, const mpz_t d)
+bool next_dividend(mpz_t rop, const mpz_t dividend, const mpz_t divisor)
 {
     // Quotient:
     mpz_t q;
@@ -80,46 +80,43 @@ bool next_dividend(mpz_t rop, const mpz_t p, const mpz_t d)
     mpz_init(r);
 
     // Initial dividend:
-    mpz_init_set(rop, p);
+    mpz_init_set(rop, dividend);
 
     // Find next dividend:
     do
     {
-        mpz_divmod(q, r, rop, d);
+        mpz_divmod(q, r, rop, divisor);
 
         if (mpz_cmp_ui(r, 0) == 0 && mpz_cmp_ui(q, 1) != 0) mpz_set(rop, q);
     }
     while (mpz_cmp_ui(r, 0) == 0 && mpz_cmp_ui(q, 1) != 0);
 
-    return mpz_cmp(rop, p) != 0;
+    return mpz_cmp(rop, dividend) != 0;
 }
 
-bool next_prime_factor(mpz_t rop, const mpz_t f, const mpz_t n)
+bool next_prime_divisor(mpz_t rop, const mpz_t dividend, const mpz_t divisor)
 {
     mpz_t quotient;
     mpz_init(quotient);
 
     mpz_t remainder;
-    mpz_init(remainder);
+    mpz_init_set_ui(remainder, 1);
 
-    mpz_t dividend;
-    next_dividend(dividend, n, f);
-    print_var("dividend", dividend);
+    mpz_t n;
+    next_dividend(n, dividend, divisor);
 
-    mpz_t divisor;
-    mpz_init_set(divisor, f);
-    print_var("divisor", divisor);
+    mpz_t d;
+    mpz_init_set(d, divisor);
 
-    do
+    while ((mpz_cmp(d, n) < 0) && (mpz_cmp_ui(remainder, 0) != 0))
     {
-        next_prime(divisor, divisor);
-        mpz_divmod(quotient, remainder, dividend, divisor);
+        next_prime(d, d);
+        mpz_divmod(quotient, remainder, n, d);
     }
-    while (mpz_cmp(remainder, 0) != 0);
 
-    mpz_set(rop, divisor);
+    mpz_set(rop, d);
 
-    return mpz_cmp(rop, f) != 0;
+    return mpz_cmp(rop, divisor) != 0;
 }
 
 
