@@ -14,7 +14,7 @@ int main()
     const clock_t start = clock();
 
     mpz_t pr;
-    primitive_root(pr, n);
+    least_primitive_root(pr, n);
 
     printf("t = %8.6lf", elapsed_secs(start));
     printf(" -> ");

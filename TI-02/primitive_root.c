@@ -1,6 +1,5 @@
 // Copyright (c) 2016 Quenio Cesar Machado dos Santos. All rights reserved.
 
-#include <stdio.h>
 #include <gmp.h>
 
 //#define MPZ_DEBUG
@@ -9,7 +8,7 @@
 #include "prime.h"
 #include "mpz_debug.h"
 
-bool is_primitive_root(mpz_t n, mpz_t g)
+bool is_primitive_root(const mpz_t n, const mpz_t g)
 {
     debug_section(is_primitive_root);
     debug_var(n);
@@ -48,7 +47,7 @@ bool is_primitive_root(mpz_t n, mpz_t g)
         debug_var(dividend);
         debug_var(divisor);
 
-        // d = p / f
+        // d = p / divisor
         mpz_div(d, p, divisor);
         debug_var(d);
 
@@ -68,35 +67,34 @@ bool is_primitive_root(mpz_t n, mpz_t g)
     mpz_clear(d);
     mpz_clear(a);
 
+    debug_section(is_primitive_root__result);
+    debug_var(g);
+
     return true;
 }
 
-void primitive_root(mpz_t rop, mpz_t n)
+void least_primitive_root(mpz_t rop, const mpz_t n)
 {
+    debug_section(least_primitive_root);
+    debug_var(n);
+
     // g = 2
     mpz_t g;
     mpz_init_set_ui(g, 2);
-
-    printf("initial g = ");
-    mpz_out_str(NULL, 10, g);
-    printf("\n");
+    debug_var(g);
 
     while (!is_primitive_root(n, g))
     {
-        printf("not primitive_root: ");
-        mpz_out_str(NULL, 10, g);
-        printf("\n");
-        printf("\n");
+        debug_section(primitive_root__loop);
 
         // g++
         mpz_add_ui(g, g, 1);
-
-        printf("next g = ");
-        mpz_out_str(NULL, 10, g);
-        printf("\n");
+        debug_var(g);
     }
 
-    mpz_init_set(rop, g);
+    debug_section(primitive_root__result);
+    mpz_set(rop, g);
+    debug_var(rop);
 
     mpz_clear(g);
 }

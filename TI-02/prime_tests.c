@@ -202,6 +202,57 @@ char * next_prime_divisor__bigger_divisors()
     return NULL;
 }
 
+char * next_prime_divisor__very_large_dividend()
+{
+    // dividend = 95
+    mpz_t dividend;
+    mpz_init_set_ui(dividend, 1639197169);
+
+    // divisor = 1
+    mpz_t divisor;
+    mpz_init_set_ui(divisor, 1);
+
+    // rop = 40487 <- 40487 x 40487 = 1639197169
+    mpz_t rop;
+    mpz_init(rop);
+    const bool result = next_prime_divisor(rop, dividend, divisor);
+
+    mu_assert(mpz_cmp_ui(rop, 40487) == 0);
+    mu_assert(result == true); // rop != divisor
+
+    mpz_clear(dividend);
+    mpz_clear(divisor);
+    mpz_clear(rop);
+
+    return NULL;
+}
+
+char * next_prime_divisor__prime_number()
+{
+    // dividend = 95
+    mpz_t dividend;
+    mpz_init_set_ui(dividend, 40487);
+
+    // divisor = 1
+    mpz_t divisor;
+    mpz_init_set_ui(divisor, 1);
+
+    // rop = 40487
+    mpz_t rop;
+    mpz_init(rop);
+    const bool result = next_prime_divisor(rop, dividend, divisor);
+
+    mu_assert(mpz_cmp_ui(rop, 40487) == 0);
+    mu_assert(result == true); // rop != divisor
+
+    mpz_clear(dividend);
+    mpz_clear(divisor);
+    mpz_clear(rop);
+
+    return NULL;
+}
+
+
 char * next_prime_divisor__last_divisor()
 {
     // dividend = 19
@@ -262,6 +313,8 @@ void all_tests()
     mu_test(next_dividend__one_as_divisor);
     mu_test(next_prime_divisor__small_divisors);
     mu_test(next_prime_divisor__bigger_divisors);
+    mu_test(next_prime_divisor__very_large_dividend);
+    mu_test(next_prime_divisor__prime_number);
     mu_test(next_prime_divisor__last_divisor);
     mu_test(next_prime_divisor__one_as_divisor);
 }

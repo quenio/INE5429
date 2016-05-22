@@ -5,6 +5,6 @@
 #include <stdbool.h>
 #include <gmp.h>
 
-bool is_primitive_root(mpz_t n, mpz_t g);
+bool is_primitive_root(const mpz_t n, const mpz_t g);
 
-void primitive_root(mpz_t rop, mpz_t n);
+void least_primitive_root(mpz_t rop, const mpz_t n);
