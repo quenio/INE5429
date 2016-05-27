@@ -6,9 +6,8 @@ static const int mswf = 1; // most significant word first
 static const int host_endian = 0;
 static const int nails = 0; // use all bits of each word
 
-void mpz_init_set_int64(mpz_t rop, size_t count, const uint64_t *op)
+void mpz_set_int64(mpz_t rop, size_t count, const uint64_t *op)
 {
-    mpz_init(rop);
     mpz_import(rop, count, mswf, sizeof(uint64_t), host_endian, nails, op);
 }
 

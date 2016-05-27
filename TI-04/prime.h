@@ -5,11 +5,13 @@
 #include <stdbool.h>
 #include <gmp.h>
 
-bool is_probably_prime(mpz_t rop);
+bool is_probably_prime(const mpz_t rop);
 
-void find_prime(mpz_t rop, size_t bit_count);
+void find_prime(mpz_t n, const size_t bit_count);
 
 void next_prime(mpz_t rop, const mpz_t n);
+
+void smallest_coprime(mpz_t rop, const mpz_t n);
 
 bool next_prime_divisor(mpz_t rop, const mpz_t dividend, const mpz_t divisor);
 

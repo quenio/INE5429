@@ -5,7 +5,7 @@
 
 #include "mpz_print.h"
 
-void print_var(const char * varName, const mpz_t var)
+void print_mpz_t(const char *varName, const mpz_t var)
 {
     printf("%s = ", varName);
     mpz_out_str(NULL, 10, var);

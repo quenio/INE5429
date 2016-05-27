@@ -1,8 +1,10 @@
 // Copyright (c) 2016 Quenio Cesar Machado dos Santos. All rights reserved.
 
 #include "random.h"
-
 #include <time.h>
+
+//#define MIN_DEBUG
+#include "min_debug.h"
 
 static const size_t s_size = 16;
 static const uint64_t seed[s_size] = {
@@ -60,28 +62,42 @@ static inline size_t div_ceiling(size_t op1, size_t op2)
     return 1 + ((op1 - 1) / op2);
 }
 
-void random_mpz(mpz_t rop, size_t bit_count)
+void random_mpz_t(mpz_t rop, const size_t bit_count)
 {
+    debug_start(random_mpz_t);
+    debug_size_t(bit_count);
+
     static const size_t byte_bit_count = 8;
 
-    // Geração dos componentes do número:
     size_t size = div_ceiling(bit_count, byte_bit_count);
-    size_t count = div_ceiling(size, sizeof(int64_t));
-    uint64_t n[count];
-    for (int i = 0; i < count; i++) n[i] = random_int64();
+    debug_size_t(size);
 
-    // Se o número for maior que 64 bits, precisamos do vetor inteiro:
+    size_t count = div_ceiling(size, sizeof(int64_t));
+    debug_size_t(count);
+
+    uint64_t n[count];
+    for (int i = 0; i < count; i++)
+    {
+        n[i] = random_int64();
+        debug_uint64_t(n[i]);
+    }
+
     static const size_t int64_bit_count = (sizeof(int64_t) * byte_bit_count);
+    debug_size_t(int64_bit_count);
+
     if (bit_count >= int64_bit_count)
     {
-        mpz_init_set_int64(rop, count, n);
+        mpz_set_int64(rop, count, n);
     }
     else
     {
         // Caso seja menos de 64 bits, capturamos apenas parte do número gerado:
         const size_t ignored_bits = (int64_bit_count - bit_count);
-        mpz_init_set_ui(rop, n[0] >> ignored_bits);
+        mpz_set_ui(rop, n[0] >> ignored_bits);
     }
+
+    debug_mpz_t(rop);
+    debug_end(random_mpz_t);
 }
 
 void random_mpz_interval(mpz_t rop, mpz_t min, mpz_t max)
@@ -93,8 +109,7 @@ void random_mpz_interval(mpz_t rop, mpz_t min, mpz_t max)
     mpz_init(rop);
     do
     {
-        mpz_clear(rop);
-        random_mpz(rop, bit_count);
+        random_mpz_t(rop, bit_count);
     }
     while ((mpz_cmp(rop, min) < 0) || (mpz_cmp(rop, max) > 0));
 }

@@ -3,14 +3,14 @@
 #include <stdio.h>
 #include <gmp.h>
 
-//#define MPZ_DEBUG
-
 #include "prime.h"
 #include "random.h"
-#include "mpz_debug.h"
+
+#define MIN_DEBUG
+#include "min_debug.h"
 
 // Fermat
-bool is_probably_prime(mpz_t op)
+bool is_probably_prime(const mpz_t op)
 {
     mpz_t n;
     mpz_init_set(n, op);
@@ -29,10 +29,12 @@ bool is_probably_prime(mpz_t op)
     mpz_init_set(exp, n);
     mpz_sub_ui(exp, exp, 1);
 
+    mpz_t a;
+    mpz_init(a);
+
     static const int k = 5;
     for (int i = 0; i < k; i++)
     {
-        mpz_t a;
         random_mpz_interval(a, min, max);
 
         mpz_t r;
@@ -42,22 +44,34 @@ bool is_probably_prime(mpz_t op)
         if (mpz_cmp_ui(r, 1) != 0) return false;
     }
 
+    mpz_clear(n);
+    mpz_clear(min);
+    mpz_clear(max);
+    mpz_clear(exp);
+    mpz_clear(a);
+
     return true;
 }
 
-void find_prime(mpz_t rop, size_t bit_count)
+void find_prime(mpz_t n, const size_t bit_count)
 {
+    debug_start(find_prime);
+    debug_size_t(bit_count);
+
     do
     {
-        random_mpz(rop, bit_count);
-        if (mpz_even_p(rop)) mpz_sub_ui(rop, rop, 1);
+        random_mpz_t(n, bit_count);
+        if (mpz_even_p(n)) mpz_sub_ui(n, n, 1);
     }
-    while (!is_probably_prime(rop));
+    while (!is_probably_prime(n));
+
+    debug_mpz_t(n);
+    debug_end(find_prime);
 }
 
-void next_odd(mpz_t rop, const mpz_t n)
+void next_odd(mpz_t rop, const mpz_t odd)
 {
-    if (rop != n) mpz_init_set(rop, n);
+    mpz_set(rop, odd);
     mpz_add_ui(rop, rop, (mpz_even_p(rop) || mpz_cmp_ui(rop, 2) <= 0) ? 1 : 2);
 }
 
@@ -73,17 +87,17 @@ void next_prime(mpz_t rop, const mpz_t n)
 
 bool next_dividend(mpz_t rop, const mpz_t dividend, const mpz_t divisor)
 {
-    debug_section(next_dividend);
-    debug_var(dividend);
-    debug_var(divisor);
+    debug_start(next_dividend);
+    debug_mpz_t(dividend);
+    debug_mpz_t(divisor);
 
     mpz_t original_dividend;
     mpz_init_set(original_dividend, dividend);
-    debug_var(original_dividend);
+    debug_mpz_t(original_dividend);
 
     // Initial dividend:
     mpz_set(rop, dividend);
-    debug_var(rop);
+    debug_mpz_t(rop);
 
     if (mpz_cmp_ui(divisor, 1) == 0) return false;
 
@@ -95,15 +109,15 @@ bool next_dividend(mpz_t rop, const mpz_t dividend, const mpz_t divisor)
     mpz_init(remainder);
 
     // Find next dividend:
-    debug_section(loop);
+    debug_start(loop);
     do
     {
         mpz_divmod(quotient, remainder, rop, divisor);
-        debug_var(quotient);
-        debug_var(remainder);
+        debug_mpz_t(quotient);
+        debug_mpz_t(remainder);
 
         if (mpz_cmp_ui(remainder, 0) == 0 && mpz_cmp_ui(quotient, 1) != 0) mpz_set(rop, quotient);
-        debug_var(rop);
+        debug_mpz_t(rop);
     }
     while (mpz_cmp_ui(remainder, 0) == 0 && mpz_cmp_ui(quotient, 1) != 0);
 
@@ -118,44 +132,44 @@ bool next_dividend(mpz_t rop, const mpz_t dividend, const mpz_t divisor)
 
 bool next_prime_divisor(mpz_t rop, const mpz_t dividend, const mpz_t divisor)
 {
-    debug_section(next_prime_divisor);
-    debug_var(dividend);
-    debug_var(divisor);
+    debug_start(next_prime_divisor);
+    debug_mpz_t(dividend);
+    debug_mpz_t(divisor);
 
     mpz_t original_divisor;
     mpz_init_set(original_divisor, divisor);
-    debug_var(original_divisor);
+    debug_mpz_t(original_divisor);
 
     mpz_t quotient;
     mpz_init(quotient);
 
     mpz_t remainder;
     mpz_init_set_ui(remainder, 1);
-    debug_var(remainder);
+    debug_mpz_t(remainder);
 
     mpz_t n;
     mpz_init(n);
     next_dividend(n, dividend, divisor);
-    debug_var(n);
+    debug_mpz_t(n);
 
     mpz_t d;
     mpz_init_set(d, divisor);
-    debug_var(d);
+    debug_mpz_t(d);
 
-    debug_section(next_prime_divisor__loop);
+    debug_start(next_prime_divisor__loop);
     while ((mpz_cmp(d, n) < 0) && (mpz_cmp_ui(remainder, 0) != 0))
     {
         next_prime(d, d);
-        debug_var(d);
+        debug_mpz_t(d);
 
         mpz_divmod(quotient, remainder, n, d);
-        debug_var(quotient);
-        debug_var(remainder);
+        debug_mpz_t(quotient);
+        debug_mpz_t(remainder);
     }
 
-    debug_section(next_prime_divisor__result);
+    debug_start(next_prime_divisor__result);
     mpz_set(rop, d);
-    debug_var(rop);
+    debug_mpz_t(rop);
 
     const bool result = mpz_cmp(rop, original_divisor) != 0;
 
@@ -166,6 +180,11 @@ bool next_prime_divisor(mpz_t rop, const mpz_t dividend, const mpz_t divisor)
     mpz_clear(d);
 
     return result;
+}
+
+void smallest_coprime(mpz_t rop, const mpz_t n)
+{
+
 }
 
 

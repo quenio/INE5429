@@ -6,5 +6,5 @@
 #include <stdio.h>
 #include <gmp.h>
 
-void mpz_init_set_int64(mpz_t rop, size_t count, const uint64_t *op);
+void mpz_set_int64(mpz_t rop, size_t count, const uint64_t *op);
 uint64_t * mpz_export_int64(uint64_t *rop, size_t *countp, const mpz_t op);

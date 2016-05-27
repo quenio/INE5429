@@ -4,4 +4,4 @@
 
 #include <stdio.h>
 
-void print_var(const char * varName, const mpz_t var);
+void print_mpz_t(const char *varName, const mpz_t var);

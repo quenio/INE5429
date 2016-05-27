@@ -4,4 +4,4 @@
 
 #include <gmp.h>
 
-void phi(mpz_t m, const mpz_t p, const mpz_t q);
+void rsa_key_modulus(mpz_t modulus, mpz_t p, mpz_t q, const size_t bit_count);
