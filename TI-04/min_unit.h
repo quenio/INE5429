@@ -7,10 +7,10 @@ extern int tests_run;
 extern int tests_failed;
 
 #define mu_assert(test) do { if (!(test)) { return " - FAILED: " #test "\n"; } } while (0)
-#define mu_test(test) do { \
-        char *message = test(); \
+#define mu_test(test, ...) do { \
+        char *message = test(__VA_ARGS__); \
         tests_run++; \
-        printf(#test); \
+        printf("%s(%s)", #test, #__VA_ARGS__); \
         if (message) { tests_failed++; printf("%s", message); return; } \
         printf(" - PASSED\n"); \
     } while (0)
