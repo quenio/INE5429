@@ -2,7 +2,7 @@
 
 #include "phi.h"
 
-#define MIN_DEBUG
+//#define MIN_DEBUG
 #include "min_debug.h"
 
 void phi(mpz_t m, const mpz_t p, const mpz_t q)
