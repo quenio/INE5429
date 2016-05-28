@@ -5,6 +5,9 @@
 #include "min_unit.h"
 #include "prime.h"
 
+//#define MIN_DEBUG
+#include "min_debug.h"
+
 char * next_dividend__small_numbers()
 {
     // dividend = 12
@@ -252,7 +255,6 @@ char * next_prime_divisor__prime_number()
     return NULL;
 }
 
-
 char * next_prime_divisor__last_divisor()
 {
     // dividend = 19
@@ -303,6 +305,22 @@ char * next_prime_divisor__one_as_divisor()
     return NULL;
 }
 
+char * small_coprime__of_number_is(uint16_t number, uint16_t expected_result)
+{
+    mpz_t n;
+    mpz_init_set_ui(n, number);
+
+    mpz_t coprime;
+    mpz_init(coprime);
+
+    small_coprime(coprime, n);
+    debug_mpz_t(coprime);
+
+    mu_assert(mpz_cmp_ui(coprime, expected_result) == 0);
+
+    return NULL;
+}
+
 void all_tests()
 {
     mu_test(next_dividend__small_numbers);
@@ -317,5 +335,20 @@ void all_tests()
     mu_test(next_prime_divisor__prime_number);
     mu_test(next_prime_divisor__last_divisor);
     mu_test(next_prime_divisor__one_as_divisor);
+    mu_test(small_coprime__of_number_is, 1, 1);
+    mu_test(small_coprime__of_number_is, 2, 1);
+    mu_test(small_coprime__of_number_is, 3, 2);
+    mu_test(small_coprime__of_number_is, 4, 3);
+    mu_test(small_coprime__of_number_is, 5, 2);
+    mu_test(small_coprime__of_number_is, 6, 5);
+    mu_test(small_coprime__of_number_is, 7, 2);
+    mu_test(small_coprime__of_number_is, 8, 3);
+    mu_test(small_coprime__of_number_is, 9, 2);
+    mu_test(small_coprime__of_number_is, 10, 3);
+    mu_test(small_coprime__of_number_is, 11, 2);
+    mu_test(small_coprime__of_number_is, 12, 5);
+    mu_test(small_coprime__of_number_is, 100, 3);
+    mu_test(small_coprime__of_number_is, 112, 3);
+    mu_test(small_coprime__of_number_is, 2802, 5);
 }
 

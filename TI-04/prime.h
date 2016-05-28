@@ -11,7 +11,7 @@ void find_prime(mpz_t n, const size_t bit_count);
 
 void next_prime(mpz_t rop, const mpz_t n);
 
-void smallest_coprime(mpz_t rop, const mpz_t n);
+void small_coprime(mpz_t rop, const mpz_t n);
 
 bool next_prime_divisor(mpz_t rop, const mpz_t dividend, const mpz_t divisor);
 
