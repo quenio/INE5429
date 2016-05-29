@@ -4,7 +4,7 @@
 #include "prime.h"
 #include "phi.h"
 
-//#define MIN_DEBUG
+#define MIN_DEBUG
 #include "min_debug.h"
 
 void rsa_key_modulus(mpz_t modulus, mpz_t p, mpz_t q, const size_t bit_count)
@@ -66,7 +66,9 @@ void rsa_key_pair(mpz_t modulus, mpz_t encrypting_exponent, mpz_t decrypting_exp
     debug_size_t(bit_count);
 
     mpz_t p, q;
-    rsa_key_modulus(modulus, p, q, bit_count);
+    mpz_init(p);
+    mpz_init(q);
+    rsa_key_modulus(modulus, p, q, bit_count / 2);
     debug_mpz_t(modulus);
 
     rsa_encrypting_exponent(p, q, encrypting_exponent);
