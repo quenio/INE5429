@@ -7,6 +7,7 @@ set(SOURCE_FILES
         min_debug.h
         mpz_print.c mpz_print.h
         mpz_int64.c mpz_int64.h
+        timer.c timer.h
         random.c random.h
         prime.c prime.h
         phi.c phi.h
