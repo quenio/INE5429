@@ -82,3 +82,29 @@ void rsa_key_pair(mpz_t modulus, mpz_t encrypting_exponent, mpz_t decrypting_exp
 
     debug_end(rsa_key_pair);
 }
+
+void rsa_encrypt(const mpz_t modulus, const mpz_t encrypting_exponent, const mpz_t message, mpz_t encrypted_message)
+{
+    debug_start(rsa_encrypt);
+    debug_mpz_t(modulus);
+    debug_mpz_t(encrypting_exponent);
+    debug_mpz_t(message);
+
+    mpz_powm(encrypted_message, message, encrypting_exponent, modulus);
+    debug_mpz_t(encrypted_message);
+
+    debug_end(rsa_encrypt);
+}
+
+void rsa_decrypt(const mpz_t modulus, const mpz_t decrypting_exponent, const mpz_t encrypted_message, mpz_t decrypted_message)
+{
+    debug_start(rsa_decrypt);
+    debug_mpz_t(modulus);
+    debug_mpz_t(decrypting_exponent);
+    debug_mpz_t(encrypted_message);
+
+    mpz_powm(decrypted_message, encrypted_message, decrypting_exponent, modulus);
+    debug_mpz_t(decrypted_message);
+
+    debug_end(rsa_decrypt);
+}

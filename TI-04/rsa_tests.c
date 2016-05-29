@@ -112,6 +112,43 @@ char * rsa_decrypting_exponent__of(const uint64_t some_p, const uint64_t some_q,
     return NULL;
 }
 
+char * rsa_encrypt__rsa_decrypt()
+{
+    mpz_t modulus;
+    mpz_init_set_ui(modulus, 2803);
+    debug_mpz_t(modulus);
+
+    mpz_t encrypting_exponent;
+    mpz_init_set_ui(encrypting_exponent, 113);
+    debug_mpz_t(encrypting_exponent);
+
+    mpz_t message;
+    mpz_init_set_ui(message, 715);
+    debug_mpz_t(message);
+
+    mpz_t encrypted_message;
+    mpz_init(encrypted_message);
+
+    rsa_encrypt(modulus, encrypting_exponent, message, encrypted_message);
+    debug_mpz_t(encrypted_message);
+
+    mu_assert(mpz_cmp_ui(encrypted_message, 708) == 0);
+
+    mpz_t decrypting_exponent;
+    mpz_init_set_ui(decrypting_exponent, 1463);
+    debug_mpz_t(decrypting_exponent);
+
+    mpz_t decrypted_message;
+    mpz_init(decrypted_message);
+
+    rsa_decrypt(modulus, decrypting_exponent, encrypted_message, decrypted_message);
+    debug_mpz_t(decrypted_message);
+
+    mu_assert(mpz_cmp(message, decrypted_message) == 0);
+
+    return NULL;
+}
+
 char * rsa_key_pair__of_bit_count(const size_t bit_count)
 {
     mpz_t modulus;
@@ -137,14 +174,14 @@ char * rsa_key_pair__of_bit_count(const size_t bit_count)
 
     mpz_t encrypted_message;
     mpz_init(encrypted_message);
-    mpz_powm(encrypted_message, message, encrypting_exponent, modulus);
+    rsa_encrypt(modulus, encrypting_exponent, message, encrypted_message);
     debug_mpz_t(encrypted_message);
 
     mu_assert(mpz_cmp(message, encrypted_message) != 0);
 
     mpz_t decrypted_message;
     mpz_init(decrypted_message);
-    mpz_powm(decrypted_message, encrypted_message, decrypting_exponent, modulus);
+    rsa_decrypt(modulus, decrypting_exponent, encrypted_message, decrypted_message);
     debug_mpz_t(decrypted_message);
 
     mu_assert(mpz_cmp(message, decrypted_message) == 0);
@@ -166,6 +203,7 @@ void all_tests()
     mu_test(rsa_decrypting_exponent__of, 2803, 113, 5);
     mu_test(rsa_decrypting_exponent__of, 11, 13, 7);
     mu_test(rsa_decrypting_exponent__of, 2803, 113, 5);
+    mu_test(rsa_encrypt__rsa_decrypt);
     mu_test(rsa_key_pair__of_bit_count, 128);
     mu_test(rsa_key_pair__of_bit_count, 256);
     mu_test(rsa_key_pair__of_bit_count, 512);
