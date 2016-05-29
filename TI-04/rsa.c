@@ -7,7 +7,7 @@
 //#define MIN_DEBUG
 #include "min_debug.h"
 
-void rsa_key_modulus(mpz_t modulus, mpz_t p, mpz_t q, const size_t bit_count)
+void rsa_key_modulus(const size_t bit_count, mpz_t modulus, mpz_t p, mpz_t q)
 {
     debug_start(rsa_key_modulus);
     debug_size_t(bit_count);
@@ -60,7 +60,7 @@ void rsa_decrypting_exponent(const mpz_t p, const mpz_t q, const mpz_t encryptin
     debug_mpz_t(decrypting_exponent);
 }
 
-void rsa_key_pair(mpz_t modulus, mpz_t encrypting_exponent, mpz_t decrypting_exponent, const size_t bit_count)
+void rsa_key_pair(const size_t bit_count, mpz_t modulus, mpz_t encrypting_exponent, mpz_t decrypting_exponent)
 {
     debug_start(rsa_key_pair);
     debug_size_t(bit_count);
@@ -68,7 +68,7 @@ void rsa_key_pair(mpz_t modulus, mpz_t encrypting_exponent, mpz_t decrypting_exp
     mpz_t p, q;
     mpz_init(p);
     mpz_init(q);
-    rsa_key_modulus(modulus, p, q, bit_count / 2);
+    rsa_key_modulus(bit_count / 2, modulus, p, q);
     debug_mpz_t(modulus);
 
     rsa_encrypting_exponent(p, q, encrypting_exponent);

@@ -21,7 +21,7 @@ char * rsa_key_modulus__small_primes()
     mpz_init(q);
 
     const size_t bit_count = sizeof(__uint64_t) * 8;
-    rsa_key_modulus(modulus, p, q, bit_count);
+    rsa_key_modulus(bit_count, modulus, p, q);
 
     debug_size_t(mpz_sizeinbase(p, 2));
     debug_size_t(mpz_sizeinbase(q, 2));
@@ -160,7 +160,7 @@ char * rsa_key_pair__of_bit_count(const size_t bit_count)
     mpz_t decrypting_exponent;
     mpz_init(decrypting_exponent);
 
-    rsa_key_pair(modulus, encrypting_exponent, decrypting_exponent, bit_count);
+    rsa_key_pair(bit_count, modulus, encrypting_exponent, decrypting_exponent);
     debug_mpz_t(modulus);
     debug_mpz_t(encrypting_exponent);
     debug_mpz_t(decrypting_exponent);
