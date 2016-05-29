@@ -6,7 +6,7 @@
 #include "phi.h"
 #include "rsa.h"
 
-#define MIN_DEBUG
+//#define MIN_DEBUG
 #include "min_debug.h"
 
 char * rsa_key_modulus__small_primes()
@@ -112,7 +112,7 @@ char * rsa_decrypting_exponent__of(const uint64_t some_p, const uint64_t some_q,
     return NULL;
 }
 
-char * rsa_key_pair__small_key()
+char * rsa_key_pair__of_bit_count(const size_t bit_count)
 {
     mpz_t modulus;
     mpz_init(modulus);
@@ -123,19 +123,17 @@ char * rsa_key_pair__small_key()
     mpz_t decrypting_exponent;
     mpz_init(decrypting_exponent);
 
-    const size_t bit_count = sizeof(uint64_t) * 8;
     rsa_key_pair(modulus, encrypting_exponent, decrypting_exponent, bit_count);
     debug_mpz_t(modulus);
     debug_mpz_t(encrypting_exponent);
     debug_mpz_t(decrypting_exponent);
-
-    size_t actual_bit_count = mpz_sizeinbase(modulus, 2);
-    debug_size_t(actual_bit_count);
+    debug_size_t(mpz_sizeinbase(modulus, 2));
 
     mpz_t message;
     mpz_init(message);
-    random_mpz_t(message, actual_bit_count - 2);
+    random_mpz_t(message, bit_count - 64);
     debug_mpz_t(message);
+    debug_size_t(mpz_sizeinbase(message, 2));
 
     mpz_t encrypted_message;
     mpz_init(encrypted_message);
@@ -163,10 +161,15 @@ char * rsa_key_pair__small_key()
 
 void all_tests()
 {
-//    mu_test(rsa_key_modulus__small_primes);
-//    mu_test(rsa_encrypting_exponent__of, 11, 13, 7);
-//    mu_test(rsa_decrypting_exponent__of, 2803, 113, 5);
-//    mu_test(rsa_decrypting_exponent__of, 11, 13, 7);
-//    mu_test(rsa_decrypting_exponent__of, 2803, 113, 5);
-    mu_test(rsa_key_pair__small_key);
+    mu_test(rsa_key_modulus__small_primes);
+    mu_test(rsa_encrypting_exponent__of, 11, 13, 7);
+    mu_test(rsa_decrypting_exponent__of, 2803, 113, 5);
+    mu_test(rsa_decrypting_exponent__of, 11, 13, 7);
+    mu_test(rsa_decrypting_exponent__of, 2803, 113, 5);
+    mu_test(rsa_key_pair__of_bit_count, 128);
+    mu_test(rsa_key_pair__of_bit_count, 256);
+    mu_test(rsa_key_pair__of_bit_count, 512);
+    mu_test(rsa_key_pair__of_bit_count, 1024);
+    mu_test(rsa_key_pair__of_bit_count, 2048);
+    mu_test(rsa_key_pair__of_bit_count, 4096);
 }
