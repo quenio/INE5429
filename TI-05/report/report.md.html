@@ -1,28 +1,84 @@
 <meta charset="utf-8" lang="pt">
 
-                                        **Protocolo de Diffie-Hellman**
-                                **INE5429 - Segurança em Computadores**
-                                        Trabalho Individual #3
+                                    **Teoria de Números e Corpos Finitos**
+                                        Trabalho Individual #5
                                 *Quênio César Machado dos Santos (14100868)*
-                                        Florianópolis, 10/05/2016
+                                    **INE5429 - Segurança em Computadores**
+                                        Florianópolis, 31/05/2016
 
-# Protocolo de *Diffie-Hellman*
+# Algoritmos
 
-Este protocolo permite estabelecer uma chave secreta entre duas partes.
+a) Euclides
 
-Este funciona da seguinte forma:
-1. As partes compartilham publicamente um número primo (*n*) e sua raiz primitiva (*g*).
-1. A seguir, compartilham o resultado (representado pela variável *a*) da operação $g^k \equiv a\pmod{n}$, tendo como:
-    - o expoente (*k*): um número aleatório secreto, normalmente um valor muito grande para impedir exploração por um *man-in-the-middle*;
-    - a base (*g*): a raiz primitiva compartilhada no passo 1, normalmente um valor pequeno;
-    - o valor de módulo (*n*): o número primo compartilhado no passo 1, normalmente um valor muito grande para impedir busca exaustiva da chave compartilhada.
-1. Usando o resultado - variável *a* - enviado pela outra parte no passo 2, calcula-se então a chave secreta (representado pela variável *s*) com a operação $a^k \equiv s\pmod{n}$.
+b) Euclides Estendido
 
-Ambas as partes agora possuem a chave secreta *s*. Ninguém mais porém possui esta chave, pois esta foi calculada a partir de *k*, um número aleatório muito grande gerado por cada uma das partes secretamente.
+# Grupos, Anéis e Corpos
 
+a) Grupo
 
+b) Anel
 
+c) Corpos ( Galois Field - GF )
 
+# Corpos
+
+a) Corpos primos
+
+b) Corpos binários
+
+# Corpos Finitos Binários Usando Polinômios
+
+a) O que são polinômios irredutíveis?
+
+b) Como efetuar a adição e a multiplicação de elementos em corpos finitos binários em um corpo com 2nelementos,  n > 0?
+
+c) Mostre um exemplo considerando o corpo GF(28)
+
+# Equações de Módulo
+
+a) 9x ≡ 8 ( mod 7 )
+
+b) x = 5 mod 3
+
+c) x = 5 mod -3
+
+d) x = -5 mod 3
+
+e) x = -5 mod -3
+
+f) x = 1234-1 mod 4321
+
+g) x = - 24140 mod 40902
+
+# Inverso Multiplicativo
+
+Encontre o inverso multiplicativo de todos os elementos diferentes de zero em Z11. Lembrar que Zn significa realizar operações módulo n.
+
+# Aritmética Polinomial
+
+Para aritmética polinomial com coeficientes em Z10, faça os seguintes cálculos:
+
+a) (7x+2) - (x2 +5)
+
+b) (6x2 + x + 3) . (5x2 +2)
+
+# Máximo Divisor Comum de Polinômios
+
+Determine o máximo divisor comum entre os seguintes polinômios:
+
+a) x3 + x + 1 e x2 + x + 1 sobre GF(2)
+
+b) x3 - x + 1 e x2 + 1 sobre GF(3)
+
+c) x5 + 88x4 + 73x3 + 83x2 + 51x + 67 e x3 + 97x2 + 40x + 38 sobre GF(101)
+
+# ?
+
+Tabela para mostrando as operações de adição e multiplicação para GF(24). Considerando o polinômio irredutível f(x) = x4 + x + 1
+
+# Inverso Multiplicativo
+
+O inverso multiplicativo de x3 + x + 1 em GF(24). Considerando o irredutível f(x) = x4 + x + 1
 
 <!-- Markdeep: -->
 <style class="fallback">body{visibility:hidden}</style>
