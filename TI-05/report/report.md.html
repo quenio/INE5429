@@ -6,9 +6,25 @@
                                     **INE5429 - Segurança em Computadores**
                                         Florianópolis, 31/05/2016
 
-# Algoritmos
+# Euclides e Euclides Estendido
 
 a) Euclides
+
+O algoritmo de Euclides permite descobrir o máximo divisor comum (MDC) entre dois números inteiros. Ele aplica o _teorema da divisão_ ($a = b q + r$), inicialmente sobre os dois números inteiros e sucessivamente sobre o quociente ($q$) e resto ($r$) até encontrar $r = 0$. O último $q$ é o MDC.
+
+Por exemplo, o MDC de $217$ e $84$ é descoberto da seguinte forma:
+
+$$ 217 = 84 \times 2 + 49 $$
+$$ 84 = 49 \times 1 + 35 $$
+$$ 49 = 35 \times 1 + 14 $$
+$$ 35 = 14 \times 2 + 7 $$
+$$ 14 = 7 \times 2 + 0 $$
+
+Como $q = 7$, temos:
+
+$$MDC(217, 84) = 7$$
+
+Isto é verdadeiro, visto que ${7 \times 31} = 217$ e $ 2 \times 2 \times 3 \times 7 = 84 $
 
 b) Euclides Estendido
 

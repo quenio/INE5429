@@ -1,0 +1,162 @@
+<meta charset="utf-8" lang="pt">
+
+                               **Resumo do Conteúdo da Prova 1**
+                            **INE5429 - Segurança em Computadores**
+                               *Quênio César Machado dos Santos*
+                                    Florianópolis, 01/06/2016
+
+# Autenticação
+
+Do ponto de vista de um sistema, a autenticação é um serviço provido pelo sistema que permite verificar:
+- que seus usuários são realmente quem eles dizem ser;
+- e que as entradas do sistema vieram de uma fonte confiável.
+
+Do ponto de vista de uma comunicação entre duas ou mais entidades, a autenticação garante:
+- a identidade das entidades se comunicando;
+- e a origem dos dados trocados durante a comunicação.
+
+# Integridade
+
+Integridade é um dos objetivos principais da área de segurança de computadores. O objetivo é garantir:
+- que dados compartilhados entre sistemas e entidades não sejam alterados durante a sua transmissão - integridade de dados;
+- e que sistemas não sejam usados de forma indevida - integridade de sistemas.
+
+# Princípio de Kerckhoffs
+
+Este princípio foi definido pelo criptógrafo Holandês no século 19 e diz que um sistema criptográfico deve ser indecifrável mesmo quando tudo sobre o sistema é de conhecimento público, incluindo algoritmos, protocolos, tabelas e _hashs_; exceto por suas chaves, que precisam ser mantidas de forma privada.
+
+# Tipos de Ataques em Criptoanálise
+
+## Texto Cifrado Somente
+
+O criptoanalista tem conhecimento do algoritmo de criptografia e do texto cifrado, mas não tem acesso a quaisquer partes do texto original que foi criptografado.
+
+## Texto Claro Conhecido
+
+Além do conhecimento do algoritmo de criptografia, o criptoanalista possui partes do texto original, juntamente com texto cifrado correspondente.
+
+## Texto Claro/Cifrado Escolhido
+
+O criptoanalista consegue obter pares de sua própria escolha, contendo o texto original e o texto criptografado correspondente.
+
+# Assinatura Digital
+
+A assinatura digital é uma transformação criptográfica aplicada a uma mensagem enviada por um remetente que permite a um destinatário verificar a origem e a integridade dos dados.
+
+No esquema genérico da assinatura digital, o remetente de uma mensagem (um conjunto de dados) aplica uma função _hashing_ sobre a mensagem para conseguir um valor de _hash_, que é então cifrado usando uma chave privada. O _hash_ cifrado então é enviado para o destinatário, juntamente com a mensagem. Ao receber a mensagem, o destinatário decifra o valor de _hash_ enviado com a mensagem usando a chave pública do remetente. Em seguida, o destinatário compara o valor de _hash_ decifrado com o resultado do seu próprio cálculo do _hash_ da mensagem. Se os valores forem iguais, então sabe-se que esta mensagem foi proveniente do remetente e que o conteúdo da mensagem não foi alterado por terceiros durante a transmissão.
+
+Para que este esquema funcione, é preciso:
+- que o remetente e destinatário utilizem a mesma função de _hashing_ e o mesmo algoritmo criptográfico assimétrico para cifrar e decifrar o valor de _hash_.
+- e que o remetente compartilhe com o destinatário sua chave pública.
+
+A assinatura digital não garante confidencialidade dos dados. Para isto, o remetente deve cifrar a mensagem com o valor de _hash_ - a assinatura digital - antes de enviá-la ao destinatário. Este último deverá decifrar a mensagem antes de verificar sua assinatura digital. O algoritmo utilizado para cifrar e decifrar a mensagem não precisa:
+- ser o mesmo que foi utilizado para gerar e verificar a assinatura digital;
+- nem mesmo ser assimétrico.
+
+# Cifrador de César
+
+É a técnica de substituição mais simples que foi utilizada pelo imperador romano Júlio Cesar. Nesta técnica, substitui-se cada letra do alfabeto pela letra que se encontra três posições adiante. Para as três últimas letras do alfabeto, volta-se às três primeiras letras do alfabeto.
+
+Exemplo:
+
+$$HORA => KRUD$$
+
+Ou ainda:
+
+$$ZERO => CHUR$$
+
+Assinalando números inteiros de $1$ a $25$ para as letras do alfabeto, podemos determinar a letra de cada substituição usando a seguinte formula:
+
+$$C = (L + 3) \text{ mod } 26$$
+
+Onde $L$ é o número correspondendo a letra a ser substituída e $C$ é o número correspondendo a letra resultante após a substituição.
+
+Permitindo a variabilidade da posição de substituição no alfabeto, tem-se uma fórmula genérica:
+
+$$C = (L + K) \text{ mod } 26$$
+
+Onde $K$ corresponde ao número de posições avançadas no alfabeto para se achar a substituição.
+
+A fórmula genérica do decifrador então é:
+
+$$L = (C - K) \text{ mod } 26$$
+
+O cifrador de César é suscetível ao ataque de força bruta, pois existem apenas 25 chaves ($K$) possíveis, correspondendo ao número de letras no alfabeto.
+
+# Cifradores Monoalfabéticos e Polialfabéticos
+
+Para eliminar ataques de força bruta como é possível com o cifrador de César, pode-se fazer a permutação das letras do alfabeto para gerar um "alfabeto cifrador" ao invés de simplesmente avançar a posição no alfabeto original. Isto vai permitir $26!$ - mais de $4 \times 10^{26}$ - chaves possíveis.
+
+Porém, com o conhecimento da frequência de cada letra do alfabeto na língua escrita, é possível determinar a correspondência entre as letras do alfabeto original e do alfabeto permutado. Pois estas frequências se mantém na mensagem cifrada. Pode-se dificultar o trabalho de criptoanálise usando um maior número de símbolos para representar cada letra que aparece com mais frequência na língua escrita. Porém, ainda é possível encontrar correspondências de digramas.
+
+Para diminuir a possibilidade de que a estrutura do texto original seja preservada no texto cifrado, pode-se usar:
+- múltiplos alfabetos no mesmo texto;
+- ou cifrar mais de uma letra em conjunto.
+
+# Playfair
+
+Playfair é o mais conhecido cifrador de digramas. Ele filtra parte da estrutura to texto original, mas ainda é suscetível a criptoanálise.
+
+Abaixo, estão os passos do Playfair:
+1. Montar uma tabela 5 x 5, preenchendo inicialmente com uma palavra-chave qualquer e removendo letras repetidas.
+2. Para as células restantes da tabela, preenche-se com as letras do alfabeto, nunca repetindo letras.
+3. Divide-se o texto original em digramas. Quando houver repetição de letras no mesmo digrama, insere-se uma letra padrão antes da segunda repetição, movendo esta última para o próximo digrama.
+4. Letras do mesmo digrama que se encontram na mesma coluna são substituídas pela letra a sua direita. Caso seja uma letra da última linha, substitui-se pela letra na primeira linha desta mesma coluna.
+5. Letras do mesmo digrama que se encontram na mesma linha são substituídas pela letra abaixo. Caso seja uma letra da última coluna, substitui-se pela letra na primeira coluna desta mesma linha.
+6. Se as letras do digrama estão em colunas e linhas diferentes, substitui-se pela letra na mesma linha, mas na coluna da outra letra.
+
+# Cifrador de Vigenère
+
+É um cifrador polialfabético baseado no cifrador de César, onde um número variável de chaves é aplicado em cada letra da mensagem. As chaves são derivadas de uma palavra-chave, sendo que cada letra da palavra determina qual é o avanço $K$ a ser aplicado na próxima letra da mensagem.
+
+A fórmula geral do cifrador de Vigenère é:
+
+$$ C_i = (L_i + K_{i \text{ mod } m}) \text{ mod } 26$$
+
+Onde $m$ é o número de letras da palavra-chave.
+
+A fórmula do decifrador é análoga:
+
+$$ C_i = (L_i - K_{i \text{ mod } m}) \text{ mod } 26$$
+
+Apesar de impedir que muito da estrutura do texto original seja transferido para o texto cifrado, o cifrador de Vigenère ainda permite o ataque do criptoanalista se este conseguir descobrir o número de letras na palavra-chave. Uma vez descoberto este número, é possível aplicar as técnicas de criptoanálise usadas em cifradores monoalfabéticos.
+
+# Cifrador de Vernam
+
+O cifrador de Vernam utiliza a operação XOR tanto para cifrar quanto para decifrar uma mensagem.
+
+Para cifrar, aplica-se a operação XOR sobre o texto claro:
+
+$$ C_i = L_i \oplus K_i$$
+
+Para decifrar, a mesma fórmula, mas aplica-se a operação XOR sobre o texto cifrado:
+
+$$L_i = C_i \oplus K_i$$
+
+Dado uma palavra-chave muito longa, o cifrador de Vernam se torna bem mais difícil de quebrar do que o cifrador de Vigenère. Porém, ainda é possível quebrá-lo quando se possui uma grande quantidade de texto cifrado e de prováveis sequencias de texto claro.
+
+# One-Time Pad
+
+One-Time Pad é uma regra aplicada ao cifrador de Vigenère, onde a chave usada para cifrar a mensagem é tão longa quanto a própria mensagem e esta chave é gerada de forma totalmente aleatória. Desta forma, é simplesmente impossível quebrar uma mensagem, pois o texto cifrado não tem qualquer relação de estrutura com o texto claro.
+
+Apesar de oferecer total segurança, One-Time Pad apresenta algumas dificuldades práticas:
+
+- Para sistemas com intensa comunicação, seria muito custoso gerar chaves com milhares ou milhões de caracteres realmente aleatórios.
+- Ainda mais difícil seria a distribuição destas chaves de forma segura entre as partes que precisam se comunicar.
+
+Portanto, na prática, One-Time Pad tem seu uso limitado a trocas de mensagens esporádicas em meios onde é possível compartilhar uma chave de uso único.
+
+# Máquina Enigma
+
+A máquina enigma foi uma máquina de criptografia usada pela Alemanha na segunda guerra mundial. Ela é baseada em rotores que simulam o comportamento de um cifrador polialfabético. A segurança desta máquina está em combinar rotores em sequência de tal forma que o texto seja cifrado várias vezes em sequência, assim diminuindo consideravelmente da estrutura do texto claro original encontrada no texto cifrado resultante.
+
+# Estaganografia
+
+Estaganografia é a técnica usada para esconder uma mensagem dentro de outra mensagem. Esta técnica não envolve criptografia, mas esta última pode ser usada na mensagem escondida.
+
+#
+
+<!-- Markdeep: -->
+<style class="fallback">body{visibility:hidden}</style>
+<script src="markdeep.js"></script>
+<script>window.alreadyProcessedMarkdeep||(document.body.style.visibility="visible")</script>
