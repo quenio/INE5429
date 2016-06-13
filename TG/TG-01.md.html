@@ -43,14 +43,32 @@ Antes, defini-se dois termos usados a seguir:
 
 O número de pré-imagens de $m$ _bits_ para cada valor $h$ de $n$ _bits_ é calculado pela formula: $2^\frac{m}{n}$. Se permitimos um tamanho em _bits_ arbitrariamente longo para as pré-imagens, isto aumentará ainda mais a probabilidade de colisão durante o uso de uma função _hash_. Entretanto, os riscos de segurança são minimizados se a função de _hash_ criptográfica oferecer as propriedades descritas nas próximas seções.
 
-### Resistente à Pré-Imagem
+### Resistente a Pré-Imagem
+
+Uma função _hash_ criptográfica é resistente a pré-imagem quando esta é uma função de uma via. Ou seja, embora seja computacionalmente fácil gerar um valor $h$ a partir de uma pré-imagem $M$ usando a função de _hash_, é computacionalmente inviável gerar uma pré-imagem a partir do valor $h$.
+
+Se uma função _hash_ não for resistente à pré-imagem, é possível atacar uma mensagem autenticada $M$ para descobrir o valor secreta $S$ usada na mensagem, permitindo assim ao perpetrante enviar uma outra mensagem $M_2$ ao destinatário no lugar do remetente sem que o destinatário perceba a violação da comunicação. O ataque ocorre da seguinte forma:
+- O perpetrante tem conhecimento do algoritmo de _hash_ $h = H(M)$ usado na comunicação entre as partes.
+- Ao escutar a comunicação, o perpetrante descobre qual é a mensagem $M$ e o valor de _hash_ $h$.
+- Visto que a inversão da função de _hash_ é computacionalmente fácil, o perpetrante calcula $H^{-1}(h)$.
+- Como $H^{-1}(h) = S \text{ || } M$, o perpetrante descobre $S$.
+
+Desta forma, o perpetrante pode utilizar a chave secreta $S$ no envio de uma mensagem $M_2$ para o destinatário sem que este perceba a violação.
 
 
-### Resistente à Segunda Pré-Imagem
+### Resistente a Segunda Pré-Imagem
 
+Uma função _hash_ criptográfica é resistente a segunda pré-imagem quando esta função torna inviável computacionalmente encontrar uma pré-imagem alternativa que gera o mesmo valor _h_ da primeira pré-imagem.
 
+Se uma função de _hash_ não for resistente a segunda pré-imagem, um perpetrante conseguirá substituir uma mensagem que utiliza um determinado valor de _hash_, mesmo que a função de _hash_ seja de uma via, ou seja, resistente a pré-imagem.
 
-### Resistente à Colisão
+### Resistente a Colisão
+
+Uma função _hash_ criptográfica é resistente a colisão quando esta tornar inviável computacionalmente encontrar duas pré-imagens quaisquer que possuam o mesmo valor de _hash_. Neste caso, diferentemente da resistência a segunda pré-imagem, não é dado uma pré-imagem inicial para a qual precisa se achar uma segunda pré-imagem, mas é suficiente encontrar duas pré-imagens quaisquer tal que $H(M_1) = H(M_2)$.
+
+Quando uma função _hash_ é resistente a colisão, está é consequente resistente a segunda pré-imagem. Porém, nem sem sempre uma função resistente a segunda pré-imagem será resistente a colisão. Por isto, diz-se que uma função _hash_ resistente a colisão é uma função de _hash_ forte.
+
+Se uma função _hash_ não for resistente a colisão, então é possível para uma parte forjar a assinatura de outra parte. Por exemplo, se Alice deseja que Bob assine um documento dizendo que deve 100 reais a ela, caso Alice saiba que um documento contendo o valor de 1000 reais contém o mesmo valor de _hash_ que o documento original, Alice pode fazer com que Bob seja responsável por uma dívida maior que a original, pois a assinatura valerá para ambos os documentos.
 
 <!-- Markdeep: -->
 <style class="fallback">body{visibility:hidden}</style>
