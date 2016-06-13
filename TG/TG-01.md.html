@@ -70,6 +70,22 @@ Quando uma função _hash_ é resistente a colisão, está é consequente resist
 
 Se uma função _hash_ não for resistente a colisão, então é possível para uma parte forjar a assinatura de outra parte. Por exemplo, se Alice deseja que Bob assine um documento dizendo que deve 100 reais a ela, caso Alice saiba que um documento contendo o valor de 1000 reais contém o mesmo valor de _hash_ que o documento original, Alice pode fazer com que Bob seja responsável por uma dívida maior que a original, pois a assinatura valerá para ambos os documentos.
 
+### Uso das Propriedades de Funções _Hash_
+
+Abaixo, temos uma tabela que mostra quais propriedades das funções _hash_ são necessárias para alguma das aplicações de segurança de computadores:
+
+
+|Aplicação|Resistente a Pre-Imagem|Resistente a Segunda Pre-Imagem|Resistente a Colisão|
+|:--------|:---------------------:|:-----------------------------:|:------------------:|
+|Autenticação de Mensagens|X|X|X|
+|Assinatura Digital|X|X|X|
+|Infecção de Sistemas||X||
+|Arquivo de Senhas de Uma Via|X|||
+
+No caso da infecção de sistemas, não há problema em usar uma função de hash com fácil inversão, pois não é necessário embutir um valor secreto na geração do valor de _hash_ de um arquivo. Já, num arquivo de _hash_ de senhas, a inversão permitiria descobrir a senha a partir do valor de _hash_.
+
+Se a função de _hash_, porém, permitir o descobrimento de uma segunda pré-imagem, seria possível infectar um arquivo de um sistema sem detecção, pois seu valor de _hash_ não mudaria. Isto não seria um problema para um arquivo de _hash_ de senhas, pois o perpetrante não possui a senha, que é a primeira pré-imagem e, portanto, não teria condições de descobrir a segunda pré-imagem.
+
 <!-- Markdeep: -->
 <style class="fallback">body{visibility:hidden}</style>
 <script src="markdeep.js"></script>
