@@ -3,18 +3,54 @@
                                     **Função de Hash Criptográfica SHA-3**
                                 *Quênio César Machado dos Santos (14100868)*
                                     **INE5429 - Segurança em Computadores**
-                                        Florianópolis, 31/05/2016
+                                        Florianópolis, 14/06/2016
 
-# Capítulo 1 - Função Hash Criptográfica
 
-Uma função _hash_ é uma função que aceita um bloco de dados de tamamho variável como entrada e produz um valor de tamanho fixo como saída, chamado de valor _hash_. Esta função tem a forma:
+# Função Hash Criptográfica
 
-$$
+Uma função _hash_ é uma função que aceita um bloco de dados de tamanho variável como entrada e produz um valor de tamanho fixo como saída, chamado de valor _hash_. Esta função tem a forma:
+
+$$ h = H(M) $$
+
+Onde:
+- _h_ é o valor _hash_ de tamanho fixo gerado pela função _hash_.
+- _H_ é função _hash_ que gerou o valor _h_.
+- _M_ é o valor de entrada de tamanho variável.
+
+Espera-se que uma função _hash_ produza valores _h_ que são uniformemente distribuídos no contra-domínio e que são aparentemente aleatórios, ou seja, a mudança de apenas um _bit_ em _M_ causará uma mudança do valor _h_. Por esta característica, as funções _hash_ são muito utilizadas para verificar se um determinado bloco de dados foi indevidamente alterado.
+
+As funções _hash_ apropriadas para o uso em segurança de computadores são chamadas de "função _hash_ criptográfica". Este tipo de função _hash_ é implementada por um algoritmo que torna inviável computacionalmente encontrar:
+
+- um valor $M$ dado um determinado valor $h$:
+$$M \text{ | } H(M) = h$$
+
+- dois valores $M_1$ e $M_2$ que resultem no mesmo valor $h$:
+$$(M_1,M_2) \text{ | } H(M_1) = H(M_2)$$
+
+Os principais casos de uso de funções _hash_ criptográficas são:
+- _Autenticação de Mensagens_: é um serviço de segurança onde é possível verificar que uma mensagem não foi alterada durante sua transmissão e que é proveniente do devido remetente.
+- _Assinatura Digital_: é um serviço de segurança que permite a uma entidade assinar digitalmente um documento ou mensagem.
+- _Arquivo de Senhas de Uma Via_: é uma forma de armazenar senhas usando o valor _hash_ da senha, permitindo sua posterior verificação sem a necessidade de armazenar a senha em claro, cifrá-la ou decifrá-la.
+- _Detecção de Perpetração ou Infeção de Sistemas_: é um serviço de segurança em que é possível determinar se arquivos de um sistema foram alterados por terceiros sem a autorização dos usuários do sistema.
 
 ## Propriedades
-### Pré-imagem
-### Segunda pré-imagem
-### Colisão
+
+Como observado na seção anterior, uma função _hash_ criptográfica precisa ter certas propriedades para permitir seu uso em segurança de computadores. Nas seções a seguir estão destacadas algumas dessas propriedades.
+
+Antes, defini-se dois termos usados a seguir:
+- _Pré-Imagem_: um valor $M$ do domínio de uma função _hash_ dada pela fórmula $h = H(M)$ é denominado de "pré-imagem" do valor $h$.
+- _Colisão_: para cada valor _h_ de tamanho $n$ _bits_ existe necessariamente mais de uma pré-imagem correspondente de tamanho $m$ _bits_ se $m > n$, ou seja, existe uma "colisão".
+
+O número de pré-imagens de $m$ _bits_ para cada valor $h$ de $n$ _bits_ é calculado pela formula: $2^\frac{m}{n}$. Se permitimos um tamanho em _bits_ arbitrariamente longo para as pré-imagens, isto aumentará ainda mais a probabilidade de colisão durante o uso de uma função _hash_. Entretanto, os riscos de segurança são minimizados se a função de _hash_ criptográfica oferecer as propriedades descritas nas próximas seções.
+
+### Resistente à Pré-Imagem
+
+
+### Resistente à Segunda Pré-Imagem
+
+
+
+### Resistente à Colisão
 
 <!-- Markdeep: -->
 <style class="fallback">body{visibility:hidden}</style>
