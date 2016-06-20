@@ -92,14 +92,20 @@ SHA-3 é uma função _hash_ criptográfica publicada pelo NIST em agosto de 201
 
 ## A Estrutura do SHA-3
 
-A estrutura do SHA-3 é a mesma de outras funções _hash_ iterativas, onde o resultado de uma função de compressão é iterativamente aplicado sobre a mesma função, juntamente com o próximo bloco da mensagem de entrada. O esquema iterativo genérico é ilustrado na figura a seguir:
+A estrutura principal do SHA-3 segue a estrutura genérica de outras funções _hash_ iterativas, onde o resultado de uma função de compressão $f$ é iterativamente aplicado sobre a mesma função, juntamente com o próximo bloco $P_i$ da mensagem de entrada, como ilustrado no diagrama abaixo:
 
-Figura 11.8
+$$\require{AMScd}
+\begin{CD}
+@VVV |P_1|=r     @VVV |P_2|=r                @.       @VVV |P_n|=r \\
+@>|S_0|=b>> f_1 @>|S_1|=b>> f_2 @>|S_2|=b>> ... @>|S_{n-1}|=b>> f_n @>|S_n|=b>>
+\end{CD}$$
 
 
-No esquema ilustrado acima, uma mensagem de entrada é dividida em vários blocos de tamanho único. Cada bloco é processado com saída da execução anterior da função de compressão, produzindo a saída final depois que todos os blocos são processados.
+No esquema ilustrado acima, uma mensagem de entrada é dividida em $n$ blocos de mesmo tamanho $r$: $P_1$, $P_2$, ..., $P_n$. Cada bloco é processado com a saída $S_{i-1}$ da execução anterior da função $f$. O símbolo $f_i$, com $1 \leq i \leq n$, representa a execução da função $f$ na iteração $i$ gerando o resultado $S_i$ de $b$ _bits_. Após todos os blocos $P_i$ serem processados, produz-se a saída final $S_n$.
 
-Apesar de seguir o esquema genérico descrito acima, o SHA-3 possui uma característica peculiar. Este permite um número variável de _bits_ tanto de entrada como de saída, que torna a estrutura do SHA-3 mais flexível e aplicável não somente como função _hash_, mas também como um gerador de números pseudo-aleatórios, entre outras funções. Devido a esta característica, seus criadores a chamam de _função esponja_. Observe esta estrutura na ilustração abaixo:
+Apesar de seguir o esquema genérico descrito acima, o SHA-3 possui uma característica peculiar. Este permite um número variável de _bits_ tanto de entrada como de saída, que torna a estrutura do SHA-3 mais flexível e aplicável não somente como função _hash_, mas também como um gerador de números pseudo-aleatórios, entre outras aplicações. Devido a esta característica, seus criadores a chamam de _função esponja_.
+
+Observe a estrutura do SHA-3 no diagrama abaixo:
 
 Figura 11.14
 
