@@ -107,7 +107,33 @@ No esquema ilustrado acima, uma mensagem de entrada de $n$ _bits_ é divida em $
 
 $$ (j - 1) \times r < l \leq j \times r$$
 
-Esta flexibilidade de $l$ bits de saída é o que dá o nome _esponja_ à função do SHA-3.
+Esta flexibilidade no número de $l$ bits de saída é o que dá o nome _esponja_ à função do SHA-3.
+
+## A Fase de Absorção
+
+A primeira fase da função esponja se chama de _absorção_ e refere-se ao processamento dos blocos da mensagem de entrada. Veja a fase de absorção na ilustração abaixo:
+
+Figura 11.15a
+
+Como ilustrado na figura acima, existe uma variável de estado $s$ que é utilizada nesta fase. Estava variável serve como entrada e saída de cada iteração que aplica a função de compressão $f$. Inicialmente, $s$ contém $0$ em todos os seus _bits_. Seu valor vai se modificando em cada iteração.
+
+O tamanho de $s$ é de $b$ _bits_, onde:
+
+$$b = r + c$$
+
+Como visto na seção anterior, $r$ é o tamanho de cada bloco da mensagem de entrada. Também é chamado de _bitrate_, ou vazão de _bits_, pois representa o número de _bits_ consumidos em cada iteração da função esponja.
+
+O número de _bits_ $c$ é chamado de _capacidade_ e representa o nível de segurança atingido pela função esponja. Dado o valor padrão de $b = r + c = 1600$ no SHA-3, quanto maior o numero $c$, maior a segurança da função, porém menor a _bitrate_.
+
+Em cada iteração, a fase de absorção ocorre da seguinte forma:
+
+- O próximo bloco da mensagem de entrada é preenchido com zeros para aumentar seu tamanho de $r$ para $b$ _bits_.
+- Ao resultado do passo anterior, uma operação _XOR_ é aplicada, tendo como segundo operando o valor de $s$ proveniente da iteração anterior, ou zeros se for a primeira iteração.
+- O resultado da operação _XOR_ serve então de entrada para a função de compressão $f$. O resultado desta função é o novo valor da variável $s$, que é usada como entrada da próximo iteração, juntamente com o próximo bloco da mensagem de entrada.
+
+Se o tamanho desejado da saída da função esponja é menor que o tamanho de $s$ - ou seja, se $l \leq b$ - então os primeiros $l$ _bits_ de $s$ - retornado pela última iteração - é o resultado da função esponja. Caso deseja-se $l > b$, então a fase de _exprimir a esponja_ inicia-se, como descrito na próxima seção.
+
+
 
 
 <!-- Markdeep: -->
