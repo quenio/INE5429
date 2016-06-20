@@ -226,6 +226,22 @@ Baseado na tabela acima, aqui estão algumas características de cada passo:
 - _Chi_ ($\chi$) é uma função de substituição baseada no valor do _bit_ corrente e dos _bits_ em posições correspondentes das duas próximas células. Sem esta função, SHA-3 seria completamente linear.
 - _Iota_ ($\iota$) é uma função de substituição baseada numa tabela - chamada $RC$, ou seja, constantes de rodada - que usará um valor constante e diferente para cada rodada do SHA-3.
 
+## Parâmetros do SHA-3
+
+O SHA-3 define um algoritmo padrão para uso com parâmetros diferentes, dependendo do nível de segurança e tamanho de _bits_ desejados na saída. A tabela abaixo enumera estes parâmetros:
+
+
+|Tamanho do Valor de _Hash_ (l)|Tamanho do Bloco (r)|Capacidade (c)|Resistência a Colisão|Resistência à Segunda Pré-Imagem|
+|---|----|---|-------|------|
+|224|1152|448|$2^{112}$|$2^{224}$|
+|256|1088|512|$2^{128}$|$2^{256}$|
+|384|832|768|$2^{192}$|$2^{384}$|
+|512|576|1024|$2^{256}$|$2^{512}$|
+
+Como visto nas seções anteriores, quanto maior o tamanho do bloco ($r$ ou _bitrate_), menor a segurança do SHA-3. Isto é evidente nos valores de resistência a colisão e à segunda pré-imagem. Quanto menor é o _bitrate_, maior é a resistência.
+
+Por outro lado, quanto maior é o tamanho do valor de _hash_ ($l$), maior será o número de rodadas $j$ (ou seja, o número de blocos $Z$) necessários na fase de _espremer a esponja_ para gerar um número com $l$ _bits_.
+
 
 
 <!-- Markdeep: -->
