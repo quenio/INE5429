@@ -228,7 +228,7 @@ Baseado na tabela acima, aqui estão algumas características de cada passo:
 
 ## Parâmetros do SHA-3
 
-O SHA-3 define um algoritmo padrão para uso com parâmetros diferentes, dependendo do nível de segurança e tamanho de _bits_ desejados na saída. A tabela abaixo enumera estes parâmetros:
+O SHA-3 define um algoritmo padrão para uso com parâmetros diferentes, dependendo do nível de segurança e tamanho de _bits_ desejados na saída. A tabela abaixo enumera os parâmetros normalmente utilizados com o SHA-3:
 
 
 |Tamanho do Valor de _Hash_ (l)|Tamanho do Bloco (r)|Capacidade (c)|Resistência a Colisão|Resistência à Segunda Pré-Imagem|
@@ -240,7 +240,7 @@ O SHA-3 define um algoritmo padrão para uso com parâmetros diferentes, depende
 
 Como visto nas seções anteriores, quanto maior o tamanho do bloco ($r$ ou _bitrate_), maior a vazão de _bits_, porém menor a segurança do SHA-3. Isto é evidente nos valores de resistência a colisão e à segunda pré-imagem, que mostram que quanto menor é o _bitrate_, maior é a resistência.
 
-Por outro lado, quanto maior é o tamanho do valor de _hash_ ($l$), maior será o número de rodadas $j$ (ou seja, o número de blocos $Z$) necessários na fase de _espremer a esponja_ para gerar um número com $l$ _bits_.
+Observe também que, para os tamanhos $l$ de valor de _hash_ da tabela acima, não há necessidade de se usar a fase de _espremer a esponja_ do algoritmo do SHA-3, pois $l$ é sempre menor que $r$ nestes casos.
 
 
 
