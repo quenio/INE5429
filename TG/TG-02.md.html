@@ -1,0 +1,116 @@
+<meta charset="utf-8" lang="pt">
+
+                                    **Função de Hash Criptográfica SHA-3**
+                                *Quênio César Machado dos Santos (14100868)*
+                                   **INE5429 - Segurança em Computadores**
+                                        Florianópolis, 21/06/2016
+
+
+# Função Hash Criptográfica
+
+Uma função _hash_ é uma função que aceita um bloco de dados de tamanho variável como entrada e produz um valor de tamanho fixo como saída, chamado de valor _hash_. Esta função tem a forma:
+
+$$ h = H(M) $$
+
+Onde:
+- _H_ é a função _hash_ que gerou o valor _h_.
+- _h_ é o valor _hash_ de tamanho fixo gerado pela função _hash_.
+- _M_ é o valor de entrada de tamanho variável.
+
+Espera-se que uma função _hash_ produza valores _h_ que são uniformemente distribuídos no contra-domínio e que são aparentemente aleatórios, ou seja, a mudança de apenas um _bit_ em _M_ causará uma mudança do valor _h_. Por esta característica, as funções _hash_ são muito utilizadas para verificar se um determinado bloco de dados foi indevidamente alterado.
+
+As funções _hash_ apropriadas para o uso em segurança de computadores são chamadas de "função _hash_ criptográfica". Este tipo de função _hash_ é implementada por um algoritmo que torna inviável computacionalmente encontrar:
+
+- um valor $M$ dado um determinado valor $h$:
+$$M \text{ | } H(M) = h$$
+
+- dois valores $M_1$ e $M_2$ que resultem no mesmo valor $h$:
+$$(M_1,M_2) \text{ | } H(M_1) = H(M_2)$$
+
+Os principais casos de uso de funções _hash_ criptográficas são:
+- _Autenticação de Mensagens_: é um serviço de segurança onde é possível verificar que uma mensagem não foi alterada durante sua transmissão e que é proveniente do devido remetente.
+- _Assinatura Digital_: é um serviço de segurança que permite a uma entidade assinar digitalmente um documento ou mensagem.
+- _Arquivo de Senhas de Uma Via_: é uma forma de armazenar senhas usando o valor _hash_ da senha, permitindo sua posterior verificação sem a necessidade de armazenar a senha em claro, cifrá-la ou decifrá-la.
+- _Detecção de Perpetração ou Infeção de Sistemas_: é um serviço de segurança em que é possível determinar se arquivos de um sistema foram alterados por terceiros sem a autorização dos usuários do sistema.
+
+## Propriedades
+
+Como observado na seção anterior, uma função _hash_ criptográfica precisa ter certas propriedades para permitir seu uso em segurança de computadores. Nas seções a seguir estão destacadas algumas dessas propriedades.
+
+Antes, defini-se dois termos usados a seguir:
+- _Pré-Imagem_: um valor $M$ do domínio de uma função _hash_ dada pela fórmula $h = H(M)$ é denominado de "pré-imagem" do valor $h$.
+- _Colisão_: para cada valor _h_ de tamanho $n$ _bits_ existe necessariamente mais de uma pré-imagem correspondente de tamanho $m$ _bits_ se $m > n$, ou seja, existe uma "colisão".
+
+O número de pré-imagens de $m$ _bits_ para cada valor $h$ de $n$ _bits_ é calculado pela formula: $2^\frac{m}{n}$. Se permitimos um tamanho em _bits_ arbitrariamente longo para as pré-imagens, isto aumentará ainda mais a probabilidade de colisão durante o uso de uma função _hash_. Entretanto, os riscos de segurança são minimizados se a função de _hash_ criptográfica oferecer as propriedades descritas nas próximas seções.
+
+### Resistente a Pré-Imagem
+
+Uma função _hash_ criptográfica é resistente a pré-imagem quando esta é uma função de uma via. Ou seja, embora seja computacionalmente fácil gerar um valor $h$ a partir de uma pré-imagem $M$ usando a função de _hash_, é computacionalmente inviável gerar uma pré-imagem a partir do valor $h$.
+
+Se uma função _hash_ não for resistente à pré-imagem, é possível atacar uma mensagem autenticada $M$ para descobrir o valor secreta $S$ usada na mensagem, permitindo assim ao perpetrante enviar uma outra mensagem $M_2$ ao destinatário no lugar do remetente sem que o destinatário perceba a violação da comunicação. O ataque ocorre da seguinte forma:
+- O perpetrante tem conhecimento do algoritmo de _hash_ $h = H(M)$ usado na comunicação entre as partes.
+- Ao escutar a comunicação, o perpetrante descobre qual é a mensagem $M$ e o valor de _hash_ $h$.
+- Visto que a inversão da função de _hash_ é computacionalmente fácil, o perpetrante calcula $H^{-1}(h)$.
+- Como $H^{-1}(h) = S \text{ || } M$, o perpetrante descobre $S$.
+
+Desta forma, o perpetrante pode utilizar a chave secreta $S$ no envio de uma mensagem $M_2$ para o destinatário sem que este perceba a violação.
+
+
+### Resistente a Segunda Pré-Imagem
+
+Uma função _hash_ criptográfica é resistente a segunda pré-imagem quando esta função torna inviável computacionalmente encontrar uma pré-imagem alternativa que gera o mesmo valor _h_ da primeira pré-imagem.
+
+Se uma função de _hash_ não for resistente a segunda pré-imagem, um perpetrante conseguirá substituir uma mensagem que utiliza um determinado valor de _hash_, mesmo que a função de _hash_ seja de uma via, ou seja, resistente a pré-imagem.
+
+### Resistente a Colisão
+
+Uma função _hash_ criptográfica é resistente a colisão quando esta tornar inviável computacionalmente encontrar duas pré-imagens quaisquer que possuam o mesmo valor de _hash_. Neste caso, diferentemente da resistência a segunda pré-imagem, não é dado uma pré-imagem inicial para a qual precisa se achar uma segunda pré-imagem, mas é suficiente encontrar duas pré-imagens quaisquer tal que $H(M_1) = H(M_2)$.
+
+Quando uma função _hash_ é resistente a colisão, está é consequente resistente a segunda pré-imagem. Porém, nem sem sempre uma função resistente a segunda pré-imagem será resistente a colisão. Por isto, diz-se que uma função _hash_ resistente a colisão é uma função de _hash_ forte.
+
+Se uma função _hash_ não for resistente a colisão, então é possível para uma parte forjar a assinatura de outra parte. Por exemplo, se Alice deseja que Bob assine um documento dizendo que deve 100 reais a ela, caso Alice saiba que um documento contendo o valor de 1000 reais contém o mesmo valor de _hash_ que o documento original, Alice pode fazer com que Bob seja responsável por uma dívida maior que a original, pois a assinatura valerá para ambos os documentos.
+
+### Uso das Propriedades de Funções _Hash_
+
+Abaixo, temos uma tabela que mostra quais propriedades das funções _hash_ são necessárias para alguma das aplicações de segurança de computadores:
+
+
+|Aplicação|Resistente a Pre-Imagem|Resistente a Segunda Pre-Imagem|Resistente a Colisão|
+|:--------|:---------------------:|:-----------------------------:|:------------------:|
+|Autenticação de Mensagens|X|X|X|
+|Assinatura Digital|X|X|X|
+|Infecção de Sistemas||X||
+|Arquivo de Senhas de Uma Via|X|||
+
+No caso da infecção de sistemas, não há problema em usar uma função de hash com fácil inversão, pois não é necessário embutir um valor secreto na geração do valor de _hash_ de um arquivo. Já, num arquivo de _hash_ de senhas, a inversão permitiria descobrir a senha a partir do valor de _hash_.
+
+Se a função de _hash_, porém, permitir o descobrimento de uma segunda pré-imagem, seria possível infectar um arquivo de um sistema sem detecção, pois seu valor de _hash_ não mudaria. Isto não seria um problema para um arquivo de _hash_ de senhas, pois o perpetrante não possui a senha, que é a primeira pré-imagem e, portanto, não teria condições de descobrir a segunda pré-imagem.
+
+# SHA-3
+
+SHA-3 é uma função _hash_ criptográfica publicada pelo NIST em agosto de 2015 para substituir o SHA-2 como o padrão para os sistemas de informação dos departamentos e das agências do governo americano. SHA-3 provavelmente será adotado por sistemas operacionais e também por organizações privadas e públicas de todo o mundo, assim como foi o caso do SHA-2 e SHA-1.
+
+## A Estrutura do SHA-3
+
+A estrutura do SHA-3 é a mesma de outras funções _hash_ iterativas, onde o resultado de uma função de compressão é iterativamente aplicado sobre a mesma função, juntamente com o próximo bloco da mensagem de entrada. O esquema iterativo genérico é ilustrado na figura a seguir:
+
+Figura 11.8
+
+
+No esquema ilustrado acima, uma mensagem de entrada é dividida em vários blocos de tamanho único. Cada bloco é processado com saída da execução anterior da função de compressão, produzindo a saída final depois que todos os blocos são processados.
+
+Apesar de seguir o esquema genérico descrito acima, o SHA-3 possui uma característica peculiar. Este permite um número variável de _bits_ tanto de entrada como de saída, que torna a estrutura do SHA-3 mais flexível e aplicável não somente como função _hash_, mas também como um gerador de números pseudo-aleatórios, entre outras funções. Devido a esta característica, seus criadores a chamam de _função esponja_. Observe esta estrutura na ilustração abaixo:
+
+Figura 11.14
+
+No esquema ilustrado acima, uma mensagem de entrada de $n$ _bits_ é divida em $k$ blocos de tamanho único de $r$ _bits_. O último bloco é sempre preenchido para que tenha $r$ _bits_. Após processar os $k$ blocos, a função esponja gera uma sequência de $j$ blocos. O número de blocos de saída $j$ é determinado pelo número de _bits_ de saída desejado. Se $l$ _bits_ são necessários na saída, então:
+
+$$ (j - 1) \times r < l \leq j \times r$$
+
+Esta flexibilidade de $l$ bits de saída é o que dá o nome _esponja_ à função do SHA-3.
+
+
+<!-- Markdeep: -->
+<style class="fallback">body{visibility:hidden}</style>
+<script src="markdeep.js"></script>
+<script>window.alreadyProcessedMarkdeep||(document.body.style.visibility="visible")</script>
