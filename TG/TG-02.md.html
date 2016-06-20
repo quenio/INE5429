@@ -238,7 +238,7 @@ O SHA-3 define um algoritmo padrão para uso com parâmetros diferentes, depende
 |384|832|768|$2^{192}$|$2^{384}$|
 |512|576|1024|$2^{256}$|$2^{512}$|
 
-Como visto nas seções anteriores, quanto maior o tamanho do bloco ($r$ ou _bitrate_), menor a segurança do SHA-3. Isto é evidente nos valores de resistência a colisão e à segunda pré-imagem. Quanto menor é o _bitrate_, maior é a resistência.
+Como visto nas seções anteriores, quanto maior o tamanho do bloco ($r$ ou _bitrate_), maior a vazão de _bits_, porém menor a segurança do SHA-3. Isto é evidente nos valores de resistência a colisão e à segunda pré-imagem, que mostram que quanto menor é o _bitrate_, maior é a resistência.
 
 Por outro lado, quanto maior é o tamanho do valor de _hash_ ($l$), maior será o número de rodadas $j$ (ou seja, o número de blocos $Z$) necessários na fase de _espremer a esponja_ para gerar um número com $l$ _bits_.
 
