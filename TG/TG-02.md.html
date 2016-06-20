@@ -156,19 +156,28 @@ Nas seções anteriores, foi dado uma visão geral da estrutura da função espo
 
 Como visto anteriormente, a função Keccaf ($f$) tem como entrada um valor $s$ de $b$ _bits_, onde $b = r + c = 1600$. No processamento interno da função $f$, o valor $s$ é organizado numa matriz $5 \times 5$ com valores de 64 _bits_ em cada uma de suas células. Esta matriz pode ser linearizada num vector de _bits_, correspondendo ao valor $s$, usando a seguinte fórmula:
 
-$$s[64(5y+x)+z] = a[x, y, z]$$
+$$s[64(5y+x)+z] = M[x, y, z]$$
 
 Onde:
-- $a$ é a matriz $5 \times 5$ com valores de 64 _bits_.
+- $M$ é a matriz $5 \times 5$ com valores de 64 _bits_.
 - $x$ é o índice de coluna na matriz, que vai de 0 a 4.
 - $y$ é o índice de linha na matriz, também de 0 a 4.
 - $z$ é o índice de _bit_ de uma célula na matriz, que vai de 0 a 63.
 
-Uma vez criada a matriz, a função $f$ vai executar 24 rodadas de processamento. Cada uma das rodadas, consiste de 5 passos. Cada passo executada uma operação de permutação ou substituição sobre a matriz. A figura abaixo ilustra este processo:
+Uma vez criada a matriz, a função $f$ vai executar 24 rodadas de processamento. Cada uma das rodadas, consiste de 5 passos. Cada passo executa uma operação de permutação ou substituição sobre a matriz. A figura abaixo ilustra este processo:
 
 Figura 11.17
 
+Observe que todas as rodadas são idênticas, exceto a última que usa uma constante que difere dos outros passos. A aplicação dos cinco passos de cada rodada é expressa pela composição das seguintes funções:
 
+$$R = \iota \circ \chi \circ \pi \circ \rho \circ \theta$$
+
+Onde cada passo é descrito na seguinte tabela:
+
+
+|Função|Tipo|Fórmula|
+|------|----|-------|
+|Theta ($\theta$)|Substituição|
 
 <!-- Markdeep: -->
 <style class="fallback">body{visibility:hidden}</style>
