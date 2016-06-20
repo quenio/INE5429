@@ -217,12 +217,13 @@ $$|
 | Chi   |$$\chi: M[x,y,z] \gets M[x,y,z] \oplus (\lnot M[x+1,y,z] \land M[x+2,y,z])$$|
 | Iota  |$$\iota: M[y,y,z] \gets M[x,y,z] \oplus RC(i) \text{, onde RC é uma tabela com um valor para cada rodada $i$.}$$|
 
+
 Baseado na tabela acima, aqui estão algumas características de cada passo:
 
-- _Theta_ ($\theta$) é uma função de substituição que utiliza _bits_ da colunas anteriores e posteriores, além dos _bits_ da célula sendo substituída. Cada _bit_ substituído depende de outros 11 _bits_, o que provê uma difusão de alto grau.
+- _Theta_ ($\theta$) é uma função de substituição que utiliza _bits_ das colunas anteriores e posteriores, além dos _bits_ da célula sendo substituída. Cada _bit_ substituído depende de outros 11 _bits_, o que provê uma difusão de alto grau.
 - _Rho_ ($\rho$) é uma função de permutação dos _bits_ dentro de cada célula. Sem esta função, a difusão entre as células, ocorreria de forma muito lenta.
 - _Pi_ ($\pi$) é também uma função de permutação, mas entre células. A rotação não se dá nos _bits_ de uma célula, mas entre as células da matriz.
-- _Chi_ ($\chi$) é uma função de substituição baseado no valor do _bit_ corrente e dos _bits_ em posições correspondentes das duas próximas células. Sem esta função, SHA-3 seria completamente linear.
+- _Chi_ ($\chi$) é uma função de substituição baseada no valor do _bit_ corrente e dos _bits_ em posições correspondentes das duas próximas células. Sem esta função, SHA-3 seria completamente linear.
 - _Iota_ ($\iota$) é uma função de substituição baseada numa tabela - chamada $RC$, ou seja, constantes de rodada - que usará um valor constante e diferente para cada rodada do SHA-3.
 
 
