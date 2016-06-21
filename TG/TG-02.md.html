@@ -101,23 +101,23 @@ $$\require{AMScd}
 \end{CD}$$
 
 
-No esquema ilustrado acima, uma mensagem de entrada é dividida em $k$ blocos de mesmo tamanho $r$: $P_1$, $P_2$, ..., $P_n$. Cada bloco é processado com a saída $S_{i-1}$ da execução anterior da função $f$. O símbolo $f_i$, com $1 \leq i \leq k$, representa a execução da função $f$ na iteração $i$ gerando o resultado $S_i$ de $b$ _bits_. Após todos os blocos $P_i$ serem processados, produz-se a saída final $S_k$.
+No esquema ilustrado acima, uma mensagem de entrada de $n$ _bits_ é dividida em $k$ blocos de tamanho $r$ _bits_: $P_1$, $P_2$, ..., $P_n$. O último bloco é sempre preenchido para que tenha $r$ _bits_. Cada bloco é processado com a saída $S_{i-1}$ da execução anterior da função $f$. O símbolo $f_i$, com $1 \leq i \leq k$, representa a execução da função $f$ na iteração $i$ gerando o resultado $S_i$ de $b$ _bits_. Após todos os blocos $P_i$ serem processados, produz-se o valor $S_k$.
 
-Apesar de seguir o esquema genérico descrito acima, o SHA-3 possui uma característica peculiar. Este permite um número variável de _bits_ tanto de entrada como de saída, que torna a estrutura do SHA-3 mais flexível e aplicável não somente como função _hash_, mas também como um gerador de números pseudo-aleatórios, entre outras aplicações. Devido a esta característica, seus criadores a chamam de _função esponja_.
+Apesar de seguir o esquema genérico, descrito acima, na sua estrutura de entrada, o SHA-3 possui uma característica peculiar, descrita abaixo, na sua estrutura de saída. Combinando ambas as estruturas, o SHA-3 permite um número variável de _bits_ tanto na entrada como na saída. Este fato o torna mais flexível e aplicável não somente como função _hash_, mas também como um gerador de números pseudo-aleatórios; além de permitir outras aplicações. Devido a esta característica, os criadores do SHA-3 chamam sua estrutura de função _esponja_.
 
 Observe a estrutura de saída do SHA-3 no diagrama abaixo:
 
 $$\require{AMScd}
 \begin{CD}
-@>|S_k|=b>> f_1 @>|S_{k+1}|=b>> f_2 @>|S_{k+2}|=b>> ... @>|S_{k+j-1}|=b>> f_k @>|S_{k+j}|=b>> \\
+@>|S_k|=b>> f_{k+1} @>|S_{k+1}|=b>> f_{k+2} @>|S_{k+2}|=b>> ... @>|S_{k+j-1}|=b>> f_{k+j} @>|S_{k+j}|=b>> \\
 @.          @VVV |Z_1|=r     @VVV |Z_2|=r                @.       @VVV |Z_j|=r \\
 \end{CD}$$
 
-No esquema ilustrado acima, uma mensagem de entrada de $n$ _bits_ é divida em $k$ blocos de tamanho único de $r$ _bits_. O último bloco é sempre preenchido para que tenha $r$ _bits_. Após processar os $k$ blocos, a função esponja gera uma sequência de $j$ blocos. O número de blocos de saída $j$ é determinado pelo número de _bits_ de saída desejado. Se $l$ _bits_ são necessários na saída, então:
+No esquema ilustrado acima, o valor $S_k$ proveniente da estrutura de entrada serve como valor inicial da estrutura de saída. Após processar os $k$ blocos da mensagem de entrada, e usando a mesma função de compressão $f$, a função esponja gera uma sequência de $j$ blocos: $Z_1$, $Z_2$, ..., $Z_j$. O número de blocos de saída $j$ é determinado pelo número de _bits_ de saída desejado. Se $l$ _bits_ são necessários na saída, então:
 
 $$ (j - 1) \times r < l \leq j \times r$$
 
-Esta flexibilidade no número de $l$ bits de saída é o que dá o nome _esponja_ à função do SHA-3.
+Esta flexibilidade no número de $l$ _bits_ de saída é o que dá o nome _esponja_ à função do SHA-3. De acordo com esta analogia, quando a estrutura de entrada está consumindo os $n$ _bits_ da mensagem de entrada, diz-se que a função _esponja_ está "absorvendo" os _bits_ de entrada. E quando a estrutura de saída está gerando os $l$ _bits_ de saída, diz-se que a função _esponja_ está sendo "espremida" para liberar os _bits_ de saída.
 
 ## A Fase de Absorção
 
