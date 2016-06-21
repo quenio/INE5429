@@ -160,11 +160,11 @@ Observando a ilustração acima, pode-se descrever esta fase da seguinte forma:
 
 Ao final deste processo, a saída da função esponja serão os primeiros $l$ _bits_ dos blocos concatenados $Z_0  \text{ || } Z_1  \text{ || } Z_{j-1}$.
 
-## Função de Compressão Keccaf
+## Função de Compressão Keccak
 
-Nas seções anteriores, foi dado uma visão geral da estrutura da função esponja utilizada por SHA-3. Nesta seção, o foco será a função de compressão utilizada em cada iteração do SHA-3, que é chamada de _Keccaf_ pelos seus autores.
+Nas seções anteriores, foi dado uma visão geral da estrutura da função esponja utilizada por SHA-3. Nesta seção, o foco será a função de compressão utilizada em cada iteração do SHA-3, que é chamada de _Keccak_ pelos seus autores.
 
-Como visto anteriormente, a função Keccaf ($f$) tem como entrada um valor $s$ de $b$ _bits_, onde $b = r + c = 1600$. No processamento interno da função $f$, o valor $s$ é organizado numa matriz $5 \times 5$ com valores de 64 _bits_ em cada uma de suas células. Esta matriz pode ser linearizada num vector de _bits_, correspondendo ao valor $s$, usando a seguinte fórmula:
+Como visto anteriormente, a função Keccak ($f$) tem como entrada um valor $s$ de $b$ _bits_, onde $b = r + c = 1600$. No processamento interno da função $f$, o valor $s$ é organizado numa matriz $5 \times 5$ com valores de 64 _bits_ em cada uma de suas células. Esta matriz pode ser linearizada num vector de _bits_, correspondendo ao valor $s$, usando a seguinte fórmula:
 
 $$s[64(5y+x)+z] = M[x, y, z]$$
 
