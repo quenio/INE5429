@@ -145,21 +145,26 @@ Em cada iteração, a fase de absorção ocorre da seguinte forma:
 - Ao resultado do passo anterior, uma operação _XOR_ é aplicada, tendo como segundo operando o valor de $s_{i-1}$ proveniente da iteração anterior, ou zeros se for a primeira iteração ($S_0^b=0^{r+c}$).
 - O resultado da operação _XOR_ serve então de entrada para a função de compressão $f$. O resultado desta função é o novo valor $s_i$ da variável $s$, que é usada como entrada da próxima iteração, juntamente com o próximo bloco $P_{i+1}$ da mensagem de entrada.
 
-Se o tamanho desejado da saída da função esponja é menor que o tamanho de $s$ - ou seja, se $l \leq b$ - então os primeiros $l$ _bits_ de $s_k$ - retornado pela última iteração - é o resultado da função esponja. Caso deseja-se $l > b$, então a fase de _espremer a esponja_ inicia-se, como descrito na próxima seção.
+Se o tamanho desejado da saída da função esponja é menor que o tamanho de $s$ - ou seja, se $l \leq b$ - então os primeiros $l$ _bits_ de $s_k$ - retornado pela última iteração - é o resultado da função esponja. Caso deseja-se $l > b$, então a fase de "espremer a esponja" inicia-se, como descrito na próxima seção.
 
-## Espremendo a Esponja
+## "Espremendo a Esponja"
 
 Na faze de absorção da função esponja, descrita na seção anterior, foram consumidos todos os blocos da mensagem de entrada, resultando num valor final de $s$ de $b$ _bits_. Se o tamanho desejado de saída ($l$) da função esponja for $l > b$, diz-se que é preciso _espremer a esponja_ para obter uma saída com o número de _bits_ desejado.
 
 A fase de _espremer a esponja_ é ilustrada abaixo:
 
-Figura 11.5b
+$$\require{AMScd}
+\begin{CD}
+s_k @>f>>  s_{k+1} @>>> ... @>f>> s_{k+j} \\
+@VZ_0^rVV  @VZ_1^rVV      @.      @VZ_{j-1}^rVV  \\
+\end{CD}$$
+
 
 Observando a ilustração acima, pode-se descrever esta fase da seguinte forma:
 
-- Primeiramente, os primeiros $r$ _bits_ de $s$ são colocados num bloco $Z_0$.
-- Então o valor de $s$ é aplicado na função $f$ para se obter novo valor de $s$.
-- Os primeiro $r$ _bits_ do novo valor de $s$ são colocados num bloco $Z_1$.
+- Primeiramente, os primeiros $r$ _bits_ de $s_k$ são colocados num bloco $Z_0$.
+- Então o valor de $s_k$ é aplicado na função $f$ para se obter novo valor de $s_{k+1}$.
+- Os primeiro $r$ _bits_ do novo valor de $s_{k+1}$ são colocados num bloco $Z_1$.
 - Este processo se repete até que se tenha $j$ blocos ($Z_0$, $Z_1$, ..., $Z_{j-1}$) tal que $(j - 1) \times r < l \leq j \times r$.
 
 Ao final deste processo, a saída da função esponja serão os primeiros $l$ _bits_ dos blocos concatenados $Z_0  \text{ || } Z_1  \text{ || } Z_{j-1}$.
