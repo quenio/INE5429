@@ -183,15 +183,20 @@ Onde:
 - $y$ é o índice de linha na matriz, também de 0 a 4.
 - $z$ é o índice de _bit_ de uma célula na matriz, que vai de 0 a 63.
 
-Uma vez criada a matriz, a função $f$ vai executar 24 rodadas de processamento. Cada uma das rodadas, consiste de 5 passos. Cada passo executa uma operação de permutação ou substituição sobre a matriz. A figura abaixo ilustra este processo:
+Uma vez criada a matriz, a função $f$ vai executar 24 rodadas de processamento:
 
-Figura 11.17
+$$\require{AMScd}
+\begin{CD}
+@. RC_1 @.    RC_2  @. @. RC_{24} \\
+@. @VVV @VVV @. @VVV \\
+@>S_{i}>> R_1 @>>> R_2 @>>> ... @>>> R_{24} @>S_{i+1}>> \\
+\end{CD}$$
 
-Observe que todas as rodadas são idênticas, exceto a última, que usa uma constante diferente em cada rodada.
+Observe acima que todas as rodadas são idênticas, exceto pela constante $RC_i$ diferente em cada rodada. Cada uma das rodadas, consiste de 5 passos. Cada passo executa uma operação de permutação ou substituição sobre a matriz.
 
 A aplicação dos cinco passos de cada rodada é expressa pela composição das seguintes funções:
 
-$$R = \iota \circ \chi \circ \pi \circ \rho \circ \theta$$
+$$R_i = \iota \circ \chi \circ \pi \circ \rho \circ \theta$$
 
 Onde cada passo tem sua fórmula na tabela seguinte:
 
