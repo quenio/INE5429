@@ -143,7 +143,7 @@ Em cada iteração, a fase de absorção ocorre da seguinte forma:
 
 - O próximo bloco $P_i$ da mensagem de entrada é preenchido com zeros ($P_i^r\text{ || }0^c$) para aumentar seu tamanho de $r$ para $b$ _bits_.
 - Ao resultado do passo anterior, uma operação _XOR_ é aplicada, tendo como segundo operando o valor de $s_{i-1}$ proveniente da iteração anterior, ou zeros se for a primeira iteração ($S_0^b=0^{r+c}$).
-- O resultado da operação _XOR_ serve então de entrada para a função de compressão $f$. O resultado desta função é o novo valor $s_i$ da variável $s$, que é usada como entrada da próxima iteração, juntamente com o próximo bloco $P_{i+1}$ da mensagem de entrada.
+- O resultado da operação _XOR_ serve então de entrada para a função de compressão $f$. O resultado desta função é o novo valor $S_i$ da variável $s$, que é usada como entrada da próxima iteração, juntamente com o próximo bloco $P_{i+1}$ da mensagem de entrada.
 
 Se o tamanho desejado da saída da função esponja é menor que o tamanho de $s$ - ou seja, se $l \leq b$ - então os primeiros $l$ _bits_ de $s_k$ - retornado pela última iteração - é o resultado da função esponja. Caso deseja-se $l > b$, então a fase de "espremer a esponja" inicia-se, como descrito na próxima seção.
 
@@ -220,7 +220,7 @@ M[x,y,z - \frac{(t+1)(t+2)}{2}], \text{ onde } 0 \leq t < 24 \text{ e }
 \begin{pmatrix}
 x \\
 y \\
-\end{pmatrix}
+\end{pmatrix} \\
 \text{ em } GF(5)^{2 \times 2}
 \end{cases}$$|
 | Pi    |$$\pi: M[x,y] \gets M[x',y'] \text{, onde }
@@ -239,7 +239,7 @@ y' \\
 \end{pmatrix}
 $$|
 | Chi   |$$\chi: M[x,y,z] \gets M[x,y,z] \oplus (\lnot M[x+1,y,z] \land M[x+2,y,z])$$|
-| Iota  |$$\iota: M[y,y,z] \gets M[x,y,z] \oplus RC(i) \text{, onde RC é uma tabela com um valor para cada rodada $i$.}$$|
+| Iota  |$$\iota: M[x,y,z] \gets M[x,y,z] \oplus RC(i) \text{, onde RC é uma tabela com um valor para cada rodada $i$.}$$|
 
 
 Baseado na tabela acima, aqui estão algumas características de cada passo:
