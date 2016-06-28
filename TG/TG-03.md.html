@@ -338,11 +338,11 @@ Cada um dos passos de mapeamento são descritos a seguir na ordem em que são ap
 
 $$\theta: M[x,y,z] \gets M[x,y,z] \oplus \sum_{y'=0}^4 M[(x-1) \text{ mod } 5,y',z] \oplus \sum_{y'=0}^4 M[(x+1) \text{ mod } 5,y',z-1] $$
 
-_Theta_ ($\theta$) é uma função de substituição que utiliza _bits_ das colunas anteriores e posteriores, além dos _bits_ da célula sendo substituída.
+_Theta_ ($\theta$) é uma função de substituição que utiliza _bits_ das colunas anteriores e posteriores, além dos _bits_ da palavra $M[x,y]$ sendo substituída.
 
 Para cada palavra $M[x,y]$:
 - O primeiro somatório faz um XOR entre todas as palavras da coluna anterior. O segundo somatório, faz o mesmo com a coluna posterior. Se a coluna da palavra $M[x,y]$ for a primeira, usa-se a última coluna para o primeiro somatório. Se a coluna de $M[x,y]$ for a última, usa-se a primeira coluna para o segundo somatório.
-- Um XOR então é aplicado entre os valores dos somatórios e $M[x,y]$.
+- Um XOR então é aplicado entre os valores resultantes dos somatórios e o valor de $M[x,y]$.
 
 Observa-se que cada _bit_ substituído pela função $\theta$ depende de outros 11 _bits_ da matriz $M$ (das colunas anteriores e posteriores, assim como o _bit_ anterior na mesma posição). Isto provê uma difusão de alto grau.
 
@@ -368,7 +368,25 @@ y \\
 \text{ em } GF(5)^{2 \times 2}
 \end{cases}$$
 
-_Rho_ ($\rho$) é uma função de permutação dos _bits_ dentro de cada célula. Sem esta função, a difusão entre as células, ocorreria de forma muito lenta.
+_Rho_ ($\rho$) é uma função de permutação dos _bits_ dentro de cada palavra $M[x,y]$.
+
+Este passo funciona da seguinte forma:
+- Se $(x,y) = (0,0)$, então $M[x,y]$ não é afetado.
+- O valor de $t$ é usado para determinar quantas posições de _shift_ circular serão usadas ($\frac{(t+1)(t+2)}{2}$) e também em que palavra ocorrerá o _shift_:
+$$\begin{pmatrix}
+x \\
+y \\
+\end{pmatrix}=\begin{pmatrix}
+0 & 1 \\
+2 & 3 \\
+\end{pmatrix}^t
+\begin{pmatrix}
+1 \\
+0 \\
+\end{pmatrix}
+$$
+
+Observa-se que, sem esta transformação, a difusão entre as palavras da matriz $M$ ocorreria de forma muito lenta.
 
 ### Passo Pi ($\pi$)
 
