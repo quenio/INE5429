@@ -274,7 +274,7 @@ Nas sub-seções abaixo, encontram-se as perguntas e respostas sobre a referênc
 
 _State Array_ é simplesmente a _string_ $S$ - que serve de entrada à função Keccak - representada na forma de uma matriz $M$ de $5 x 5$, tendo como suas células as palavras de _bits_ de comprimento $w$, que varia de 1 a 64 _bits_.
 
-Representando a string $S$ numa matriz facilita a definição e a implementação das sub-funções de substituição e permutação ($\iota, \chi, \pi, \rho, \theta$) que fazem parte da função Keccak.
+Representando a string $S$ numa matriz facilita a definição e a implementação das sub-funções de substituição e permutação ($\theta, \rho, \pi, \chi, \iota$) que fazem parte da função Keccak.
 
 Após realizar as várias transformações no _State Array_ (ou seja, na matriz $M$), a função Keccak terá como sua saída o estado final encontrado nesta matriz, que então será convertida novamente no formato da _string_ $S$, servindo por sua vez como a entrada da próxima rodada do SHA-3.
 
@@ -327,6 +327,75 @@ Usando ainda o exemplo com $w = 2$ e $b = 50$, temos:
 $$S = \\M[0,0,0]||M[0,0,1]||M[1,0,0]||M[1,0,1]||M[2,0,0]||M[2,0,1]||M[3,0,0]||M[3,0,1]||M[4,0,0]||M[4,0,1]||\\
 M[0,1,0]||M[0,1,1]||M[1,1,0]||M[1,1,1]||M[2,1,0]||M[2,1,1]||M[3,1,0]||M[3,1,1]||M[4,1,0]||M[4,1,1]||\\
 ...||M[4,4,1]$$
+
+## Passos de Mapeamento (_Step Mappings_)
+
+Para cada rodada do SHA-3, os cinco passos de mapeamento de Keccak - representados pelas funções $\theta, \rho, \pi, \chi, \iota$ - fazem substituições e permutações sobre as palavras da matriz $M$ (o _State Array_) até que se encontre o estado final da _string_ $S$ naquela rodada.
+
+Cada um dos passos de mapeamento são descritos a seguir na ordem em que são aplicados à matriz $M$.
+
+### Passo Theta ($\theta$)
+
+$$\theta: M[x,y,z] \gets M[x,y,z] \oplus \sum_{y'=0}^4 M[x-1,y',z] \oplus \sum_{y'=0}^4 M[x+1,y',z-1] $$
+
+_Theta_ ($\theta$) é uma função de substituição que utiliza _bits_ das colunas anteriores e posteriores, além dos _bits_ da célula sendo substituída. Cada _bit_ substituído depende de outros 11 _bits_, o que provê uma difusão de alto grau.
+
+
+### Passo Rho ($\rho$)
+
+$$\rho: M[x,y,z] \gets
+\begin{cases}
+M[x,y,z]\text{, se } x = y = 0 \\
+M[x,y,z - \frac{(t+1)(t+2)}{2}], \text{ onde } 0 \leq t < 24 \text{ e }
+\begin{pmatrix}
+0 & 1 \\
+2 & 3 \\
+\end{pmatrix}^t
+\begin{pmatrix}
+1 \\
+0 \\
+\end{pmatrix}
+=
+\begin{pmatrix}
+x \\
+y \\
+\end{pmatrix} \\
+\text{ em } GF(5)^{2 \times 2}
+\end{cases}$$
+
+_Rho_ ($\rho$) é uma função de permutação dos _bits_ dentro de cada célula. Sem esta função, a difusão entre as células, ocorreria de forma muito lenta.
+
+### Passo Pi ($\pi$)
+
+$$\pi: M[x,y] \gets M[x',y'] \text{, onde }
+\begin{pmatrix}
+x \\
+y \\
+\end{pmatrix}
+\begin{pmatrix}
+0 & 1 \\
+2 & 3 \\
+\end{pmatrix}
+=
+\begin{pmatrix}
+x' \\
+y' \\
+\end{pmatrix}
+$$
+
+_Pi_ ($\pi$) é também uma função de permutação, mas entre células. A rotação não se dá nos _bits_ de uma célula, mas entre as células da matriz.
+
+### Passo Chi ($\chi$)
+
+$$\chi: M[x,y,z] \gets M[x,y,z] \oplus (\lnot M[x+1,y,z] \land M[x+2,y,z])$$
+
+_Chi_ ($\chi$) é uma função de substituição baseada no valor do _bit_ corrente e dos _bits_ em posições correspondentes das duas próximas células. Sem esta função, SHA-3 seria completamente linear.
+
+### Passo Iota ($\iota$)
+
+$$\iota: M[x,y,z] \gets M[x,y,z] \oplus RC(i)$$
+
+_Iota_ ($\iota$) é uma função de substituição baseada numa tabela - chamada $RC$, ou seja, constantes de rodada - que usará um valor constante e diferente para cada rodada $i$ do SHA-3.
 
 # Referências
 
