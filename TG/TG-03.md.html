@@ -504,6 +504,51 @@ Ou seja, é a aplicação da estrutura esponja, tendo:
 
 Portanto, $Keccak[c]$ vai aceitar uma mensagem de tamanho variável, que será _padded_ com _pad10*1_. Cada rodada irá processar um bloco da mensagem de entrada de tamanho $r = b - c$, com uma capacidade (ou segurança) de tamanho $c = b - r$.
 
+## Especificação das Funções SHA-3
+
+[FIPS202] especifica quatro versões da função de _hash_ SHA-3 (SHA3-224, SHA3-256, SHA3-384, SHA3-512) e duas versões da função de saída extensível (XOF SHAKE128 e SHAKE256). Estas funções são descritas nas próximas seções.
+
+### Funções de _Hash_ SHA-3
+
+De forma genérica, pode-se definir uma única função de _hash_ SHA-3 da seguinte forma:
+
+$$SHA3[d](M) = Keccak[2d] (M\text{ || }01, d)$$
+
+Onde:
+- $M$ é a mensagem a ser processada. Observa-se a concatenação dos bits "01" à mensagem $M$ antes de aplicar a função $Keccak[c]$.
+- $d$ é o tamanho em _bits_ do valor de _hash_ a ser gerado pela função. Observa-se aqui que a capacidade se Keccak é o dobro do tamanho de $d$.
+
+De acordo com a forma genérica, podemos definir as quatro versões específicas desta forma:
+- $SHA3\text{-}224(M) = SHA3[224](M)$
+- $SHA3\text{-}256(M) = SHA3[256](M)$
+- $SHA3\text{-}384(M) = SHA3[384](M)$
+- $SHA3\text{-}512(M) = SHA3[512](M)$
+
+Portanto, SHA-3 possui funções que podem gerar valor de _hash_ nos tamanhos de 224, 256, 384 e 512 _bits_, respectivamente.
+
+### Funções de Saída Extensível SHA-3 (XOF)
+
+Além de permitir a geração de valores de _hash_ de tamanho fixo, o SHA-3 também permite a geração de valores de tamanho arbitrário através da função genérica:
+
+$$SHAKE[c](M, d) = Keccak[c](M\text{ || }1111, d)$$
+
+Onde:
+- $M$ é a mensagem a ser processada. Observa-se a concatenação dos bits "1111" à mensagem $M$ antes de aplicar a função $Keccak[c]$.
+- $d$ é o tamanho em _bits_ do valor de _hash_ a ser gerado pela função. Se $d > 1600$, será preciso "espremer a esponja", como foi descrito nas seções anteriores.
+- $c$ é o tamanho da capacidade (ou segurança) da função $Keccak[c]$, que pode ser diferente de $d$.
+
+Dado a forma genérica acima, podemos definir as duas funções XOF específicas do SHA-3:
+- $SHAKE128(M, d) = SHAKE[128](M, d)$
+- $SHAKE256(M, d) = SHAKE[256](M, d)$
+
+Portanto, o SHA-3 define apenas duas funções XOF com capacidades de 128 e 256 _bits_, respectivamente.
+
+### Separação de Domínios
+
+Terminando as mensagens das funções de _hash_ com "01" e das funções XOF com "1111" garante que os domínios destas funções não tenham interseção.
+
+Os últimos _bits_ "11" das funções XOF também garantem compatibilidade com o esquema de codificação Sakura, que permite processamento paralelo na geração de valores de _hash_ para mensagens longas.
+
 # Referências
 
 [#Stalling2014]: Cryptography and Network Security, Sixth International Edition, 2014.
