@@ -330,15 +330,21 @@ M[0,1,0]||M[0,1,1]||M[1,1,0]||M[1,1,1]||M[2,1,0]||M[2,1,1]||M[3,1,0]||M[3,1,1]||
 
 ## Passos de Mapeamento (_Step Mappings_)
 
-Para cada rodada do SHA-3, os cinco passos de mapeamento de Keccak - representados pelas funções $\theta, \rho, \pi, \chi, \iota$ - fazem substituições e permutações sobre as palavras da matriz $M$ (o _State Array_) até que se encontre o estado final da _string_ $S$ naquela rodada.
+Para cada rodada do SHA-3, os cinco passos de mapeamento de $Keccak\text{-}p$ - representados pelas funções $\theta, \rho, \pi, \chi, \iota$ - fazem substituições e permutações sobre as palavras da matriz $M$ (o _State Array_) até que se encontre o estado final da _string_ $S$ naquela rodada.
 
 Cada um dos passos de mapeamento são descritos a seguir na ordem em que são aplicados à matriz $M$.
 
 ### Passo Theta ($\theta$)
 
-$$\theta: M[x,y,z] \gets M[x,y,z] \oplus \sum_{y'=0}^4 M[x-1,y',z] \oplus \sum_{y'=0}^4 M[x+1,y',z-1] $$
+$$\theta: M[x,y,z] \gets M[x,y,z] \oplus \sum_{y'=0}^4 M[(x-1) \text{ mod } 5,y',z] \oplus \sum_{y'=0}^4 M[(x+1) \text{ mod } 5,y',z-1] $$
 
-_Theta_ ($\theta$) é uma função de substituição que utiliza _bits_ das colunas anteriores e posteriores, além dos _bits_ da célula sendo substituída. Cada _bit_ substituído depende de outros 11 _bits_, o que provê uma difusão de alto grau.
+_Theta_ ($\theta$) é uma função de substituição que utiliza _bits_ das colunas anteriores e posteriores, além dos _bits_ da célula sendo substituída.
+
+Para cada palavra $M[x,y]$:
+- O primeiro somatório faz um XOR entre todas as palavras da coluna anterior. O segundo somatório, faz o mesmo com a coluna posterior. Se a coluna da palavra $M[x,y]$ for a primeira, usa-se a última coluna para o primeiro somatório. Se a coluna de $M[x,y]$ for a última, usa-se a primeira coluna para o segundo somatório.
+- Um XOR então é aplicado entre os valores dos somatórios e $M[x,y]$.
+
+Observa-se que cada _bit_ substituído pela função $\theta$ depende de outros 11 _bits_ da matriz $M$ (das colunas anteriores e posteriores, assim como o _bit_ anterior na mesma posição). Isto provê uma difusão de alto grau.
 
 ### Passo Rho ($\rho$)
 
