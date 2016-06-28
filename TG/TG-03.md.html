@@ -1,0 +1,326 @@
+<meta charset="utf-8" lang="pt">
+
+                                    **Função de Hash Criptográfica SHA-3**
+                                *Quênio César Machado dos Santos (14100868)*
+                                   **INE5429 - Segurança em Computadores**
+                                        Florianópolis, 28/06/2016
+
+
+# Função Hash Criptográfica
+
+Uma função _hash_ é uma função que aceita um bloco de dados de tamanho variável como entrada e produz um valor de tamanho fixo como saída, chamado de valor _hash_. Esta função tem a forma:
+
+$$ h = H(M) $$
+
+Onde:
+- _H_ é a função _hash_ que gerou o valor _h_.
+- _h_ é o valor _hash_ de tamanho fixo gerado pela função _hash_.
+- _M_ é o valor de entrada de tamanho variável.
+
+Espera-se que uma função _hash_ produza valores _h_ que são uniformemente distribuídos no contra-domínio e que são aparentemente aleatórios, ou seja, a mudança de apenas um _bit_ em _M_ causará uma mudança do valor _h_. Por esta característica, as funções _hash_ são muito utilizadas para verificar se um determinado bloco de dados foi indevidamente alterado.
+
+As funções _hash_ apropriadas para o uso em segurança de computadores são chamadas de "função _hash_ criptográfica". Este tipo de função _hash_ é implementada por um algoritmo que torna inviável computacionalmente encontrar:
+
+- um valor $M$ dado um determinado valor $h$:
+$$M \text{ | } H(M) = h$$
+
+- dois valores $M_1$ e $M_2$ que resultem no mesmo valor $h$:
+$$(M_1,M_2) \text{ | } H(M_1) = H(M_2)$$
+
+Os principais casos de uso de funções _hash_ criptográficas são:
+- _Autenticação de Mensagens_: é um serviço de segurança onde é possível verificar que uma mensagem não foi alterada durante sua transmissão e que é proveniente do devido remetente.
+- _Assinatura Digital_: é um serviço de segurança que permite a uma entidade assinar digitalmente um documento ou mensagem.
+- _Arquivo de Senhas de Uma Via_: é uma forma de armazenar senhas usando o valor _hash_ da senha, permitindo sua posterior verificação sem a necessidade de armazenar a senha em claro, cifrá-la ou decifrá-la.
+- _Detecção de Perpetração ou Infeção de Sistemas_: é um serviço de segurança em que é possível determinar se arquivos de um sistema foram alterados por terceiros sem a autorização dos usuários do sistema.
+
+## Propriedades
+
+Como observado na seção anterior, uma função _hash_ criptográfica precisa ter certas propriedades para permitir seu uso em segurança de computadores. Nas seções a seguir estão destacadas algumas dessas propriedades.
+
+Antes, defini-se dois termos usados a seguir:
+- _Pré-Imagem_: um valor $M$ do domínio de uma função _hash_ dada pela fórmula $h = H(M)$ é denominado de "pré-imagem" do valor $h$.
+- _Colisão_: para cada valor _h_ de tamanho $n$ _bits_ existe necessariamente mais de uma pré-imagem correspondente de tamanho $m$ _bits_ se $m > n$, ou seja, existe uma "colisão".
+
+O número de pré-imagens de $m$ _bits_ para cada valor $h$ de $n$ _bits_ é calculado pela formula: $2^\frac{m}{n}$. Se permitimos um tamanho em _bits_ arbitrariamente longo para as pré-imagens, isto aumentará ainda mais a probabilidade de colisão durante o uso de uma função _hash_. Entretanto, os riscos de segurança são minimizados se a função de _hash_ criptográfica oferecer as propriedades descritas nas próximas seções.
+
+### Resistente a Pré-Imagem
+
+Uma função _hash_ criptográfica é resistente a pré-imagem quando esta é uma função de uma via. Ou seja, embora seja computacionalmente fácil gerar um valor $h$ a partir de uma pré-imagem $M$ usando a função de _hash_, é computacionalmente inviável gerar uma pré-imagem a partir do valor $h$.
+
+Se uma função _hash_ não for resistente à pré-imagem, é possível atacar uma mensagem autenticada $M$ para descobrir o valor secreta $S$ usada na mensagem, permitindo assim ao perpetrante enviar uma outra mensagem $M_2$ ao destinatário no lugar do remetente sem que o destinatário perceba a violação da comunicação. O ataque ocorre da seguinte forma:
+- O perpetrante tem conhecimento do algoritmo de _hash_ $h = H(M)$ usado na comunicação entre as partes.
+- Ao escutar a comunicação, o perpetrante descobre qual é a mensagem $M$ e o valor de _hash_ $h$.
+- Visto que a inversão da função de _hash_ é computacionalmente fácil, o perpetrante calcula $H^{-1}(h)$.
+- Como $H^{-1}(h) = S \text{ || } M$, o perpetrante descobre $S$.
+
+Desta forma, o perpetrante pode utilizar a chave secreta $S$ no envio de uma mensagem $M_2$ para o destinatário sem que este perceba a violação.
+
+
+### Resistente a Segunda Pré-Imagem
+
+Uma função _hash_ criptográfica é resistente a segunda pré-imagem quando esta função torna inviável computacionalmente encontrar uma pré-imagem alternativa que gera o mesmo valor _h_ da primeira pré-imagem.
+
+Se uma função de _hash_ não for resistente a segunda pré-imagem, um perpetrante conseguirá substituir uma mensagem que utiliza um determinado valor de _hash_, mesmo que a função de _hash_ seja de uma via, ou seja, resistente a pré-imagem.
+
+### Resistente a Colisão
+
+Uma função _hash_ criptográfica é resistente a colisão quando esta tornar inviável computacionalmente encontrar duas pré-imagens quaisquer que possuam o mesmo valor de _hash_. Neste caso, diferentemente da resistência a segunda pré-imagem, não é dado uma pré-imagem inicial para a qual precisa se achar uma segunda pré-imagem, mas é suficiente encontrar duas pré-imagens quaisquer tal que $H(M_1) = H(M_2)$.
+
+Quando uma função _hash_ é resistente a colisão, está é consequente resistente a segunda pré-imagem. Porém, nem sem sempre uma função resistente a segunda pré-imagem será resistente a colisão. Por isto, diz-se que uma função _hash_ resistente a colisão é uma função de _hash_ forte.
+
+Se uma função _hash_ não for resistente a colisão, então é possível para uma parte forjar a assinatura de outra parte. Por exemplo, se Alice deseja que Bob assine um documento dizendo que deve 100 reais a ela, caso Alice saiba que um documento contendo o valor de 1000 reais contém o mesmo valor de _hash_ que o documento original, Alice pode fazer com que Bob seja responsável por uma dívida maior que a original, pois a assinatura valerá para ambos os documentos.
+
+### Uso das Propriedades de Funções _Hash_
+
+Abaixo, temos uma tabela que mostra quais propriedades das funções _hash_ são necessárias para alguma das aplicações de segurança de computadores:
+
+
+|Aplicação|Resistente a Pre-Imagem|Resistente a Segunda Pre-Imagem|Resistente a Colisão|
+|:--------|:---------------------:|:-----------------------------:|:------------------:|
+|Autenticação de Mensagens|X|X|X|
+|Assinatura Digital|X|X|X|
+|Infecção de Sistemas||X||
+|Arquivo de Senhas de Uma Via|X|||
+
+No caso da infecção de sistemas, não há problema em usar uma função de hash com fácil inversão, pois não é necessário embutir um valor secreto na geração do valor de _hash_ de um arquivo. Já, num arquivo de _hash_ de senhas, a inversão permitiria descobrir a senha a partir do valor de _hash_.
+
+Se a função de _hash_, porém, permitir o descobrimento de uma segunda pré-imagem, seria possível infectar um arquivo de um sistema sem detecção, pois seu valor de _hash_ não mudaria. Isto não seria um problema para um arquivo de _hash_ de senhas, pois o perpetrante não possui a senha, que é a primeira pré-imagem e, portanto, não teria condições de descobrir a segunda pré-imagem.
+
+# SHA-3
+
+SHA-3 é uma função _hash_ criptográfica publicada pelo NIST em agosto de 2015 para substituir o SHA-2 como o padrão para os sistemas de informação dos departamentos e das agências do governo americano. SHA-3 provavelmente será adotado por sistemas operacionais e também por organizações privadas e públicas de todo o mundo, assim como foi o caso do SHA-2 e SHA-1.
+
+## A Estrutura do SHA-3
+
+A estrutura de entrada do SHA-3 segue a estrutura genérica de outras funções _hash_ iterativas, onde o resultado de uma função de compressão $f$ é iterativamente aplicado sobre a mesma função, juntamente com o próximo bloco $P_i$ da mensagem de entrada, como ilustrado no diagrama abaixo:
+
+$$\require{AMScd}
+\begin{CD}
+@VVV |P_1|=r     @VVV |P_2|=r                @.       @VVV |P_k|=r \\
+@>|S_0|=b>> f_1 @>|S_1|=b>> f_2 @>|S_2|=b>> ... @>|S_{k-1}|=b>> f_k @>|S_k|=b>>
+\end{CD}$$
+
+
+No esquema ilustrado acima, uma mensagem de entrada de $n$ _bits_ é dividida em $k$ blocos de tamanho $r$ _bits_: $P_1$, $P_2$, ..., $P_n$. O último bloco é sempre preenchido para que tenha $r$ _bits_. Cada bloco é processado com a saída $S_{i-1}$ da execução anterior da função $f$. O símbolo $f_i$, com $1 \leq i \leq k$, representa a execução da função $f$ na iteração $i$ gerando o resultado $S_i$ de $b$ _bits_. Após todos os blocos $P_i$ serem processados, produz-se o valor $S_k$.
+
+Apesar de seguir o esquema genérico, descrito acima, na sua estrutura de entrada, o SHA-3 possui uma característica peculiar, descrita abaixo, na sua estrutura de saída. Combinando ambas as estruturas, o SHA-3 permite um número variável de _bits_ tanto na entrada como na saída. Este fato o torna mais flexível e aplicável não somente como função _hash_, mas também como um gerador de números pseudo-aleatórios; além de permitir outras aplicações. Devido a esta característica, os criadores do SHA-3 chamam sua estrutura de função _esponja_.
+
+Observe a estrutura de saída do SHA-3 no diagrama abaixo:
+
+$$\require{AMScd}
+\begin{CD}
+@>|S_k|=b>> f_{k+1} @>|S_{k+1}|=b>> f_{k+2} @>|S_{k+2}|=b>> ... @>|S_{k+j-1}|=b>> f_{k+j} @>|S_{k+j}|=b>> \\
+@.          @VVV |Z_1|=r     @VVV |Z_2|=r                @.       @VVV |Z_j|=r \\
+\end{CD}$$
+
+No esquema ilustrado acima, o valor $S_k$ proveniente da estrutura de entrada serve como valor inicial da estrutura de saída. Após processar os $k$ blocos da mensagem de entrada, e usando a mesma função de compressão $f$, a função esponja gera uma sequência de $j$ blocos: $Z_1$, $Z_2$, ..., $Z_j$. O número de blocos de saída $j$ é determinado pelo número de _bits_ de saída desejado. Se $l$ _bits_ são necessários na saída, então:
+
+$$ (j - 1) \times r < l \leq j \times r$$
+
+Esta flexibilidade no número de $l$ _bits_ de saída é o que dá o nome _esponja_ à função do SHA-3. De acordo com esta analogia, quando a estrutura de entrada está consumindo os $n$ _bits_ da mensagem de entrada, diz-se que a função _esponja_ está "absorvendo" os _bits_ de entrada. E quando a estrutura de saída está gerando os $l$ _bits_ de saída, diz-se que a função _esponja_ está sendo "espremida" para liberar os _bits_ de saída.
+
+## A Fase de Absorção
+
+A primeira fase da função esponja se chama de _absorção_ e refere-se ao processamento dos blocos da mensagem de entrada. Veja a fase de absorção na ilustração abaixo:
+
+$$\require{AMScd}
+\begin{CD}
+@VVV P_1^r\text{ || }0^c   @.   @VVV P_2^r\text{ || }0^c                @.       @.    @VVV   P_k^r\text{ || }0^c \\
+@>S_0^b=0^{r+c}>> \oplus @>>> f @>S_1^b>> \oplus @>>> f @>S_2^b>> ... @>S_{k-1}^b>> \oplus @>>> f @>S_k^b>>
+\end{CD}$$
+
+Como ilustrado na figura acima, existe uma variável de estado $s$ que é utilizada nesta fase. Estava variável serve como entrada e saída de cada iteração que aplica a função de compressão $f$. Inicialmente, $s$ contém $0$ em todos os seus _bits_. Seu valor vai se modificando em cada iteração.
+
+O tamanho de $s$ é de $b$ _bits_, onde:
+
+$$b = r + c$$
+
+Como visto na seção anterior, $r$ é o tamanho de cada bloco $P_i$ da mensagem de entrada. Também é chamado de _bitrate_, ou vazão de _bits_, pois representa o número de _bits_ consumidos em cada iteração da função esponja.
+
+O número de _bits_ $c$ é chamado de _capacidade_ e representa o nível de segurança atingido pela função esponja. Dado o valor padrão de $b = r + c = 1600$ no SHA-3, quanto maior o numero $c$, maior a segurança da função, porém menor o _bitrate_.
+
+Em cada iteração, a fase de absorção ocorre da seguinte forma:
+
+- O próximo bloco $P_i$ da mensagem de entrada é preenchido com zeros ($P_i^r\text{ || }0^c$) para aumentar seu tamanho de $r$ para $b$ _bits_.
+- Ao resultado do passo anterior, uma operação _XOR_ é aplicada, tendo como segundo operando o valor de $s_{i-1}$ proveniente da iteração anterior, ou zeros se for a primeira iteração ($S_0^b=0^{r+c}$).
+- O resultado da operação _XOR_ serve então de entrada para a função de compressão $f$. O resultado desta função é o novo valor $S_i$ da variável $s$, que é usada como entrada da próxima iteração, juntamente com o próximo bloco $P_{i+1}$ da mensagem de entrada.
+
+Se o tamanho desejado da saída da função esponja é menor que o tamanho de $s$ - ou seja, se $l \leq b$ - então os primeiros $l$ _bits_ de $s_k$ - retornado pela última iteração - é o resultado da função esponja. Caso deseja-se $l > b$, então a fase de "espremer a esponja" inicia-se, como descrito na próxima seção.
+
+## "Espremendo a Esponja"
+
+Na faze de absorção da função esponja, descrita na seção anterior, foram consumidos todos os blocos da mensagem de entrada, resultando num valor final de $s$ de $b$ _bits_. Se o tamanho desejado de saída ($l$) da função esponja for $l > b$, diz-se que é preciso _espremer a esponja_ para obter uma saída com o número de _bits_ desejado.
+
+A fase de _espremer a esponja_ é ilustrada abaixo:
+
+$$\require{AMScd}
+\begin{CD}
+s_k @>f>>  s_{k+1} @>>> ... @>f>> s_{k+j} \\
+@VZ_0^rVV  @VZ_1^rVV      @.      @VZ_{j-1}^rVV  \\
+\end{CD}$$
+
+
+Observando a ilustração acima, pode-se descrever esta fase da seguinte forma:
+
+- Primeiramente, os primeiros $r$ _bits_ de $s_k$ são colocados num bloco $Z_0$.
+- Então o valor de $s_k$ é aplicado na função $f$ para se obter novo valor de $s_{k+1}$.
+- Os primeiro $r$ _bits_ do novo valor de $s_{k+1}$ são colocados num bloco $Z_1$.
+- Este processo se repete até que se tenha $j$ blocos ($Z_0$, $Z_1$, ..., $Z_{j-1}$) tal que $(j - 1) \times r < l \leq j \times r$.
+
+Ao final deste processo, a saída da função esponja serão os primeiros $l$ _bits_ dos blocos concatenados $Z_0  \text{ || } Z_1  \text{ || } ... \text{ || } Z_{j-1}$.
+
+## Função de Compressão Keccak
+
+Nas seções anteriores, foi dado uma visão geral da estrutura da função esponja utilizada por SHA-3. Nesta seção, o foco será a função de compressão utilizada em cada iteração do SHA-3, que é chamada de _Keccak_ pelos seus autores.
+
+Como visto anteriormente, a função Keccak ($f$) tem como entrada um valor $s$ de $b$ _bits_, onde $b = r + c = 1600$. No processamento interno da função $f$, o valor $s$ é organizado numa matriz $5 \times 5$ com valores de 64 _bits_ em cada uma de suas células. Esta matriz pode ser linearizada num vector de _bits_, correspondendo ao valor $s$, usando a seguinte fórmula:
+
+$$s[64(5y+x)+z] = M[x, y, z]$$
+
+Onde:
+- $M$ é a matriz $5 \times 5$ com valores de 64 _bits_.
+- $x$ é o índice de coluna na matriz, que vai de 0 a 4.
+- $y$ é o índice de linha na matriz, também de 0 a 4.
+- $z$ é o índice de _bit_ de uma célula na matriz, que vai de 0 a 63.
+
+Uma vez criada a matriz, a função $f$ vai executar 24 rodadas de processamento:
+
+$$\require{AMScd}
+\begin{CD}
+@. RC_1 @.    RC_2  @. @. RC_{24} \\
+@. @VVV @VVV @. @VVV \\
+@>S_{i}>> R_1 @>>> R_2 @>>> ... @>>> R_{24} @>S_{i+1}>> \\
+\end{CD}$$
+
+Observe acima que todas as rodadas são idênticas, exceto pela constante $RC_i$ diferente em cada rodada. Cada uma das rodadas, consiste de 5 passos. Cada passo executa uma operação de permutação ou substituição sobre a matriz.
+
+A aplicação dos cinco passos de cada rodada é expressa pela composição das seguintes funções:
+
+$$R_i = \iota \circ \chi \circ \pi \circ \rho \circ \theta$$
+
+Onde cada passo tem sua fórmula na tabela seguinte:
+
+
+|Função |Fórmula|
+|-------|-------|
+| Theta |$$\theta: M[x,y,z] \gets M[x,y,z] \oplus \sum_{y'=0}^4 M[x-1,y',z] \oplus \sum_{y'=0}^4 M[x+1,y',z-1] $$|
+| Rho   |$$\rho: M[x,y,z] \gets
+\begin{cases}
+M[x,y,z]\text{, se } x = y = 0 \\
+M[x,y,z - \frac{(t+1)(t+2)}{2}], \text{ onde } 0 \leq t < 24 \text{ e }
+\begin{pmatrix}
+0 & 1 \\
+2 & 3 \\
+\end{pmatrix}^t
+\begin{pmatrix}
+1 \\
+0 \\
+\end{pmatrix}
+=
+\begin{pmatrix}
+x \\
+y \\
+\end{pmatrix} \\
+\text{ em } GF(5)^{2 \times 2}
+\end{cases}$$|
+| Pi    |$$\pi: M[x,y] \gets M[x',y'] \text{, onde }
+\begin{pmatrix}
+x \\
+y \\
+\end{pmatrix}
+\begin{pmatrix}
+0 & 1 \\
+2 & 3 \\
+\end{pmatrix}
+=
+\begin{pmatrix}
+x' \\
+y' \\
+\end{pmatrix}
+$$|
+| Chi   |$$\chi: M[x,y,z] \gets M[x,y,z] \oplus (\lnot M[x+1,y,z] \land M[x+2,y,z])$$|
+| Iota  |$$\iota: M[x,y,z] \gets M[x,y,z] \oplus RC(i) \text{, onde RC é uma tabela com um valor para cada rodada $i$.}$$|
+
+
+Baseado na tabela acima, aqui estão algumas características de cada passo:
+
+- _Theta_ ($\theta$) é uma função de substituição que utiliza _bits_ das colunas anteriores e posteriores, além dos _bits_ da célula sendo substituída. Cada _bit_ substituído depende de outros 11 _bits_, o que provê uma difusão de alto grau.
+- _Rho_ ($\rho$) é uma função de permutação dos _bits_ dentro de cada célula. Sem esta função, a difusão entre as células, ocorreria de forma muito lenta.
+- _Pi_ ($\pi$) é também uma função de permutação, mas entre células. A rotação não se dá nos _bits_ de uma célula, mas entre as células da matriz.
+- _Chi_ ($\chi$) é uma função de substituição baseada no valor do _bit_ corrente e dos _bits_ em posições correspondentes das duas próximas células. Sem esta função, SHA-3 seria completamente linear.
+- _Iota_ ($\iota$) é uma função de substituição baseada numa tabela - chamada $RC$, ou seja, constantes de rodada - que usará um valor constante e diferente para cada rodada do SHA-3.
+
+## Parâmetros do SHA-3
+
+O SHA-3 define um algoritmo padrão para uso com parâmetros diferentes, dependendo do nível de segurança e tamanho de _bits_ desejados na saída. A tabela abaixo enumera os parâmetros normalmente utilizados com o SHA-3:
+
+
+|Tamanho do Valor de _Hash_ (l)|Tamanho do Bloco (r)|Capacidade (c)|Resistência a Colisão|Resistência à Segunda Pré-Imagem|
+|---|----|---|-------|------|
+|224|1152|448|$2^{112}$|$2^{224}$|
+|256|1088|512|$2^{128}$|$2^{256}$|
+|384|832|768|$2^{192}$|$2^{384}$|
+|512|576|1024|$2^{256}$|$2^{512}$|
+
+Como visto nas seções anteriores, quanto maior o tamanho do bloco ($r$ ou _bitrate_), maior a vazão de _bits_, porém menor a segurança do SHA-3. Isto é evidente nos valores de resistência a colisão e à segunda pré-imagem, que mostram que quanto menor é o _bitrate_, maior é a resistência.
+
+Observe também que, para os tamanhos $l$ de valor de _hash_ da tabela acima, não há necessidade de se usar a fase de _espremer a esponja_ do algoritmo do SHA-3, pois $l$ é sempre menor que $r$ nestes casos.
+
+# Perguntas e Respostas
+
+Nas sub-seções abaixo, encontram-se as perguntas e respostas sobre a referência [#FIPS202] que apresenta o SHA-3 padronizado pelo NIST.
+
+## O que é e para que serve o _State Array_?
+
+_State Array_ é simplesmente a _string_ $S$ - que serve de entrada à função Keccak - representada na forma de uma matriz $M$ de $5 x 5$, tendo como suas células as palavras de _bits_ de comprimento $w$, que varia de 1 a 64 _bits_.
+
+Representando a string $S$ numa matriz facilita a definição e a implementação das sub-funções de substituição e permutação ($\iota, \chi, \pi, \rho, \theta$) que fazem parte da função Keccak.
+
+Após realizar as várias transformações no _State Array_ (ou seja, na matriz $M$), a função Keccak terá como sua saída o estado final encontrado nesta matriz, que então será convertida novamente no formato da _string_ $S$, servindo por sua vez como a entrada da próxima rodada do SHA-3.
+
+## Como é feita a conversação de strings para State Arrays?
+
+Uma _bit string_ $S$ pode ser convertida numa matriz $M$ de 5x5 de palavras de comprimento $w$ _bits_. Para tanto, é preciso que o comprimento $b$ da _bit string_ $S$ tenha como múltiplos $25$ ($5x5=25$) e $w$, de tal forma que $b = 25w$.
+
+Respeitada a condição definida acima, é possível estabelecer um mapeamento entre cada _bit_ da _string_ $S$ e cada _bit_ de uma palavra da matriz $M$, usando a seguinte equação:
+
+$$M[x,y,z]=S[w(5y+x)+z]$$
+
+Onde:
+- $M$ é a matriz $5 \times 5$ com palavras de $w$ _bits_.
+- $x$ é o índice de coluna na matriz, que vai de 0 a 4.
+- $y$ é o índice de linha na matriz, também de 0 a 4.
+- $z$ é o índice de _bit_ de uma palavra na matriz $M$, que vai de 0 a $w-1$.
+
+Fazendo $w = 2$ e $b = 50$, o que faz as palavras da matriz $M$ ter apenas 2 _bits_ e a _bit string_ $S$ ter 50 _bits_, podemos visualizar o mapeamento na seguinte tabela:
+
+
+|$M[x,y]$ | $x = 0$        | $x = 1$        | $x = 2$        | $x = 3$        | $x = 4$        |
+|---------|:--------------:|:--------------:|:--------------:|:--------------:|:--------------:|
+| $y = 0$ | $S[0]\text{ || }S[1]$ | $S[2]\text{ || }S[3]$ | $S[4]\text{ || }S[5]$ | $S[6]\text{ || }S[7]$ | $S[8]\text{ || }[9]$   |
+| $y = 1$ | $S[10]\text{ || }S[11]$ | $S[12]\text{ || }S[13]$ | $S[14]\text{ || }S[15]$ | $S[16]\text{ || }S[17]$ | $S[18]\text{ || }S[19]$ |
+| $y = 2$ | $S[20]\text{ || }S[21]$ | $S[22]\text{ || }S[23]$ | $S[24]\text{ || }S[25]$ | $S[26]\text{ || }S[27]$ | $S[28]\text{ || }S[29]$ |
+| $y = 3$ | $S[30]\text{ || }S[31]$ | $S[32]\text{ || }S[33]$ | $S[34]\text{ || }S[35]$ | $S[36]\text{ || }S[37]$ | $S[38]\text{ || }S[39]$ |
+| $y = 4$ | $S[40]\text{ || }S[41]$ | $S[42]\text{ || }S[43]$ | $S[44]\text{ || }S[45]$ | $S[46]\text{ || }S[47]$ | $S[48]\text{ || }S[49]$ |
+
+Ou seja:
+- $M[0,0,0] = S[0]$
+- $M[0,0,1] = S[1]$
+- $M[0,1,0] = S[2]$
+- $M[0,1,1] = S[3]$
+- ...
+
+E assim por diante, até que todas as palavras da matriz $M$ sejam preenchidas com os _bits_ da _string_ $S$.
+
+# Referências
+
+[#Stalling2014]: Cryptography and Network Security, Sixth International Edition, 2014.
+
+[#FIPS202]: FIPS PUB 202, 2015.
+
+[#Wikipedia2016]: Wikipedia, 2016.
+
+<!-- Markdeep: -->
+<style class="fallback">body{visibility:hidden}</style>
+<script src="markdeep.js"></script>
+<script>window.alreadyProcessedMarkdeep||(document.body.style.visibility="visible")</script>
