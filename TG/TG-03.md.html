@@ -429,6 +429,48 @@ Observe que, em $Keccak\text{-}f$, o índice da rodada será sempre um inteiro n
 
 $$0 \leq i < n_r$$
 
+## Estrutura Esponja
+
+É uma estrutura usada para encadear a execução de uma função $f$, operando sobre dados binários de comprimento variável (a mensagem) e gerando um valor _hash_ de tamanho arbitrário.
+
+Para que a mensagem possa ser consumida pela estrutura esponja, esta precisa ter um determinado tamanho em _bits_. Para isto, é necessário aplicar uma regra de _padding_ que alongue a mensagem para o tamanho desejado.
+
+A estrutura, como ilustrada na figura 7 de [FIPS2002], é dividida em duas partes (absorção e liberação), descritas nas próximas seções.
+
+### Absorção
+
+A primeira fase da função esponja se chama de _absorção_ e refere-se ao processamento dos blocos da mensagem de entrada.
+
+Como ilustrada na figura 7 de [FIPS202], o resultado da execução anterior da função $f$ serve como entrada em cada iteração para a próxima execução da função $f$. Inicialmente, uma _bit string_ que contém $0$ em todos os seus _bits_ é fornecida à primeira iteração. Esta _bit string_ (que chamaremos de $S$ a partir de agora) vai se modificando em cada iteração.
+
+O tamanho de $S$ é de $b$ _bits_, onde:
+
+$$b = r + c$$
+
+Onde:
+- $r$: o tamanho de cada bloco da mensagem binária de entrada. Também é chamado de _bitrate_, ou vazão de _bits_, pois representa o número de _bits_ consumidos em cada iteração da função esponja.
+- $c$: chamado de _capacidade_, representa o nível de segurança atingido pela função esponja. Quanto maior o numero $c$, maior a segurança, porém menor o _bitrate_.
+
+Em cada iteração, a fase de absorção ocorre da seguinte forma:
+
+- O próximo bloco $P_i$ da mensagem de entrada é preenchido com zeros ($P_i^r\text{ || }0^c$) para aumentar seu tamanho de $r$ para $b$ _bits_.
+- Ao resultado do passo anterior, uma operação _XOR_ é aplicada, tendo como segundo operando o valor de $S_{i-1}$ proveniente da iteração anterior, ou zeros se for a primeira iteração ($S_0^b=0^{r+c}$).
+- O resultado da operação _XOR_ serve então de entrada para a função de compressão $f$. O resultado desta função é o novo valor $S_i$ da variável $s$, que é usada como entrada da próxima iteração, juntamente com o próximo bloco $P_{i+1}$ da mensagem de entrada.
+
+Se o tamanho desejado da saída da função esponja é menor que o tamanho de $s$ - ou seja, se $l \leq b$ - então os primeiros $l$ _bits_ de $s_k$ - retornado pela última iteração - é o resultado da função esponja. Caso deseja-se $l > b$, então a fase de liberação inicia-se, como descrito na próxima seção.
+
+### Liberação
+
+Na fase de absorção da estrutura esponja, descrita na seção anterior, foram consumidos todos os blocos da mensagem de entrada, resultando num valor final de $s$ de $b$ _bits_. Se o tamanho desejado de saída ($l$) da função esponja for $l > b$, é preciso "espremer a esponja" para obter uma saída com o número de _bits_ desejado.
+
+Observando a figura 7 de [FIPS202], pode-se descrever esta fase da seguinte forma:
+
+- Primeiramente, os primeiros $r$ _bits_ de $S_k$ são colocados num bloco $Z_0$, o primeiro bloco de $Z$.
+- Então o _bit string_ $S_k$ é aplicado à função $f$ para se obter novo _bit string_ $S_{k+1}$.
+- Os primeiro $r$ _bits_ do novo valor de $S_{k+1}$ são colocados num bloco $Z_1$.
+- Este processo se repete até que se tenha $j$ blocos ($Z_0$, $Z_1$, ..., $Z_{j-1}$) tal que $(j - 1) \times r < l \leq j \times r$.
+
+Ao final deste processo, a saída da estrutura esponja serão os primeiros $l$ _bits_ dos blocos concatenados $Z_0  \text{ || } Z_1  \text{ || } ... \text{ || } Z_{j-1}$.
 
 # Referências
 
