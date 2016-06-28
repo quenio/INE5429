@@ -403,7 +403,7 @@ $Keccak\text{-}p$ é a generalização das funções de substituição e permuta
 - $b$: o comprimento em _bits_ da _bit string_ $S$, usada como a variável de estado do SHA-3.
 - $n_r$: o número de rodadas da fase de absorção do SHA-3.
 
-Cada rodada de substituições e permutações de Keccak consiste numa sequência de cinco transformações (_step mappings_), como visto anteriormente, modificando o estado da _string_ S:
+Cada rodada de substituições e permutações de $Keccak\text{-}p$ consiste numa sequência de cinco transformações (_step mappings_), como visto anteriormente, modificando o estado da _string_ S:
 
 $$S_i = \iota(\chi(\phi(\rho(\theta(A)))), i)$$
 
@@ -412,7 +412,7 @@ Onde:
 - $S_i$ é o estado da _string_ $S$ na rodada $i$.
 
 
-Observe que em $Keccak\text{-}p$, o índice da rodada $i$ pode ser um número negativo.
+Observe que, em $Keccak\text{-}p$, o índice da rodada $i$ pode ser um inteiro negativo.
 
 ### $Keccak\text{-}f$
 
@@ -425,9 +425,9 @@ Devido a fixação dos parâmetros, pode-se definir que:
 
 $$Keccak\text{-}f[b] = Keccak\text{-}p[b, 12 + 2l]$$
 
-Observe que, em $Keccak\text{-}f$, o índice da rodada será sempre um valor não-negativo no intervalo:
+Observe que, em $Keccak\text{-}f$, o índice da rodada será sempre um inteiro não-negativo no intervalo:
 
-$$0 \leq i \leq n_r-1$$
+$$0 \leq i < n_r$$
 
 
 # Referências
