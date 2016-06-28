@@ -392,6 +392,11 @@ Observa-se que, sem esta transformação, a difusão entre as palavras da matriz
 
 $$\pi: M[x,y] \gets M[x',y'] \text{, onde }
 \begin{pmatrix}
+x' \\
+y' \\
+\end{pmatrix}
+=
+\begin{pmatrix}
 x \\
 y \\
 \end{pmatrix}
@@ -399,26 +404,39 @@ y \\
 0 & 1 \\
 2 & 3 \\
 \end{pmatrix}
-=
-\begin{pmatrix}
-x' \\
-y' \\
-\end{pmatrix}
 $$
 
-_Pi_ ($\pi$) é também uma função de permutação, mas entre células. A rotação não se dá nos _bits_ de uma célula, mas entre as células da matriz.
+_Pi_ ($\pi$) é também uma função de permutação, mas entre as palavras. Ou seja, a rotação _não_ se dá nos _bits_ de uma palavra, mas entre as palavras da matriz $M$.
 
 ### Passo Chi ($\chi$)
 
 $$\chi: M[x,y,z] \gets M[x,y,z] \oplus (\lnot M[x+1,y,z] \land M[x+2,y,z])$$
 
-_Chi_ ($\chi$) é uma função de substituição baseada no valor do _bit_ corrente e dos _bits_ em posições correspondentes das duas próximas células. Sem esta função, SHA-3 seria completamente linear.
+_Chi_ ($\chi$) é uma função de substituição baseada no valor do _bit_ corrente e dos _bits_ em posições correspondentes das duas próximas células.
+
+Este passo é o único mapeamento não-linear. Sem este passo, SHA-3 seria mais suscetível a ataques.
 
 ### Passo Iota ($\iota$)
 
 $$\iota: M[x,y,z] \gets M[x,y,z] \oplus RC(i)$$
 
 _Iota_ ($\iota$) é uma função de substituição baseada numa tabela - chamada $RC$, ou seja, constantes de rodada - que usará um valor constante e diferente para cada rodada $i$ do SHA-3.
+
+A tabela $RC$ pode ser calculada com o seguinte algoritmo:
+
+```
+função RC(i):
+    se i mod 255 = 0, retorne 1
+    faça R = 10000000
+    para i de 1 to t mod 255, faça:
+        R = 0 || R
+        R[0] = R[0] + R[8]
+        R[4] = R[4] + R[8]
+        R[5] = R[5] + R[8]
+        R[6] = R[6] + R[8]
+        R = Truncar8[R]
+retorne R[0]
+```
 
 ## Permutação $Keccak\text{-}p[b,n_r]$
 
