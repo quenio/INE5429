@@ -340,7 +340,6 @@ $$\theta: M[x,y,z] \gets M[x,y,z] \oplus \sum_{y'=0}^4 M[x-1,y',z] \oplus \sum_{
 
 _Theta_ ($\theta$) é uma função de substituição que utiliza _bits_ das colunas anteriores e posteriores, além dos _bits_ da célula sendo substituída. Cada _bit_ substituído depende de outros 11 _bits_, o que provê uma difusão de alto grau.
 
-
 ### Passo Rho ($\rho$)
 
 $$\rho: M[x,y,z] \gets
@@ -396,6 +395,40 @@ _Chi_ ($\chi$) é uma função de substituição baseada no valor do _bit_ corre
 $$\iota: M[x,y,z] \gets M[x,y,z] \oplus RC(i)$$
 
 _Iota_ ($\iota$) é uma função de substituição baseada numa tabela - chamada $RC$, ou seja, constantes de rodada - que usará um valor constante e diferente para cada rodada $i$ do SHA-3.
+
+## Permutação $Keccak\text{-}p[b,n_r]$
+
+$Keccak\text{-}p$ é a generalização das funções de substituição e permutação $Keccak$ que podem ser usadas pelo algoritmo do SHA-3. Tem como parâmetros:
+
+- $b$: o comprimento em _bits_ da _bit string_ $S$, usada como a variável de estado do SHA-3.
+- $n_r$: o número de rodadas da fase de absorção do SHA-3.
+
+Cada rodada de substituições e permutações de Keccak consiste numa sequência de cinco transformações (_step mappings_), como visto anteriormente, modificando o estado da _string_ S:
+
+$$S_i = \iota(\chi(\phi(\rho(\theta(A)))), i)$$
+
+Onde:
+-  $i \geq 2l + 12–n_r \text{ e } i < 2l + 12, l \in \Bbb{Z}$.
+- $S_i$ é o estado da _string_ $S$ na rodada $i$.
+
+
+Observe que em $Keccak\text{-}p$, o índice da rodada $i$ pode ser um número negativo.
+
+### $Keccak\text{-}f$
+
+$Keccak\text{-}f$ é uma especialização de $Keccak\text{-}p$, onde fixamos os parâmetros da seguinte forma:
+
+- $b \in \{25, 50, 100, 200, 400, 800, 1600\}$
+- $n_r = 2l + 12, l \in \Bbb{Z}$.
+
+Devido a fixação dos parâmetros, pode-se definir que:
+
+$$Keccak\text{-}f[b] = Keccak\text{-}p[b, 12 + 2l]$$
+
+Observe que, em $Keccak\text{-}f$, o índice da rodada será sempre um valor não-negativo no intervalo:
+
+$$0 \leq i \leq n_r-1$$
+
 
 # Referências
 
