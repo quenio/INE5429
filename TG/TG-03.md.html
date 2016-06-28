@@ -457,7 +457,7 @@ Analisando o algoritmo 8 em [FIPS202], pode-se dizer que, em cada iteração, a 
 - Ao resultado do passo anterior, uma operação _XOR_ é aplicada, tendo como segundo operando o valor de $S_{i-1}$ proveniente da iteração anterior, ou zeros se for a primeira iteração ($S_0^b=0^{r+c}$).
 - O resultado da operação _XOR_ serve então de entrada para a função de compressão $f$. O resultado desta função é o novo valor $S_i$ da variável $s$, que é usada como entrada da próxima iteração, juntamente com o próximo bloco $P_{i+1}$ da mensagem de entrada.
 
-Se o tamanho desejado da saída da função esponja é menor que o tamanho de $s$ - ou seja, se $l \leq b$ - então os primeiros $l$ _bits_ de $s_k$ - retornado pela última iteração - é o resultado da função esponja. Caso deseja-se $l > b$, então a fase de liberação inicia-se, como descrito na próxima seção.
+Se o tamanho desejado $l$ da saída da função esponja é menor que o tamanho de $s$ - ou seja, se $l \leq b$ - então os primeiros $l$ _bits_ de $s_k$ - retornado pela última iteração - é o resultado da função esponja. Caso deseja-se $l > b$, então a fase de liberação inicia-se, como descrito na próxima seção.
 
 ### Liberação
 
@@ -471,6 +471,38 @@ Observando a figura 7 e analisando o algoritmo 8 de [FIPS202], pode-se descrever
 - Este processo se repete até que se tenha $j$ blocos ($Z_0$, $Z_1$, ..., $Z_{j-1}$) tal que $(j - 1) \times r < l \leq j \times r$.
 
 Ao final deste processo, a saída da estrutura esponja serão os primeiros $l$ _bits_ dos blocos concatenados $Z_0  \text{ || } Z_1  \text{ || } ... \text{ || } Z_{j-1}$.
+
+## Funções Esponja Keccak
+
+As funções esponja Keccak são um grupo de funções definidas para serem usadas na estrutura esponja:
+- _pad10*1_ é a função de _padding_ aplicação à mensagem que servirá de entrada para a estrutura esponja.
+- $Keccak[c]$ é a aplicação de $Keccak\text{-}p[b,n_r]$ como a função $f$ sobre a estrutura esponja com parâmetros $b$, $n_r$ e $r$ pré-definidos, sendo $r$ baseado em $c$.
+
+As funções listadas acima são definidas na próximas seções.
+
+### _pad10*1_
+
+De acordo com o algoritmo 9 de [FIPS202], _pad10*1_ retorna uma _bit string_ $PAD$ de tamanho:
+
+$$b - (m \text{ mod } b)$$
+
+Onde:
+- $b$ é o tamanho do bloco em _bits_ da estrutura esponja.
+- $m$ é o tamanho da mensagem de entrada em _bits_.
+- $PAD$ tem o seguinte formato binário: $1 \text{ || } 0^{m-2} \text{ || } 1$
+
+### $Keccak[c]$
+
+$Keccak[c]$ é definida da seguinte forma:
+
+$$Keccak[c] = Sponge[Keccak\text{-p}[1600, 24], pad10*1, 1600 – c]$$
+
+Ou seja, é a aplicação da estrutura esponja, tendo:
+- como função $f$, a função $Keccak\text{-p}$ com $b = 1600$ e $n_r = 24$.
+- _pad10*1_ como o algoritmo de _padding_.
+- como bloco da mensagem de entrada, uma _bit string_ de tamanho $r = b - c$.
+
+Portanto, $Keccak[c]$ vai aceitar uma mensagem de tamanho variável, que será _padded_ com _pad10*1_. Cada rodada irá processar um bloco da mensagem de entrada de tamanho $r = b - c$, com uma capacidade (ou segurança) de tamanho $c = b - r$.
 
 # Referências
 
