@@ -549,6 +549,33 @@ Terminando as mensagens das funções de _hash_ com "01" e das funções XOF com
 
 Os últimos _bits_ "11" das funções XOF também garantem compatibilidade com o esquema de codificação Sakura, que permite processamento paralelo na geração de valores de _hash_ para mensagens longas.
 
+## Análise de Segurança do SHA-3
+
+De acordo com o tipo de ataque, a tabela abaixo mostra a "forca" de segurança em _bits_ das diferentes versões das funções SHA-3:
+
+
+|Função|Tamanho Saída|Colisão|Pré-Imagem|Segunda Pré-Imagem|
+|------|-------------|-------|----------|------------------|
+|SHA-1|160|< 80|160|160–L(M)|
+|SHA-224|224|112|224|min(224,256–L(M))|
+|SHA-512/224|224|112|224|224|
+|SHA-256|256|128|256|256–L(M)|
+|SHA-512/256|256|128|256|256|
+|SHA-384|384|192|384|384|
+|SHA-512|512|256|512|512–L(M)|
+|SHA3-224|224|112|224|224|
+|SHA3-256|256|128|256|256|
+|SHA3-384|384|192|384|384|
+|SHA3-512|512|256|512|512|
+|SHAKE128|d|min(d/2,128)|≥ min(d,128)|min(d,128)|
+|SHAKE256|d|min(d/2,256)|≥ min(d,256)|min(d,256)|
+
+Onde:
+
+$$L(M) = ⌈log2(len(M)/B)⌉$$
+
+É interessante observar que, quanto maior a capacidade ($c$), maior a segurança do SHA-3. Isto é evidente nos valores de resistência a colisão e à segunda pré-imagem mostrados na tabela acima.
+
 # Referências
 
 [#Stalling2014]: Cryptography and Network Security, Sixth International Edition, 2014.
