@@ -306,11 +306,27 @@ Fazendo $w = 2$ e $b = 50$, o que faz as palavras da matriz $M$ ter apenas 2 _bi
 Ou seja:
 - $M[0,0,0] = S[0]$
 - $M[0,0,1] = S[1]$
-- $M[0,1,0] = S[2]$
-- $M[0,1,1] = S[3]$
+- $M[1,0,0] = S[2]$
+- $M[1,0,1] = S[3]$
 - ...
 
 E assim por diante, até que todas as palavras da matriz $M$ sejam preenchidas com os _bits_ da _string_ $S$.
+
+## Como é feita a conversão de State Array para Strings?
+
+Pode-se converter a matriz $M$ (o _State Array_) de volta a uma _bit string_ $S$ usando a mesma equação definida anteriormente, apenas invertendo as expressões, como mostrado abaixo:
+
+$$S[w(5y+x)+z]=M[x,y,z]$$
+
+Uma vez definidos cada um dos _bits_, faz-se a concatenação destes para obter _string_ $S$:
+
+$$S = M[x,y,0]||M[x,y,1]||...||M[x,y,w-1], 0\leq x\leq4, 0\leq y\leq4$$
+
+Usando ainda o exemplo com $w = 2$ e $b = 50$, temos:
+
+$$S = \\M[0,0,0]||M[0,0,1]||M[1,0,0]||M[1,0,1]||M[2,0,0]||M[2,0,1]||M[3,0,0]||M[3,0,1]||M[4,0,0]||M[4,0,1]||\\
+M[0,1,0]||M[0,1,1]||M[1,1,0]||M[1,1,1]||M[2,1,0]||M[2,1,1]||M[3,1,0]||M[3,1,1]||M[4,1,0]||M[4,1,1]||\\
+...||M[4,4,1]$$
 
 # Referências
 
