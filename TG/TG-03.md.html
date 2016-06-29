@@ -447,7 +447,7 @@ $Keccak\text{-}p$ é a generalização das funções de substituição e permuta
 
 Cada rodada de substituições e permutações de $Keccak\text{-}p$ consiste numa sequência de cinco transformações (_step mappings_), como visto anteriormente, modificando o estado da _string_ S:
 
-$$S_i = \iota(\chi(\phi(\rho(\theta(A)))), i)$$
+$$S_i = \iota(\chi(\phi(\rho(\theta(S_{i-1})))), i)$$
 
 Onde:
 -  $i \geq 2l + 12–n_r \text{ e } i < 2l + 12, l \in \Bbb{Z}$.
