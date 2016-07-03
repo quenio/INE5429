@@ -23,15 +23,11 @@ const char * state_array__assignment()
 {
     ST2 a { BS50 { s1 } };
 
-    for (size_t x = 0; x < ST2::row_size; x++)
+    for (ST2::Coord3D write_coord = ST2::begin(); write_coord != ST2::end(); write_coord.next())
     {
-        for (size_t y = 0; y < ST2::column_size; y++)
-        {
-            for (size_t z = 0; z < ST2::w; z++)
-            {
-                a.set(x, y, z, a.get(x, y, (z + 1) % ST2::w));
-            }
-        }
+        ST2::Coord3D read_coord = write_coord;
+        read_coord.cycle();
+        a.set(write_coord, a[read_coord]);
     }
 
     mu_assert(a.s().to_string() == string(s2));

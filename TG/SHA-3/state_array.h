@@ -15,30 +15,72 @@ struct StateArray
     static constexpr size_t w = W;
     static constexpr size_t b = row_size * column_size * w;
 
-    size_t linear_index(size_t x, size_t y, size_t z) const
+    struct Coord3D
     {
-        return w * ((5 * y) + x) + z;
+        size_t x, y, z;
+
+        Coord3D(size_t x, size_t y, size_t z): x(x), y(y), z(z) {}
+
+        void cycle_x() { x = (x + 1) % row_size; }
+        void cycle_y() { y = (y + 1) % column_size; }
+        void cycle_z() { z = (z + 1) % w; }
+
+        void next()
+        {
+            cycle_z();
+            if (z == 0) cycle_y();
+            if (y == 0 && z == 0) x++;
+        }
+
+        void cycle()
+        {
+            cycle_z();
+            if (z == 0) cycle_y();
+            if (y == 0 && z == 0) cycle_x();
+        }
+
+        bool operator !=(const Coord3D & other) const
+        {
+            return x != other.x || y != other.y || z != other.z;
+        }
+
+        size_t linear_index() const
+        {
+            return w * ((5 * y) + x) + z;
+        }
+
+        // bitset is little-endian:
+        // - first bit in position b - 1
+        // - last bit in position zero
+        size_t little_endian_index() const
+        {
+            return b - linear_index() - 1;
+        }
+
+        // bitset is little-endian:
+        // - first bit in position w - 1
+        // - last bit in position zero
+        size_t little_endian_z() const
+        {
+            return w - z - 1;
+        }
+    };
+
+    static Coord3D begin()
+    {
+        return { 0, 0, 0 };
     }
 
-    // bitset is little-endian:
-    // - first bit in position b - 1
-    // - last bit in position zero
-    size_t little_endian_index(size_t x, size_t y, size_t z) const
+    static Coord3D end()
     {
-        return b - linear_index(x, y, z) - 1;
+        return { row_size, 0, 0 };
     }
 
     StateArray(BitString<b> s)
     {
-        for (size_t x = 0; x < row_size; x++)
+        for (Coord3D coord = begin(); coord != end(); coord.next())
         {
-            for (size_t y = 0; y < column_size; y++)
-            {
-                for (size_t z = 0; z < w; z++)
-                {
-                    set(x, y, z, s[little_endian_index(x, y, z)]);
-                }
-            }
+            this->set(coord, s[coord.little_endian_index()]);
         }
     }
 
@@ -46,36 +88,22 @@ struct StateArray
     {
         BitString<b> s;
 
-        for (size_t x = 0; x < row_size; x++)
+        for (Coord3D coord = begin(); coord != end(); coord.next())
         {
-            for (size_t y = 0; y < column_size; y++)
-            {
-                for (size_t z = 0; z < w; z++)
-                {
-                    s.set(little_endian_index(x, y, z), get(x, y, z));
-                }
-            }
+            s.set(coord.little_endian_index(), (*this)[coord]);
         }
 
         return s;
     }
 
-    // bitset is little-endian:
-    // - first bit in position w - 1
-    // - last bit in position zero
-    size_t little_endian_z(size_t z) const
+    bool operator [](const Coord3D & coord) const
     {
-        return w - z - 1;
+        return matrix[coord.x][coord.y][coord.little_endian_z()];
     }
 
-    bool get(const size_t & x, const size_t & y, const size_t & z) const
+    void set(const Coord3D & coord, const bool & bit)
     {
-        return matrix[x][y][little_endian_z(z)];
-    }
-
-    void set(const size_t & x, const size_t & y, const size_t & z, const bool & bit)
-    {
-        matrix[x][y].set(little_endian_z(z), bit);
+        matrix[coord.x][coord.y].set(coord.little_endian_z(), bit);
     }
 
 private:
