@@ -6,17 +6,41 @@
 
 using namespace std;
 
-const char *s = "01010101010101010101010101010101010101010101010101";
+const char *s1 = "01100110011001100110011001100110011001100110011001";
+const char *s2 = "11001100110011001100110011001100110011001100110011";
 
-const char * state_array__constructor()
+using ST2 = StateArray<2>;
+using BS50 = BitString<50>;
+
+const char * state_array__in_and_out()
 {
-    state_array<2> a { bit_string<50> { s } };
-    mu_assert(a.s().to_string() == string(s));
-    cout << a.s().to_string().c_str() << "\n";
+    ST2 a { BS50 { s1 } };
+    mu_assert(a.s().to_string() == string(s1));
+    return NULL;
+}
+
+const char * state_array__assignment()
+{
+    ST2 a { BS50 { s1 } };
+
+    for (size_t x = 0; x < ST2::row_size; x++)
+    {
+        for (size_t y = 0; y < ST2::column_size; y++)
+        {
+            for (size_t z = 0; z < ST2::w; z++)
+            {
+                a.set(x, y, z, a.get(x, y, (z + 1) % ST2::w));
+            }
+        }
+    }
+
+    mu_assert(a.s().to_string() == string(s2));
+
     return NULL;
 }
 
 void all_tests()
 {
-    mu_test(state_array__constructor);
+    mu_test(state_array__in_and_out);
+    mu_test(state_array__assignment);
 }
