@@ -12,8 +12,8 @@ struct StateArray
 {
     static constexpr size_t row_size = 5;
     static constexpr size_t column_size = row_size;
-    static constexpr size_t w = W;
-    static constexpr size_t b = row_size * column_size * w;
+    static constexpr size_t word_size = W;
+    static constexpr size_t string_size = row_size * column_size * word_size;
 
     struct Coord3D
     {
@@ -21,9 +21,27 @@ struct StateArray
 
         Coord3D(size_t x, size_t y, size_t z): x(x), y(y), z(z) {}
 
+        void p_cycle_x() { x = (x == 0 ? row_size : x) - 1; }
+        void p_cycle_y() { y = (y == 0 ? column_size : y) - 1; }
+        void p_cycle_z() { z = (z == 0 ? word_size : z) - 1; }
+
+        void previous()
+        {
+            p_cycle_z();
+            if (z == (word_size - 1)) p_cycle_y();
+            if (y == (column_size - 1) && z == (word_size - 1)) x--;
+        }
+
+        void p_cycle()
+        {
+            p_cycle_z();
+            if (z == (word_size - 1)) p_cycle_y();
+            if (y == (column_size - 1) && z == (word_size - 1)) p_cycle_x();
+        }
+
         void cycle_x() { x = (x + 1) % row_size; }
         void cycle_y() { y = (y + 1) % column_size; }
-        void cycle_z() { z = (z + 1) % w; }
+        void cycle_z() { z = (z + 1) % word_size; }
 
         void next()
         {
@@ -46,7 +64,7 @@ struct StateArray
 
         size_t linear_index() const
         {
-            return w * ((5 * y) + x) + z;
+            return word_size * ((5 * y) + x) + z;
         }
 
         // bitset is little-endian:
@@ -54,7 +72,7 @@ struct StateArray
         // - last bit in position zero
         size_t little_endian_index() const
         {
-            return b - linear_index() - 1;
+            return string_size - linear_index() - 1;
         }
 
         // bitset is little-endian:
@@ -62,7 +80,7 @@ struct StateArray
         // - last bit in position zero
         size_t little_endian_z() const
         {
-            return w - z - 1;
+            return word_size - z - 1;
         }
     };
 
@@ -76,7 +94,7 @@ struct StateArray
         return { row_size, 0, 0 };
     }
 
-    StateArray(BitString<b> s)
+    StateArray(BitString<string_size> s)
     {
         for (Coord3D coord = begin(); coord != end(); coord.next())
         {
@@ -84,9 +102,9 @@ struct StateArray
         }
     }
 
-    BitString<b> s()
+    BitString<string_size> s()
     {
-        BitString<b> s;
+        BitString<string_size> s;
 
         for (Coord3D coord = begin(); coord != end(); coord.next())
         {
@@ -106,8 +124,13 @@ struct StateArray
         matrix[coord.x][coord.y].set(coord.little_endian_z(), bit);
     }
 
+    void XOR(const Coord3D & left_coord, const Coord3D & right_coord)
+    {
+        set(left_coord, (*this)[left_coord] xor (*this)[right_coord]);
+    }
+
 private:
-    BitString<w> matrix[row_size][column_size];
+    BitString<word_size> matrix[row_size][column_size];
 };
 
 

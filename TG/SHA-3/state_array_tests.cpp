@@ -8,6 +8,7 @@ using namespace std;
 
 const char *s1 = "01100110011001100110011001100110011001100110011001";
 const char *s2 = "11001100110011001100110011001100110011001100110011";
+const char *s3 = "10101010101010101010101010101010101010101010101010";
 
 using ST2 = StateArray<2>;
 using BS50 = BitString<50>;
@@ -35,8 +36,33 @@ const char * state_array__assignment()
     return NULL;
 }
 
+const char * state_array__xor()
+{
+    ST2 a { BS50 { s1 } };
+
+    ST2::Coord3D a_coord = ST2::begin();
+    ST2::Coord3D b_coord = ST2::begin();
+    b_coord.next();
+
+    while (a_coord != ST2::end() && b_coord != ST2::end())
+    {
+        a.XOR(a_coord, b_coord);
+        a_coord.next();
+        b_coord.next();
+    }
+
+    a_coord = ST2::end();
+    a_coord.previous();
+    a.XOR(a_coord, ST2::begin());
+
+    mu_assert(a.s().to_string() == string(s3));
+
+    return NULL;
+}
+
 void all_tests()
 {
     mu_test(state_array__in_and_out);
     mu_test(state_array__assignment);
+    mu_test(state_array__xor);
 }
