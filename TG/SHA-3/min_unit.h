@@ -10,7 +10,7 @@ extern int tests_failed;
 #define mu_assert(test) do { if (!(test)) { return " - FAILED: " #test "\n"; } } while (0)
 #define mu_test(test, ...) do { \
         const clock_t start = clock(); \
-        char *message = test(__VA_ARGS__); \
+        const char *message = test(__VA_ARGS__); \
         const double time = elapsed_secs(start); \
         tests_run++; \
         printf("%s(%s)", #test, #__VA_ARGS__); \

@@ -3,7 +3,7 @@
 
 #include <stdio.h>
 
-char * all_tests();
+void all_tests();
 
 int tests_run = 0;
 int tests_failed = 0;
