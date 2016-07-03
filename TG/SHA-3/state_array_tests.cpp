@@ -11,6 +11,7 @@ const char *s2 = "11001100110011001100110011001100110011001100110011";
 const char *s3 = "10101010101010101010101010101010101010101010101010";
 const char *s4 = "10011001100110011001100110011001100110011001100110";
 
+
 using ST2 = StateArray<2>;
 using BS50 = BitString<50>;
 
@@ -73,7 +74,7 @@ const char * state_array__Coord2D_get()
         mu_assert(a[coord].to_string() == string(coord.linear_index() % 2 == 0 ? "01" : "10"));
     }
 
-    mu_assert(count == ST2::word_count);
+    mu_assert(count == ST2::lane_count);
 
     return NULL;
 }
@@ -104,6 +105,21 @@ const char * state_array__Coord2D_set()
     return NULL;
 }
 
+const char * state_array__column_xor()
+{
+    ST2 a { BS50 { s1 } };
+
+    string result;
+    for (size_t column_index = 0; column_index < ST2::column_count; column_index++)
+    {
+        result += a.column_xor(column_index).to_string();
+    }
+
+    mu_assert(result == string("0110011001"));
+
+    return NULL;
+}
+
 void all_tests()
 {
     mu_test(state_array__in_and_out);
@@ -111,4 +127,5 @@ void all_tests()
     mu_test(state_array__xor);
     mu_test(state_array__Coord2D_get);
     mu_test(state_array__Coord2D_set);
+    mu_test(state_array__column_xor);
 }

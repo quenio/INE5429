@@ -10,13 +10,13 @@ using BitString = std::bitset<B>;
 template<size_t W>
 struct StateArray
 {
-    static constexpr size_t row_size = 5;
-    static constexpr size_t column_size = row_size;
-    static constexpr size_t word_size = W;
-    static constexpr size_t word_count = row_size * column_size;
-    static constexpr size_t string_size = word_count * word_size;
+    static constexpr size_t row_count = 5;
+    static constexpr size_t column_count = row_count;
+    static constexpr size_t lane_count = row_count * column_count;
+    static constexpr size_t lane_size = W;
+    static constexpr size_t string_size = lane_count * lane_size;
 
-    using Lane = BitString<word_size>;
+    using Lane = BitString<lane_size>;
 
     struct Coord2D
     {
@@ -29,23 +29,23 @@ struct StateArray
             return x != other.x || y != other.y;
         }
 
-        void p_cycle_x() { x = (x == 0 ? row_size : x) - 1; }
-        void p_cycle_y() { y = (y == 0 ? column_size : y) - 1; }
+        void p_cycle_x() { x = (x == 0 ? row_count : x) - 1; }
+        void p_cycle_y() { y = (y == 0 ? column_count : y) - 1; }
 
         void previous()
         {
             p_cycle_y();
-            if (y == (column_size - 1)) x--;
+            if (y == (column_count - 1)) x--;
         }
 
         void p_cycle()
         {
             p_cycle_y();
-            if (y == (column_size - 1)) p_cycle_x();
+            if (y == (column_count - 1)) p_cycle_x();
         }
 
-        void cycle_x() { x = (x + 1) % row_size; }
-        void cycle_y() { y = (y + 1) % column_size; }
+        void cycle_x() { x = (x + 1) % row_count; }
+        void cycle_y() { y = (y + 1) % column_count; }
 
         void next()
         {
@@ -61,7 +61,7 @@ struct StateArray
 
         size_t linear_index() const
         {
-            return (column_size * y) + x;
+            return (x * column_count) + y;
         }
 
     };
@@ -72,27 +72,27 @@ struct StateArray
 
         Coord3D(size_t x, size_t y, size_t z): x(x), y(y), z(z) {}
 
-        void p_cycle_x() { x = (x == 0 ? row_size : x) - 1; }
-        void p_cycle_y() { y = (y == 0 ? column_size : y) - 1; }
-        void p_cycle_z() { z = (z == 0 ? word_size : z) - 1; }
+        void p_cycle_x() { x = (x == 0 ? row_count : x) - 1; }
+        void p_cycle_y() { y = (y == 0 ? column_count : y) - 1; }
+        void p_cycle_z() { z = (z == 0 ? lane_size : z) - 1; }
 
         void previous()
         {
             p_cycle_z();
-            if (z == (word_size - 1)) p_cycle_y();
-            if (y == (column_size - 1) && z == (word_size - 1)) x--;
+            if (z == (lane_size - 1)) p_cycle_y();
+            if (y == (column_count - 1) && z == (lane_size - 1)) x--;
         }
 
         void p_cycle()
         {
             p_cycle_z();
-            if (z == (word_size - 1)) p_cycle_y();
-            if (y == (column_size - 1) && z == (word_size - 1)) p_cycle_x();
+            if (z == (lane_size - 1)) p_cycle_y();
+            if (y == (column_count - 1) && z == (lane_size - 1)) p_cycle_x();
         }
 
-        void cycle_x() { x = (x + 1) % row_size; }
-        void cycle_y() { y = (y + 1) % column_size; }
-        void cycle_z() { z = (z + 1) % word_size; }
+        void cycle_x() { x = (x + 1) % row_count; }
+        void cycle_y() { y = (y + 1) % column_count; }
+        void cycle_z() { z = (z + 1) % lane_size; }
 
         void next()
         {
@@ -115,7 +115,7 @@ struct StateArray
 
         size_t linear_index() const
         {
-            return word_size * ((column_size * y) + x) + z;
+            return lane_size * ((x * column_count) + y) + z;
         }
 
         // bitset is little-endian:
@@ -131,7 +131,7 @@ struct StateArray
         // - last bit in position zero
         size_t little_endian_z() const
         {
-            return word_size - z - 1;
+            return lane_size - z - 1;
         }
     };
 
@@ -142,7 +142,7 @@ struct StateArray
 
     static Coord3D end()
     {
-        return { row_size, 0, 0 };
+        return { row_count, 0, 0 };
     }
 
     static Coord2D begin2D()
@@ -152,7 +152,7 @@ struct StateArray
 
     static Coord2D end2D()
     {
-        return { row_size, 0 };
+        return { row_count, 0 };
     }
 
     StateArray(BitString<string_size> s)
@@ -195,8 +195,23 @@ struct StateArray
         set(left_coord, (*this)[left_coord] xor (*this)[right_coord]);
     }
 
+    Lane column_xor(size_t columnIndex)
+    {
+        Coord2D coord = { 0, columnIndex };
+        Lane result = (*this)[coord];
+
+        while (++coord.x < row_count)
+        {
+            result ^= (*this)[coord];
+        }
+
+        return result;
+    }
+
 private:
-    Lane matrix[row_size][column_size];
+    Lane matrix[row_count][column_count];
 };
+
+
 
 
