@@ -13,7 +13,58 @@ struct StateArray
     static constexpr size_t row_size = 5;
     static constexpr size_t column_size = row_size;
     static constexpr size_t word_size = W;
-    static constexpr size_t string_size = row_size * column_size * word_size;
+    static constexpr size_t word_count = row_size * column_size;
+    static constexpr size_t string_size = word_count * word_size;
+
+    using Lane = BitString<word_size>;
+
+    struct Coord2D
+    {
+        size_t x, y;
+
+        Coord2D(size_t x, size_t y): x(x), y(y) {}
+
+        bool operator !=(const Coord2D & other) const
+        {
+            return x != other.x || y != other.y;
+        }
+
+        void p_cycle_x() { x = (x == 0 ? row_size : x) - 1; }
+        void p_cycle_y() { y = (y == 0 ? column_size : y) - 1; }
+
+        void previous()
+        {
+            p_cycle_y();
+            if (y == (column_size - 1)) x--;
+        }
+
+        void p_cycle()
+        {
+            p_cycle_y();
+            if (y == (column_size - 1)) p_cycle_x();
+        }
+
+        void cycle_x() { x = (x + 1) % row_size; }
+        void cycle_y() { y = (y + 1) % column_size; }
+
+        void next()
+        {
+            cycle_y();
+            if (y == 0) x++;
+        }
+
+        void cycle()
+        {
+            cycle_y();
+            if (y == 0) cycle_x();
+        }
+
+        size_t linear_index() const
+        {
+            return (column_size * y) + x;
+        }
+
+    };
 
     struct Coord3D
     {
@@ -64,7 +115,7 @@ struct StateArray
 
         size_t linear_index() const
         {
-            return word_size * ((5 * y) + x) + z;
+            return word_size * ((column_size * y) + x) + z;
         }
 
         // bitset is little-endian:
@@ -94,6 +145,16 @@ struct StateArray
         return { row_size, 0, 0 };
     }
 
+    static Coord2D begin2D()
+    {
+        return { 0, 0 };
+    }
+
+    static Coord2D end2D()
+    {
+        return { row_size, 0 };
+    }
+
     StateArray(BitString<string_size> s)
     {
         for (Coord3D coord = begin(); coord != end(); coord.next())
@@ -119,6 +180,11 @@ struct StateArray
         return matrix[coord.x][coord.y][coord.little_endian_z()];
     }
 
+    Lane & operator [](const Coord2D & coord)
+    {
+        return matrix[coord.x][coord.y];
+    }
+
     void set(const Coord3D & coord, const bool & bit)
     {
         matrix[coord.x][coord.y].set(coord.little_endian_z(), bit);
@@ -130,7 +196,7 @@ struct StateArray
     }
 
 private:
-    BitString<word_size> matrix[row_size][column_size];
+    Lane matrix[row_size][column_size];
 };
 
 
