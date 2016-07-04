@@ -26,13 +26,13 @@ StateArray<W> theta(StateArray<W> & a)
 
     for (Coord2D coord = SA::begin2D(); coord != SA::end2D(); coord.next())
     {
-        Coord2D previous = coord;
-        previous.p_cycle_y();
+        Coord2D previous_column = coord;
+        previous_column.p_cycle_x();
 
-        Coord2D next = coord;
-        next.cycle_y();
+        Coord2D next_column = coord;
+        next_column.cycle_x();
 
-        b[coord] = a.column_xor(previous.y) ^ a[coord] ^ (rotate(a.column_xor(next.y), 1));
+        b[coord] = a.column_xor(previous_column.x) ^ a[coord] ^ (rotate(a.column_xor(next_column.x), 1));
     }
 
     return b;
