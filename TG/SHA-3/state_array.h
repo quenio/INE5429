@@ -3,6 +3,7 @@
 #pragma once
 
 #include <bitset>
+#include <string>
 
 template<size_t B>
 using BitString = std::bitset<B>;
@@ -163,7 +164,7 @@ struct StateArray
         }
     }
 
-    BitString<string_size> s()
+    BitString<string_size> s() const
     {
         BitString<string_size> s;
 
@@ -206,6 +207,11 @@ struct StateArray
         }
 
         return result;
+    }
+
+    std::string to_string() const
+    {
+        return this->s().to_string();
     }
 
 private:
