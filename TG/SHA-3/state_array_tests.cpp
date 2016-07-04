@@ -110,7 +110,7 @@ const char * state_array__column_xor()
     ST2 a { BS50 { s1 } };
 
     string result;
-    for (size_t column_index = 0; column_index < ST2::column_count; column_index++)
+    for (int column_index = 0; column_index < ST2::column_count; column_index++)
     {
         result += a.column_xor(column_index).to_string();
     }

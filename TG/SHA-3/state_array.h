@@ -21,9 +21,9 @@ struct StateArray
 
     struct Coord2D
     {
-        size_t x, y;
+        int x, y;
 
-        Coord2D(size_t x, size_t y): x(x), y(y) {}
+        Coord2D(int x, int y): x(x), y(y) {}
 
         bool operator !=(const Coord2D & other) const
         {
@@ -60,7 +60,7 @@ struct StateArray
             if (y == 0) cycle_x();
         }
 
-        size_t linear_index() const
+        int linear_index() const
         {
             return (x * column_count) + y;
         }
@@ -69,9 +69,9 @@ struct StateArray
 
     struct Coord3D
     {
-        size_t x, y, z;
+        int x, y, z;
 
-        Coord3D(size_t x, size_t y, size_t z): x(x), y(y), z(z) {}
+        Coord3D(int x, int y, int z): x(x), y(y), z(z) {}
 
         void p_cycle_x() { x = (x == 0 ? row_count : x) - 1; }
         void p_cycle_y() { y = (y == 0 ? column_count : y) - 1; }
@@ -114,7 +114,7 @@ struct StateArray
             return x != other.x || y != other.y || z != other.z;
         }
 
-        size_t linear_index() const
+        int linear_index() const
         {
             return lane_size * ((x * column_count) + y) + z;
         }
@@ -122,7 +122,7 @@ struct StateArray
         // bitset is little-endian:
         // - first bit in position b - 1
         // - last bit in position zero
-        size_t little_endian_index() const
+        int little_endian_index() const
         {
             return string_size - linear_index() - 1;
         }
@@ -130,7 +130,7 @@ struct StateArray
         // bitset is little-endian:
         // - first bit in position w - 1
         // - last bit in position zero
-        size_t little_endian_z() const
+        int little_endian_z() const
         {
             return lane_size - z - 1;
         }
@@ -198,7 +198,7 @@ struct StateArray
         set(left_coord, (*this)[left_coord] xor (*this)[right_coord]);
     }
 
-    Lane column_xor(size_t columnIndex)
+    Lane column_xor(int columnIndex)
     {
         Coord2D coord = { 0, columnIndex };
         Lane result = (*this)[coord];
