@@ -156,6 +156,8 @@ struct StateArray
         return { row_count, 0 };
     }
 
+    StateArray() {}
+
     StateArray(BitString<string_size> s)
     {
         for (Coord3D coord = begin(); coord != end(); coord.next())

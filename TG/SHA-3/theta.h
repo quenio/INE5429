@@ -22,7 +22,7 @@ StateArray<W> theta(StateArray<W> & a)
     using SA = StateArray<W>;
     using Coord2D = typename SA::Coord2D;
 
-    SA b { a.s() };
+    SA b;
 
     for (Coord2D coord = SA::begin2D(); coord != SA::end2D(); coord.next())
     {
