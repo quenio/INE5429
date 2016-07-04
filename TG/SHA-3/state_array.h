@@ -30,23 +30,23 @@ struct StateArray
             return x != other.x || y != other.y;
         }
 
-        void p_cycle_x() { x = (x == 0 ? row_count : x) - 1; }
-        void p_cycle_y() { y = (y == 0 ? column_count : y) - 1; }
+        void p_cycle_x() { x = (x == 0 ? column_count : x) - 1; }
+        void p_cycle_y() { y = (y == 0 ? row_count : y) - 1; }
 
         void previous()
         {
             p_cycle_y();
-            if (y == (column_count - 1)) x--;
+            if (y == (row_count - 1)) x--;
         }
 
         void p_cycle()
         {
             p_cycle_y();
-            if (y == (column_count - 1)) p_cycle_x();
+            if (y == (row_count - 1)) p_cycle_x();
         }
 
-        void cycle_x() { x = (x + 1) % row_count; }
-        void cycle_y() { y = (y + 1) % column_count; }
+        void cycle_x() { x = (x + 1) % column_count; }
+        void cycle_y() { y = (y + 1) % row_count; }
 
         void next()
         {
@@ -62,7 +62,7 @@ struct StateArray
 
         int linear_index() const
         {
-            return (x * column_count) + y;
+            return (y * column_count) + x;
         }
 
     };
@@ -73,26 +73,26 @@ struct StateArray
 
         Coord3D(int x, int y, int z): x(x), y(y), z(z) {}
 
-        void p_cycle_x() { x = (x == 0 ? row_count : x) - 1; }
-        void p_cycle_y() { y = (y == 0 ? column_count : y) - 1; }
+        void p_cycle_x() { x = (x == 0 ? column_count : x) - 1; }
+        void p_cycle_y() { y = (y == 0 ? row_count : y) - 1; }
         void p_cycle_z() { z = (z == 0 ? lane_size : z) - 1; }
 
         void previous()
         {
             p_cycle_z();
             if (z == (lane_size - 1)) p_cycle_y();
-            if (y == (column_count - 1) && z == (lane_size - 1)) x--;
+            if (y == (row_count - 1) && z == (lane_size - 1)) x--;
         }
 
         void p_cycle()
         {
             p_cycle_z();
             if (z == (lane_size - 1)) p_cycle_y();
-            if (y == (column_count - 1) && z == (lane_size - 1)) p_cycle_x();
+            if (y == (row_count - 1) && z == (lane_size - 1)) p_cycle_x();
         }
 
-        void cycle_x() { x = (x + 1) % row_count; }
-        void cycle_y() { y = (y + 1) % column_count; }
+        void cycle_x() { x = (x + 1) % column_count; }
+        void cycle_y() { y = (y + 1) % row_count; }
         void cycle_z() { z = (z + 1) % lane_size; }
 
         void next()
@@ -116,7 +116,7 @@ struct StateArray
 
         int linear_index() const
         {
-            return lane_size * ((x * column_count) + y) + z;
+            return lane_size * ((y * column_count) + x) + z;
         }
 
         // bitset is little-endian:
@@ -143,7 +143,7 @@ struct StateArray
 
     static Coord3D end()
     {
-        return { row_count, 0, 0 };
+        return { column_count, 0, 0 };
     }
 
     static Coord2D begin2D()
@@ -153,7 +153,7 @@ struct StateArray
 
     static Coord2D end2D()
     {
-        return { row_count, 0 };
+        return { column_count, 0 };
     }
 
     StateArray() {}
@@ -198,12 +198,12 @@ struct StateArray
         set(left_coord, (*this)[left_coord] xor (*this)[right_coord]);
     }
 
-    Lane column_xor(int columnIndex)
+    Lane column_xor(int column_index)
     {
-        Coord2D coord = { 0, columnIndex };
+        Coord2D coord = { column_index, 0 };
         Lane result = (*this)[coord];
 
-        while (++coord.x < row_count)
+        while (++coord.y < row_count)
         {
             result ^= (*this)[coord];
         }
@@ -217,7 +217,7 @@ struct StateArray
     }
 
 private:
-    Lane matrix[row_count][column_count];
+    Lane matrix[column_count][row_count];
 };
 
 
