@@ -2,9 +2,6 @@
 
 #include "min_unit.h"
 #include "chi.h"
-#include <iostream>
-
-using namespace std;
 
 const char *s1 = "01100110011001100110011001100110011001100110011001";
 const char *s2 = "00000010110000000111000000101100000001110000001011";
@@ -16,8 +13,6 @@ const char * chi_test()
 {
     SA2 a { BS50 { s1 } };
     SA2 b = chi(a);
-    cout << "a = " << a.to_string() << endl;
-    cout << "b = " << b.to_string() << endl;
     mu_assert(b.to_string() == s2);
     return NULL;
 }
