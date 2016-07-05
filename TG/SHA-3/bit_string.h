@@ -16,7 +16,7 @@ struct BitString
 
     std::string to_string() const { return bs.to_string(); }
 
-    std::string to_hex()
+    std::string to_hex() const
     {
         std::stringstream ss;
         ss << std::hex << bs.to_ulong() << std::endl;
@@ -56,6 +56,13 @@ struct BitString
 
     BitString operator << (size_t pos) const { return BitString(bs << pos); }
     BitString operator >> (size_t pos) const { return BitString(bs >> pos); }
+
+    BitString reverse()
+    {
+        std::string rc = to_string();
+        std::reverse(rc.begin(), rc.end());
+        return BitString(rc.c_str());
+    }
 
     friend inline BitString operator & (const BitString & lhs, const BitString & rhs) { return BitString(lhs.bs & rhs.bs); }
     friend inline BitString operator | (const BitString & lhs, const BitString & rhs) { return BitString(lhs.bs | rhs.bs); }
