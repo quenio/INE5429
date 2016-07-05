@@ -63,6 +63,11 @@ struct StateArray
             return (y * column_count) + x;
         }
 
+        friend inline ostream & operator << (ostream & os, const Coord2D & coord)
+        {
+            return os << "(" << coord.x << "," << coord.y << ")";
+        }
+
     };
 
     struct Coord3D
@@ -115,6 +120,11 @@ struct StateArray
         int linear_index() const
         {
             return lane_size * ((y * column_count) + x) + z;
+        }
+
+        friend inline ostream & operator << (ostream & os, const Coord3D & coord)
+        {
+            return os << "(" << coord.x << "," << coord.y << "," << coord.z << ")";
         }
 
     };
