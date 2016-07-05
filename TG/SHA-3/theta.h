@@ -17,7 +17,7 @@ inline BitString<W> rotate(BitString<W> b, unsigned n)
 }
 
 template<size_t W>
-StateArray<W> theta(StateArray<W> & a)
+StateArray<W> theta(const StateArray<W> & a)
 {
     using SA = StateArray<W>;
     using Coord2D = typename SA::Coord2D;

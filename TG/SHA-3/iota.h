@@ -40,7 +40,7 @@ BitString<W> rc(int round_index)
 };
 
 template<size_t W>
-StateArray<W> iota(StateArray<W> & a, int round_index)
+StateArray<W> iota(const StateArray<W> & a, int round_index)
 {
     assert(round_index >= 0 && round_index < 24);
 

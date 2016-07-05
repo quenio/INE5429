@@ -5,7 +5,7 @@
 #include "state_array.h"
 
 template<size_t W>
-StateArray<W> rho(StateArray<W> & a)
+StateArray<W> rho(const StateArray<W> & a)
 {
     using SA = StateArray<W>;
     using Coord3D = typename SA::Coord3D;
