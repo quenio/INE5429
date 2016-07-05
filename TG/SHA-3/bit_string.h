@@ -5,6 +5,7 @@
 #include <bitset>
 #include <string>
 #include <sstream>
+#include <iomanip>
 
 // Non-inversed version of bitset.
 template<size_t N>
@@ -19,7 +20,7 @@ struct BitString
     std::string to_hex() const
     {
         std::stringstream ss;
-        ss << std::hex << bs.to_ulong() << std::endl;
+        ss << std::setfill('0') << std::setw(N/4) << std::uppercase << std::hex << bs.to_ulong();
         return ss.str();
     }
 
