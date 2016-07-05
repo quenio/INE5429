@@ -7,8 +7,8 @@ using namespace std;
 
 const char * bit_string__from_hex()
 {
-    mu_assert(hex_to_bin("F2F2") == string("1111001011110010"));
-    mu_assert(hex_to_bin("1E1E") == string("0001111000011110"));
+    mu_assert(hex_to_bs<16>("F2F2").to_string() == string("1111001011110010"));
+    mu_assert(hex_to_bs<16>("1E1E").to_string() == string("0001111000011110"));
     return NULL;
 }
 

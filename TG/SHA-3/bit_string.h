@@ -8,27 +8,6 @@
 #include <iomanip>
 #include <cassert>
 
-inline std::string hex_to_bin(std::string hex_str)
-{
-    constexpr int byte_size = 2;
-
-    assert(hex_str.size() % byte_size == 0);
-
-    std::string bin_str;
-    for (int i = 0; i < hex_str.size(); i += byte_size)
-    {
-        std::stringstream ss(hex_str.substr(i, byte_size));
-
-        unsigned int value;
-        ss >> std::hex >> value;
-        std::bitset<8> bs = value;
-
-        bin_str += bs.to_string();
-    }
-
-    return bin_str;
-}
-
 // Non-inversed version of bitset.
 template<size_t N>
 struct BitString
@@ -99,3 +78,30 @@ private:
     std::bitset<N> bs;
 };
 
+
+inline std::string hex_to_bin(std::string hex_str)
+{
+    constexpr int byte_size = 2;
+
+    assert(hex_str.size() % byte_size == 0);
+
+    std::string bin_str;
+    for (int i = 0; i < hex_str.size(); i += byte_size)
+    {
+        std::stringstream ss(hex_str.substr(i, byte_size));
+
+        unsigned int value;
+        ss >> std::hex >> value;
+        std::bitset<8> bs = value;
+
+        bin_str += bs.to_string();
+    }
+
+    return bin_str;
+}
+
+template<size_t N>
+inline BitString<N> hex_to_bs(std::string hex_str)
+{
+    return BitString<N>(hex_to_bin(hex_str).c_str());
+}
