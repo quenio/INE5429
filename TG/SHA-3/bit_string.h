@@ -4,6 +4,7 @@
 
 #include <bitset>
 #include <string>
+#include <sstream>
 
 // Non-inversed version of bitset.
 template<size_t N>
@@ -14,6 +15,13 @@ struct BitString
     BitString(std::bitset<N> bs): bs(bs) {}
 
     std::string to_string() const { return bs.to_string(); }
+
+    std::string to_hex()
+    {
+        std::stringstream ss;
+        ss << std::hex << bs.to_ulong() << std::endl;
+        return ss.str();
+    }
 
     size_t count() const { return bs.count(); }
     size_t size() const { return bs.size(); }
