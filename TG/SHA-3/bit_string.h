@@ -31,7 +31,7 @@ struct BitString
     BitString& reset() { bs.reset(); return *this; }
     BitString& reset(size_t pos) { bs.reset(little_endian(pos)); return *this; }
 
-    BitString operator~() const { ~bs; return *this; }
+    BitString operator~() const { return BitString(~bs); }
 
     BitString& flip() { bs.flip(); return *this; }
     BitString& flip(size_t pos){ bs.flip(little_endian(pos)); return *this; }
