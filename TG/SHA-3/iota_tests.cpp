@@ -41,9 +41,6 @@ const char * rc_test()
     for (int i = 0; i < ROUND_COUNT; i++)
     {
         const BitString<W> & bs = rc<W>(i).reverse();
-        cout << "rc<64>(" << i << ") = " << bs.to_hex() << endl;
-        cout << "RC[" << i << "]     = " << RC[i] << endl << endl;
-
         mu_assert(bs.to_hex() == string(RC[i]));
     }
 
