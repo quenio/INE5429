@@ -6,12 +6,12 @@
 #include <string>
 
 // Non-inversed version of bitset.
-template<size_t B>
+template<size_t N>
 struct BitString
 {
     BitString() {}
     BitString(const char * s): bs(s) {}
-    BitString(std::bitset<B> bs): bs(bs) {}
+    BitString(std::bitset<N> bs): bs(bs) {}
 
     std::string to_string() const { return bs.to_string(); }
 
@@ -49,8 +49,13 @@ struct BitString
     BitString operator<<(size_t pos) const { return BitString(bs >> pos); }
     BitString operator>>(size_t pos) const { return BitString(bs << pos); }
 
-private:
-    size_t little_endian(size_t pos) const { return B - pos - 1; }
+    friend inline BitString operator & (const BitString & lhs, const BitString & rhs) { return BitString(lhs.bs & rhs.bs); }
+    friend inline BitString operator | (const BitString & lhs, const BitString & rhs) { return BitString(lhs.bs | rhs.bs); }
+    friend inline BitString operator ^ (const BitString & lhs, const BitString & rhs) { return BitString(lhs.bs ^ rhs.bs); }
 
-    std::bitset<B> bs;
+private:
+    size_t little_endian(size_t pos) const { return N - pos - 1; }
+
+    std::bitset<N> bs;
 };
+
