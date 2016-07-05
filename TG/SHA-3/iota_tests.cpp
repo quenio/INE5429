@@ -48,28 +48,24 @@ const char * rc_test()
 }
 
 const char *s1 = "01100110011001100110011001100110011001100110011001";
-const char *s2 = "01010101011010010101101010100101101010100101011010";
+const char *s0 = "11100110011001100110011001100110011001100110011001";
+const char *s11 = "00100110011001100110011001100110011001100110011001";
+const char *s23 = "01100110011001100110011001100110011001100110011001";
 
 using SA2 = StateArray<2>;
 using BS50 = BitString<50>;
 
 const char * iota_test()
 {
-    BitString<4> b { "1010" };
-
-    for (size_t i = 0; i < b.size(); i++)
-    {
-        cout << b[i] << endl;
-    }
-
-//    SA2 a { BS50 { s1 } };
-//    SA2 b = iota(a, 0);
-//    mu_assert(b.to_string() == s2);
+    SA2 a { BS50 { s1 } };
+    mu_assert(iota(a, 0).to_string() == s0);
+    mu_assert(iota(a, 11).to_string() == s11);
+    mu_assert(iota(a, 23).to_string() == s23);
     return NULL;
 }
 
 void all_tests()
 {
     mu_test(rc_test);
-//    mu_test(iota_test);
+    mu_test(iota_test);
 }
