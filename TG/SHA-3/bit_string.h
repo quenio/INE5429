@@ -37,23 +37,23 @@ struct BitString
     BitString& operator >>= (size_t pos) { bs >>= pos; return *this; }
 
     BitString& set() { bs.set(); return *this; }
-    BitString& set(size_t pos, bool val = true) { bs.set(little_endian(pos), val); return *this; }
+    BitString& set(size_t pos, bool val = true) { bs.set(reversed(pos), val); return *this; }
 
     BitString& reset() { bs.reset(); return *this; }
-    BitString& reset(size_t pos) { bs.reset(little_endian(pos)); return *this; }
+    BitString& reset(size_t pos) { bs.reset(reversed(pos)); return *this; }
 
     BitString operator~() const { return BitString(~bs); }
 
     BitString& flip() { bs.flip(); return *this; }
-    BitString& flip(size_t pos){ bs.flip(little_endian(pos)); return *this; }
+    BitString& flip(size_t pos){ bs.flip(reversed(pos)); return *this; }
 
-    bool operator [] (size_t pos) { return bs[little_endian(pos)]; }
-    const bool operator [] (size_t pos) const { return bs[little_endian(pos)]; }
+    bool operator [] (size_t pos) { return bs[reversed(pos)]; }
+    const bool operator [] (size_t pos) const { return bs[reversed(pos)]; }
 
     bool operator == (const BitString& rhs) const { return bs == rhs.bs; }
     bool operator != (const BitString& rhs) const { return bs != rhs.bs; }
 
-    bool test(size_t pos) const { return bs.test(little_endian(pos)); }
+    bool test(size_t pos) const { return bs.test(reversed(pos)); }
     bool all() const { return bs.all(); }
     bool any() const { return bs.any(); }
     bool none() const { return bs.none(); }
@@ -73,7 +73,7 @@ struct BitString
     friend inline BitString operator ^ (const BitString & lhs, const BitString & rhs) { return BitString(lhs.bs ^ rhs.bs); }
 
 private:
-    size_t little_endian(size_t pos) const { return N - pos - 1; }
+    size_t reversed(size_t pos) const { return N - pos - 1; }
 
     std::bitset<N> bs;
 };
