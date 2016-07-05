@@ -4,8 +4,6 @@
 
 #include <cassert>
 #include "state_array.h"
-#include <iostream>
-using namespace std;
 
 bool rc_bit(int t)
 {

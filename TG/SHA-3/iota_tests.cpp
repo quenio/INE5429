@@ -2,9 +2,6 @@
 
 #include "min_unit.h"
 #include "iota.h"
-#include <iostream>
-
-using namespace std;
 
 constexpr int ROUND_COUNT = 24;
 const char * RC[ROUND_COUNT] =
