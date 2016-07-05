@@ -2,9 +2,6 @@
 
 #include "min_unit.h"
 #include "state_array.h"
-#include <iostream>
-
-using namespace std;
 
 const char *s1 = "01100110011001100110011001100110011001100110011001";
 const char *s2 = "11001100110011001100110011001100110011001100110011";

@@ -2,11 +2,9 @@
 
 #pragma once
 
-#include <bitset>
-#include <string>
+#include "bit_string.h"
 
-template<size_t B>
-using BitString = std::bitset<B>;
+using namespace std;
 
 template<size_t W>
 struct StateArray
@@ -119,21 +117,6 @@ struct StateArray
             return lane_size * ((y * column_count) + x) + z;
         }
 
-        // bitset is little-endian:
-        // - first bit in position b - 1
-        // - last bit in position zero
-        int little_endian_index() const
-        {
-            return string_size - linear_index() - 1;
-        }
-
-        // bitset is little-endian:
-        // - first bit in position w - 1
-        // - last bit in position zero
-        int little_endian_z() const
-        {
-            return lane_size - z - 1;
-        }
     };
 
     static Coord3D begin()
@@ -162,7 +145,7 @@ struct StateArray
     {
         for (Coord3D coord = begin(); coord != end(); coord.next())
         {
-            this->set(coord, s[coord.little_endian_index()]);
+            this->set(coord, s[coord.linear_index()]);
         }
     }
 
@@ -172,7 +155,7 @@ struct StateArray
 
         for (Coord3D coord = begin(); coord != end(); coord.next())
         {
-            s.set(coord.little_endian_index(), (*this)[coord]);
+            s.set(coord.linear_index(), (*this)[coord]);
         }
 
         return s;
@@ -180,7 +163,7 @@ struct StateArray
 
     bool operator [](const Coord3D & coord) const
     {
-        return matrix[coord.x][coord.y][coord.little_endian_z()];
+        return matrix[coord.x][coord.y][coord.z];
     }
 
     Lane & operator [](const Coord2D & coord)
@@ -190,7 +173,7 @@ struct StateArray
 
     void set(const Coord3D & coord, const bool & bit)
     {
-        matrix[coord.x][coord.y].set(coord.little_endian_z(), bit);
+        matrix[coord.x][coord.y].set(coord.z, bit);
     }
 
     void XOR(const Coord3D & left_coord, const Coord3D & right_coord)
