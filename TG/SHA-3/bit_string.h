@@ -45,7 +45,8 @@ struct BitString
     BitString& flip() { bs.flip(); return *this; }
     BitString& flip(size_t pos){ bs.flip(little_endian(pos)); return *this; }
 
-    bool operator [] (size_t pos) const { return bs[little_endian(pos)]; }
+    bool operator [] (size_t pos) { return bs[little_endian(pos)]; }
+    const bool operator [] (size_t pos) const { return bs[little_endian(pos)]; }
 
     bool operator == (const BitString& rhs) const { return bs == rhs.bs; }
     bool operator != (const BitString& rhs) const { return bs != rhs.bs; }

@@ -161,12 +161,22 @@ struct StateArray
         return s;
     }
 
-    bool operator [](const Coord3D & coord) const
+    bool operator [](const Coord3D & coord)
+    {
+        return matrix[coord.x][coord.y][coord.z];
+    }
+
+    const bool operator [](const Coord3D & coord) const
     {
         return matrix[coord.x][coord.y][coord.z];
     }
 
     Lane & operator [](const Coord2D & coord)
+    {
+        return matrix[coord.x][coord.y];
+    }
+
+    const Lane & operator [](const Coord2D & coord) const
     {
         return matrix[coord.x][coord.y];
     }
@@ -181,7 +191,7 @@ struct StateArray
         set(left_coord, (*this)[left_coord] xor (*this)[right_coord]);
     }
 
-    Lane column_xor(int column_index)
+    Lane column_xor(int column_index) const
     {
         Coord2D coord = { column_index, 0 };
         Lane result = (*this)[coord];
