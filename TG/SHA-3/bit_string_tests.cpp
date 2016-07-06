@@ -40,6 +40,22 @@ const char * bit_string__to_hex__multiple_of_block_size()
     return NULL;
 }
 
+const char * bit_string__istream()
+{
+    const char * str = "123456";
+
+    stringstream ss(str);
+    BitString<16> bs;
+
+    ss >> bs;
+    mu_assert(bs.to_hex() == string("3132"));
+
+    ss >> bs;
+    mu_assert(bs.to_hex() == string("3334"));
+
+    return NULL;
+}
+
 void all_tests()
 {
     mu_test(bit_string__from_hex);
@@ -47,4 +63,5 @@ void all_tests()
     mu_test(bit_string__to_hex__less_than_block_size);
     mu_test(bit_string__to_hex__greater_than_block_size);
     mu_test(bit_string__to_hex__multiple_of_block_size);
+    mu_test(bit_string__istream);
 }

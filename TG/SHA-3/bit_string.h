@@ -4,6 +4,7 @@
 
 #include <bitset>
 #include <string>
+#include <istream>
 #include <sstream>
 #include <iomanip>
 #include <cassert>
@@ -110,6 +111,26 @@ struct BitString
     friend inline BitString operator & (const BitString & lhs, const BitString & rhs) { return BitString(lhs.bs & rhs.bs); }
     friend inline BitString operator | (const BitString & lhs, const BitString & rhs) { return BitString(lhs.bs | rhs.bs); }
     friend inline BitString operator ^ (const BitString & lhs, const BitString & rhs) { return BitString(lhs.bs ^ rhs.bs); }
+
+    friend inline std::istream & operator >> (std::istream & is, BitString & bstr)
+    {
+        constexpr size_t byte_size = 8;
+        constexpr size_t block_size = N / byte_size;
+
+        std::stringstream ss;
+
+        for (size_t i = 0; i < block_size; i++)
+        {
+            unsigned char value;
+            is >> value;
+            std::bitset<byte_size> bs = value;
+            ss << bs.to_string();
+        }
+
+        bstr.bs = std::bitset<N> { ss.str() };
+
+        return is;
+    }
 
 private:
     size_t reversed(size_t pos) const { return N - pos - 1; }
