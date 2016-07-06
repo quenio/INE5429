@@ -14,11 +14,14 @@ int main(int argc, char **argv)
 
     all_tests();
 
-    printf("\nTests Run: %d - Tests Failed: %d\n", tests_run, tests_failed);
-
     if (tests_failed == 0)
     {
+        printf("\nTests Run: %d\n", tests_run);
         printf("ALL TESTS PASSED\n");
+    }
+    else
+    {
+        printf("\nTests Run: %d - Tests Failed: %d\n", tests_run, tests_failed);
     }
 
     return tests_failed;
