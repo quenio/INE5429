@@ -118,6 +118,9 @@ struct BitString
         return BitString<L+R>(lhs.bs.to_string() + rhs.bs.to_string());
     }
 
+    template<size_t O, size_t I>
+    friend BitString<O> truncate(const BitString<I> & input);
+
     friend inline std::istream & operator >> (std::istream & is, BitString & bstr)
     {
         constexpr size_t byte_size = 8;
@@ -151,6 +154,11 @@ private:
     std::bitset<N> bs;
 };
 
+template<size_t O, size_t I>
+inline BitString<O> truncate(const BitString<I> & input)
+{
+    return BitString<O>(input.to_string());
+}
 
 inline std::string hex_to_bin(std::string hex_str)
 {

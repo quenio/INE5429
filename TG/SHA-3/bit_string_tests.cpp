@@ -90,6 +90,19 @@ const char * bit_string__truncation()
     return NULL;
 }
 
+const char * bit_string__truncate()
+{
+    const char * str = "11000"; // five bytes
+
+    BitString<5> input { str };
+    BitString<3> output = truncate<3>(input);
+
+    mu_assert(input.to_string() == string(str));
+    mu_assert(output.to_string() == string("110"));
+
+    return NULL;
+}
+
 void all_tests()
 {
     mu_test(bit_string__from_hex);
@@ -100,4 +113,5 @@ void all_tests()
     mu_test(bit_string__istream);
     mu_test(bit_string__concatenation);
     mu_test(bit_string__truncation);
+    mu_test(bit_string__truncate);
 }
