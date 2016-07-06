@@ -22,7 +22,8 @@ StateArray<W> rho(const StateArray<W> & a)
     {
         for (;coord.z < SA::lane_size; coord.z++)
         {
-            const int offset_z = (coord.z - (t+1)*(t+2)/2) % SA::lane_size;
+            // shift with "sum"; not "subtraction"? deviating from documentation
+            const int offset_z = (coord.z + (t+1)*(t+2)/2) % SA::lane_size;
             const Coord3D offset { coord.x, coord.y, offset_z };
 
             b.set(coord, a[offset]);
