@@ -10,12 +10,6 @@
 
 using namespace std;
 
-template <size_t W>
-inline BitString<W> rotate(BitString<W> b, unsigned n)
-{
-    return b << n | b >> (W-n);
-}
-
 template<size_t W>
 StateArray<W> theta(const StateArray<W> & a)
 {

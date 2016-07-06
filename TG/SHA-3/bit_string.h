@@ -134,3 +134,9 @@ inline BitString<N> hex_to_bs(std::string hex_str)
 {
     return BitString<N>(hex_to_bin(hex_str).c_str());
 }
+
+template <size_t N>
+inline BitString<N> rotate(BitString<N> b, unsigned n)
+{
+    return b << n | b >> (N-n);
+}
