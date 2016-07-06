@@ -8,7 +8,7 @@
 #include <iomanip>
 #include <cassert>
 
-// Non-inversed version of bitset.
+// Non-reversed version of bitset.
 template<size_t N>
 struct BitString
 {
