@@ -123,8 +123,15 @@ struct BitString
         {
             unsigned char value;
             is >> value;
-            std::bitset<byte_size> bs = value;
-            ss << bs.to_string();
+            if (is.eof())
+            {
+                ss << "00000000"; // one byte
+            }
+            else
+            {
+                std::bitset<byte_size> bs = value;
+                ss << bs.to_string();
+            }
         }
 
         bstr.bs = std::bitset<N> { ss.str() };

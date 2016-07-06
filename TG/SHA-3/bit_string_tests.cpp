@@ -42,16 +42,22 @@ const char * bit_string__to_hex__multiple_of_block_size()
 
 const char * bit_string__istream()
 {
-    const char * str = "123456";
+    const char * str = "12345"; // five bytes
 
     stringstream ss(str);
-    BitString<16> bs;
+    BitString<2*8> bs; // blocks of two bytes
 
+    // Reads first two bytes:
     ss >> bs;
     mu_assert(bs.to_hex() == string("3132"));
 
+    // Reads next two bytes:
     ss >> bs;
     mu_assert(bs.to_hex() == string("3334"));
+
+    // Reads last byte:
+    ss >> bs;
+    mu_assert(bs.to_hex() == string("3500")); // padded second byte of block since stream had only one byte
 
     return NULL;
 }
