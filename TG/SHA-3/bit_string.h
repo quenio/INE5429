@@ -136,7 +136,7 @@ inline BitString<N> hex_to_bs(std::string hex_str)
 }
 
 template <size_t N>
-inline BitString<N> rotate(BitString<N> b, unsigned n)
+inline BitString<N> rotate(BitString<N> b, int n)
 {
-    return b << n | b >> (N-n);
+    return b << (n % N) | b >> ((N-n) % N);
 }
