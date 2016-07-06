@@ -79,6 +79,17 @@ const char * bit_string__concatenation()
     return NULL;
 }
 
+const char * bit_string__truncation()
+{
+    const char * str = "11000"; // five bytes
+
+    BitString<3> bs { str };
+
+    mu_assert(bs.to_string() == string("110"));
+
+    return NULL;
+}
+
 void all_tests()
 {
     mu_test(bit_string__from_hex);
@@ -88,4 +99,5 @@ void all_tests()
     mu_test(bit_string__to_hex__multiple_of_block_size);
     mu_test(bit_string__istream);
     mu_test(bit_string__concatenation);
+    mu_test(bit_string__truncation);
 }
