@@ -3,11 +3,12 @@
 #include "min_unit.h"
 #include "state_array.h"
 
+using namespace std;
+
 const char *s1 = "01100110011001100110011001100110011001100110011001";
 const char *s2 = "11001100110011001100110011001100110011001100110011";
 const char *s3 = "10101010101010101010101010101010101010101010101010";
 const char *s4 = "10011001100110011001100110011001100110011001100110";
-
 
 using ST2 = StateArray<2>;
 using BS50 = BitString<50>;
@@ -97,7 +98,7 @@ const char * state_array__Coord2D_set()
     a_coord.previous();
     a[a_coord] = a[ST2::begin2D()];
 
-    mu_assert(a.s().to_string() == string(s4));
+    mu_assert(a.to_string() == string(s4));
 
     return NULL;
 }

@@ -6,6 +6,8 @@
 
 using namespace std;
 
+#include <climits>
+
 template<size_t W>
 struct StateArray
 {
@@ -33,14 +35,14 @@ struct StateArray
 
         void previous()
         {
-            p_cycle_y();
-            if (y == (row_count - 1)) x--;
+            p_cycle_x();
+            if (x == (column_count - 1)) y--;
         }
 
         void p_cycle()
         {
-            p_cycle_y();
-            if (y == (row_count - 1)) p_cycle_x();
+            p_cycle_x();
+            if (x == (column_count - 1)) p_cycle_y();
         }
 
         void cycle_x() { x = (x + 1) % column_count; }
@@ -48,14 +50,14 @@ struct StateArray
 
         void next()
         {
-            cycle_y();
-            if (y == 0) x++;
+            cycle_x();
+            if (x == 0) y++;
         }
 
         void cycle()
         {
-            cycle_y();
-            if (y == 0) cycle_x();
+            cycle_x();
+            if (x == 0) cycle_y();
         }
 
         int linear_index() const
@@ -83,15 +85,15 @@ struct StateArray
         void previous()
         {
             p_cycle_z();
-            if (z == (lane_size - 1)) p_cycle_y();
-            if (y == (row_count - 1) && z == (lane_size - 1)) x--;
+            if (z == (lane_size - 1)) p_cycle_x();
+            if (x == (column_count - 1) && z == (lane_size - 1)) y--;
         }
 
         void p_cycle()
         {
             p_cycle_z();
-            if (z == (lane_size - 1)) p_cycle_y();
-            if (y == (row_count - 1) && z == (lane_size - 1)) p_cycle_x();
+            if (z == (lane_size - 1)) p_cycle_x();
+            if (x == (column_count - 1) && z == (lane_size - 1)) p_cycle_y();
         }
 
         void cycle_x() { x = (x + 1) % column_count; }
@@ -101,15 +103,15 @@ struct StateArray
         void next()
         {
             cycle_z();
-            if (z == 0) cycle_y();
-            if (y == 0 && z == 0) x++;
+            if (z == 0) cycle_x();
+            if (x == 0 && z == 0) y++;
         }
 
         void cycle()
         {
             cycle_z();
-            if (z == 0) cycle_y();
-            if (y == 0 && z == 0) cycle_x();
+            if (z == 0) cycle_x();
+            if (x == 0 && z == 0) cycle_y();
         }
 
         bool operator !=(const Coord3D & other) const
@@ -136,7 +138,7 @@ struct StateArray
 
     static Coord3D end()
     {
-        return { column_count, 0, 0 };
+        return { 0, row_count, 0 };
     }
 
     static Coord2D begin2D()
@@ -146,7 +148,7 @@ struct StateArray
 
     static Coord2D end2D()
     {
-        return { column_count, 0 };
+        return { 0, row_count };
     }
 
     StateArray() {}
@@ -157,15 +159,19 @@ struct StateArray
         {
             this->set(coord, s[coord.linear_index()]);
         }
+
+        swap_endian();
     }
 
     BitString<string_size> s() const
     {
-        BitString<string_size> s;
+        StateArray st = *this;
+        st.swap_endian();
 
+        BitString<string_size> s;
         for (Coord3D coord = begin(); coord != end(); coord.next())
         {
-            s.set(coord.linear_index(), (*this)[coord]);
+            s.set(coord.linear_index(), st[coord]);
         }
 
         return s;
@@ -216,10 +222,36 @@ struct StateArray
 
     std::string to_string() const
     {
-        return this->s().to_string();
+        return s().to_string();
+    }
+
+    std::string to_hex() const
+    {
+        StateArray st = *this;
+        st.swap_endian();
+
+        std::string str;
+        for (Coord2D coord = begin2D(); coord != end2D(); coord.next())
+        {
+            str += st[coord].to_hex();
+        }
+
+        return str;
     }
 
 private:
+
+    void swap_endian()
+    {
+        if (lane_size % BitString<W>::byte_size == 0)
+        {
+            for (Coord2D coord = begin2D(); coord != end2D(); coord.next())
+            {
+                (*this)[coord].swap_endian();
+            }
+        }
+    }
+
     Lane matrix[column_count][row_count];
 };
 
