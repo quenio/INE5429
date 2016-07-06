@@ -37,7 +37,7 @@ const char * rc_test()
     constexpr size_t W = 64;
     for (int i = 0; i < ROUND_COUNT; i++)
     {
-        const BitString<W> & bs = rc<W>(i).reverse();
+        const BitString<W> & bs = rc<W>(i).reversed();
         mu_assert(bs.to_hex() == string(RC[i]));
     }
 
