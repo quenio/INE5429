@@ -16,7 +16,7 @@ using BS50 = BitString<50>;
 const char * state_array__in_and_out()
 {
     ST2 a { BS50 { s1 } };
-    mu_assert(a.s().to_string() == string(s1));
+    mu_assert(a.to_string() == string(s1));
     return NULL;
 }
 
@@ -31,7 +31,7 @@ const char * state_array__assignment()
         a.set(write_coord, a[read_coord]);
     }
 
-    mu_assert(a.s().to_string() == string(s2));
+    mu_assert(a.to_string() == string(s2));
 
     return NULL;
 }
@@ -55,7 +55,7 @@ const char * state_array__xor()
     a_coord.previous();
     a.XOR(a_coord, ST2::begin());
 
-    mu_assert(a.s().to_string() == string(s3));
+    mu_assert(a.to_string() == string(s3));
 
     return NULL;
 }

@@ -163,7 +163,7 @@ struct StateArray
         swap_endian();
     }
 
-    BitString<string_size> s() const
+    BitString<string_size> bs() const
     {
         StateArray st = *this;
         st.swap_endian();
@@ -222,7 +222,7 @@ struct StateArray
 
     std::string to_string() const
     {
-        return s().to_string();
+        return bs().to_string();
     }
 
     std::string to_hex() const
