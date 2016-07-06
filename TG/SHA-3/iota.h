@@ -36,7 +36,7 @@ BitString<W> rc(int round_index)
         i *= 2;
     }
 
-    return word;
+    return word.reversed();
 };
 
 template<size_t W>

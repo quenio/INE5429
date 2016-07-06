@@ -27,7 +27,7 @@ const char * chi_SA64()
     SA64 a { hex_to_bs<1600>(MSG5_PI) };
     SA64 b = chi(a);
 
-    mu_assert(b.to_hex() == MSG5_CHI);
+    mu_assert(b.to_hex() == MSG5_CHI0);
 
     return NULL;
 }

@@ -2,6 +2,7 @@
 
 #include "min_unit.h"
 #include "iota.h"
+#include "samples.h"
 
 constexpr int ROUND_COUNT = 24;
 const char * RC[ROUND_COUNT] =
@@ -37,32 +38,50 @@ const char * rc_test()
     constexpr size_t W = 64;
     for (int i = 0; i < ROUND_COUNT; i++)
     {
-        const BitString<W> & bs = rc<W>(i).reversed();
+        const BitString<W> & bs = rc<W>(i);
         mu_assert(bs.to_hex() == string(RC[i]));
     }
 
     return NULL;
 }
 
-const char *s1 = "01100110011001100110011001100110011001100110011001";
-const char *s0 = "11100110011001100110011001100110011001100110011001";
-const char *s11 = "00100110011001100110011001100110011001100110011001";
-const char *s23 = "01100110011001100110011001100110011001100110011001";
-
-using SA2 = StateArray<2>;
-using BS50 = BitString<50>;
-
-const char * iota_test()
+const char * iota_SA2()
 {
-    SA2 a { BS50 { s1 } };
+    using SA2 = StateArray<2>;
+    using BS50 = BitString<50>;
+
+    const char *s = "01100110011001100110011001100110011001100110011001";
+    const char *s0 = "00100110011001100110011001100110011001100110011001";
+    const char *s11 = "11100110011001100110011001100110011001100110011001";
+    const char *s23 = "01100110011001100110011001100110011001100110011001";
+
+    SA2 a { BS50 { s } };
+
     mu_assert(iota(a, 0).to_string() == s0);
     mu_assert(iota(a, 11).to_string() == s11);
     mu_assert(iota(a, 23).to_string() == s23);
+
+    return NULL;
+}
+
+const char * iota_SA64()
+{
+    using SA64 = StateArray<64>;
+
+    SA64 a { hex_to_bs<1600>(MSG5_CHI0) };
+    SA64 b = iota(a, 0);
+    mu_assert(b.to_hex() == MSG5_IOTA0);
+
+    SA64 c { hex_to_bs<1600>(MSG5_CHI10) };
+    SA64 d = iota(c, 10);
+    mu_assert(d.to_hex() == MSG5_IOTA10);
+
     return NULL;
 }
 
 void all_tests()
 {
     mu_test(rc_test);
-    mu_test(iota_test);
+    mu_test(iota_SA2);
+    mu_test(iota_SA64);
 }
