@@ -8,12 +8,33 @@
 #include <iomanip>
 #include <cassert>
 
+template <typename T>
+T swap_endian(T u)
+{
+    static_assert (CHAR_BIT == 8, "CHAR_BIT != 8");
+
+    union
+    {
+        T u;
+        unsigned char u8[sizeof(T)];
+    } source, dest;
+
+    source.u = u;
+
+    for (size_t k = 0; k < sizeof(T); k++)
+        dest.u8[k] = source.u8[sizeof(T) - k - 1];
+
+    return dest.u;
+}
+
 // Non-reversed version of bitset.
 template<size_t N>
 struct BitString
 {
+    static constexpr size_t byte_size = 8;
+
     BitString() {}
-    BitString(unsigned long long val): bs(val) {}
+    BitString(uint64_t val): bs(val) {}
     BitString(const char * s): bs(s) {}
     BitString(std::bitset<N> bs): bs(bs) {}
 
@@ -61,11 +82,19 @@ struct BitString
     BitString operator << (size_t pos) const { return BitString(bs << pos); }
     BitString operator >> (size_t pos) const { return BitString(bs >> pos); }
 
-    BitString reverse()
+    BitString reversed() const
     {
-        std::string rc = to_string();
-        std::reverse(rc.begin(), rc.end());
-        return BitString(rc.c_str());
+        std::string str = to_string();
+        std::reverse(str.begin(), str.end());
+        return BitString(str.c_str());
+    }
+
+    void swap_endian()
+    {
+        if (bs.size() % byte_size == 0)
+        {
+            bs = ::swap_endian(bs.to_ullong());
+        }
     }
 
     friend inline BitString operator & (const BitString & lhs, const BitString & rhs) { return BitString(lhs.bs & rhs.bs); }
