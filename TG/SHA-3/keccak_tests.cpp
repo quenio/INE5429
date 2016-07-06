@@ -35,8 +35,21 @@ const char * rnd_SA64()
     return NULL;
 }
 
+const char * keccak_f_SA64()
+{
+    using BS1600 = BitString<1600>;
+
+    BS1600 input = hex_to_bs<1600>(MSG5_XOR);
+    BS1600 output = keccak_f(input);
+
+    mu_assert(output.to_hex() == MSG5_IOTA23);
+
+    return NULL;
+}
+
 void all_tests()
 {
     mu_test(rnd_SA2);
     mu_test(rnd_SA64);
+    mu_test(keccak_f_SA64);
 }

@@ -7,7 +7,7 @@ set(SOURCE_FILES
         timer.cpp timer.h
         bit_string.h state_array.h
         theta.h rho.h pi.h chi.h iota.h
-        keccak.h)
+        keccak.h samples.h)
 set(MIN_UNIT_FILES min_unit.cpp min_unit.h)
 
 add_executable(sha3 main.cpp ${SOURCE_FILES})
