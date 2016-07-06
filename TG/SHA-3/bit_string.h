@@ -35,6 +35,7 @@ struct BitString
 
     BitString() {}
     BitString(uint64_t val): bs(val) {}
+    BitString(const std::string & s): bs(s.c_str()) {}
     BitString(const char * s): bs(s) {}
     BitString(std::bitset<N> bs): bs(bs) {}
 
@@ -42,8 +43,16 @@ struct BitString
 
     std::string to_hex() const
     {
+        constexpr size_t block_size = 64;
+        const std::string bin_str = to_string();
+
         std::stringstream ss;
-        ss << std::setfill('0') << std::setw(N/4) << std::uppercase << std::hex << bs.to_ulong();
+        for (int i = 0; i < size(); i += block_size)
+        {
+            std::bitset<block_size> bs64 { bin_str.substr(i, block_size).c_str() };
+            ss << std::setfill('0') << std::setw(N/4) << std::uppercase << std::hex << bs64.to_ulong();
+        }
+
         return ss.str();
     }
 
