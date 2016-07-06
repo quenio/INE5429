@@ -29,9 +29,9 @@ struct BitString
     size_t count() const { return bs.count(); }
     size_t size() const { return bs.size(); }
 
-    BitString& operator&=(const BitString& rhs) { bs &= rhs.bs; return *this; }
-    BitString& operator|=(const BitString& rhs) { bs |= rhs.bs; return *this; }
-    BitString& operator^=(const BitString& rhs) { bs ^= rhs.bs; return *this; }
+    BitString& operator &= (const BitString& rhs) { bs &= rhs.bs; return *this; }
+    BitString& operator |= (const BitString& rhs) { bs |= rhs.bs; return *this; }
+    BitString& operator ^= (const BitString& rhs) { bs ^= rhs.bs; return *this; }
 
     BitString& operator <<= (size_t pos) { bs <<= pos; return *this; }
     BitString& operator >>= (size_t pos) { bs >>= pos; return *this; }
