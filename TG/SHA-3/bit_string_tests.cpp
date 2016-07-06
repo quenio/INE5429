@@ -12,8 +12,39 @@ const char * bit_string__from_hex()
     return NULL;
 }
 
+const char * bit_string__to_hex__block_size()
+{
+    const char * hex_str = "27E2DDB00CC8F9EE";
+    mu_assert(hex_to_bs<64>(hex_str).to_hex() == string(hex_str));
+    return NULL;
+}
+
+const char * bit_string__to_hex__less_than_block_size()
+{
+    const char * hex_str = "0CC8F9EE";
+    mu_assert(hex_to_bs<32>(hex_str).to_hex() == string(hex_str));
+    return NULL;
+}
+
+const char * bit_string__to_hex__greater_than_block_size()
+{
+    const char * hex_str = "0CC8F9EE27E2DDB00CC8F9EE";
+    mu_assert(hex_to_bs<64+32>(hex_str).to_hex() == string(hex_str));
+    return NULL;
+}
+
+const char * bit_string__to_hex__multiple_of_block_size()
+{
+    const char * hex_str = "27E2DDB00CC8F9EE27E2DDB00CC8F9EE";
+    mu_assert(hex_to_bs<64*2>(hex_str).to_hex() == string(hex_str));
+    return NULL;
+}
 
 void all_tests()
 {
     mu_test(bit_string__from_hex);
+    mu_test(bit_string__to_hex__block_size);
+    mu_test(bit_string__to_hex__less_than_block_size);
+    mu_test(bit_string__to_hex__greater_than_block_size);
+    mu_test(bit_string__to_hex__multiple_of_block_size);
 }

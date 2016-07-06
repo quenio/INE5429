@@ -50,7 +50,8 @@ struct BitString
         for (int i = 0; i < size(); i += block_size)
         {
             std::bitset<block_size> bs64 { bin_str.substr(i, block_size).c_str() };
-            ss << std::setfill('0') << std::setw(N/4) << std::uppercase << std::hex << bs64.to_ulong();
+            const size_t bit_width = (i + block_size) > size() ? size() - i : block_size;
+            ss << std::setfill('0') << std::setw(bit_width/4) << std::uppercase << std::hex << bs64.to_ulong();
         }
 
         return ss.str();
