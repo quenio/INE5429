@@ -1,7 +1,8 @@
 // Copyright (c) 2016 Quenio Cesar Machado dos Santos. All rights reserved.
 
-#include "min_unit.h"
 #include "bit_string.h"
+#include "min_unit.h"
+#include "iostream"
 
 using namespace std;
 
@@ -62,6 +63,22 @@ const char * bit_string__istream()
     return NULL;
 }
 
+const char * bit_string__concatenation()
+{
+    const char * str = "11111"; // five bytes
+
+    BitString<5> bs { str };
+    BitString<3> pad;
+
+    BitString<8> padded = bs + pad;
+
+    mu_assert(bs.to_string() == string("11111"));
+    mu_assert(pad.to_string() == string("000"));
+    mu_assert(padded.to_string() == string("11111000"));
+
+    return NULL;
+}
+
 void all_tests()
 {
     mu_test(bit_string__from_hex);
@@ -70,4 +87,5 @@ void all_tests()
     mu_test(bit_string__to_hex__greater_than_block_size);
     mu_test(bit_string__to_hex__multiple_of_block_size);
     mu_test(bit_string__istream);
+    mu_test(bit_string__concatenation);
 }

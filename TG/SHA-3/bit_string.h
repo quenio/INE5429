@@ -112,6 +112,12 @@ struct BitString
     friend inline BitString operator | (const BitString & lhs, const BitString & rhs) { return BitString(lhs.bs | rhs.bs); }
     friend inline BitString operator ^ (const BitString & lhs, const BitString & rhs) { return BitString(lhs.bs ^ rhs.bs); }
 
+    template <size_t L, size_t R>
+    friend inline BitString<L+R> operator + (const BitString<L> & lhs, const BitString<R> & rhs)
+    {
+        return BitString<L+R>(lhs.bs.to_string() + rhs.bs.to_string());
+    }
+
     friend inline std::istream & operator >> (std::istream & is, BitString & bstr)
     {
         constexpr size_t byte_size = 8;
