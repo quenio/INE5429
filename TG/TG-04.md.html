@@ -639,6 +639,8 @@ Aqui temos um exemplo de uma mensagem de 5 _bits_ para a qual gerou-se um _hash_
 
 ## Funções SHA-3
 
+Na código abaixo, estão implementadas todas as funções do SHA3, utilizando-se da função keccak:
+
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // Copyright (c) 2016 Quenio Cesar Machado dos Santos. All rights reserved.
 
@@ -646,10 +648,16 @@ Aqui temos um exemplo de uma mensagem de 5 _bits_ para a qual gerou-se um _hash_
 
 #include "keccak.h"
 
+// Nota: A classe cstream foi copiada do Stack Overflow.
+// cstream concatena duas input streams,
+// fazendo o padding do delimitador da mensagem.
+// Observe que na especificação o padding está em bits,
+// enquanto na implementação de referência está em bytes.
+
 template< size_t D >
 std::string sha3(std::istream & message)
 {
-    return keccak< D*2 >(message, D, "01");
+    return keccak< D*2 >(cstream(message, "0x06"), D);
 }
 
 std::string sha3_224(std::istream & message)
@@ -675,7 +683,7 @@ std::string sha3_512(std::istream & message)
 template< size_t N >
 std::string shake(std::istream & message, size_t digest_bit_size)
 {
-    return keccak< N*2 >(message, digest_bit_size, "1111");
+    return keccak< N*2 >(cstream(message, "0x1F"), digest_bit_size);
 }
 
 std::string shake_128(std::istream & message, size_t digest_bit_size)
@@ -690,6 +698,8 @@ std::string shake_256(std::istream & message, size_t digest_bit_size)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 ## Funções Keccak
+
+Na código abaixo, estão implementadas todas as funções rnd, keccak_f e keccak:
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // Copyright (c) 2016 Quenio Cesar Machado dos Santos. All rights reserved.
@@ -731,6 +741,8 @@ std::string keccak(std::istream & message, size_t digest_bit_size)
 
 ## Função Esponja
 
+Na código abaixo, está implementada a função esponja:
+
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // Copyright (c) 2016 Quenio Cesar Machado dos Santos. All rights reserved.
 
@@ -743,7 +755,7 @@ template< size_t B >
 using SpongeF = BitString< B >(*)(BitString< B >);
 
 template< size_t B, size_t R, SpongeF< B > F>
-std::string sponge(std::istream & message, size_t digest_bit_size, std::string terminator)
+std::string sponge(std::istream & message, size_t digest_bit_size)
 {
     static_assert(R >= 8, "Rate must have at least one byte.");
     static_assert(B > R, "State size must be greater than rate.");
@@ -756,7 +768,6 @@ std::string sponge(std::istream & message, size_t digest_bit_size, std::string t
     {
         message >> block;
         if (message.eof()) {
-             block = block + terminator;
              pad101(block, block.bits_read());
         }
         state = F(state ^ (block + capacity));
@@ -778,6 +789,8 @@ std::string sponge(std::istream & message, size_t digest_bit_size, std::string t
 
 ## Padding
 
+Na código abaixo, está implementada a função pad101:
+
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // Copyright (c) 2016 Quenio Cesar Machado dos Santos. All rights reserved.
 
@@ -793,6 +806,739 @@ void pad101(BitString< R > & block, size_t actual_size)
         block.set(actual_size, 1);
         block.set(R - 1, 1);
     }
+}
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+## Theta
+
+Na código abaixo, está implementada a função Theta:
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+// Copyright (c) 2016 Quenio Cesar Machado dos Santos. All rights reserved.
+
+#pragma once
+
+#include "state_array.h"
+#include <algorithm>
+#include <bitset>
+#include <iostream>
+
+using namespace std;
+
+template< size_t W >
+StateArray< W > theta(const StateArray< W > & a)
+{
+    using SA = StateArray< W >;
+    using Coord2D = typename SA::Coord2D;
+
+    SA b;
+
+    for (Coord2D coord = SA::begin2D(); coord != SA::end2D(); coord.next())
+    {
+        Coord2D previous_column = coord;
+        previous_column.p_cycle_x();
+
+        Coord2D next_column = coord;
+        next_column.cycle_x();
+
+        b[coord] = a.column_xor(previous_column.x)
+                   ^ a[coord]
+                   ^ (rotate(a.column_xor(next_column.x), 1));
+    }
+
+    return b;
+}
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+## Rho
+
+Na código abaixo, está implementada a função Rho:
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+// Copyright (c) 2016 Quenio Cesar Machado dos Santos. All rights reserved.
+
+#pragma once
+
+#include "state_array.h"
+
+template< size_t W >
+StateArray< W > rho(const StateArray< W > & a)
+{
+    using SA = StateArray< W >;
+    using Coord2D = typename SA::Coord2D;
+
+    SA b;
+
+    Coord2D coord { 0, 0 };
+    b[coord] = a[coord];
+
+    coord = Coord2D { 1, 0 };
+    for (int t = 0; t < 24; t++)
+    {
+        const int offset = (t+1)*(t+2)/2;
+
+        b[coord] = rotate(a[coord], offset);
+
+        coord = Coord2D { coord.y, (2 * coord.x + 3 * coord.y) % 5 };
+    }
+
+    return b;
+}
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+## Pi
+
+Na código abaixo, está implementada a função Pi:
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+// Copyright (c) 2016 Quenio Cesar Machado dos Santos. All rights reserved.
+
+#pragma once
+
+#include "state_array.h"
+
+template< size_t W >
+StateArray< W > pi(const StateArray< W > & a)
+{
+    using SA = StateArray< W >;
+    using Coord2D = typename SA::Coord2D;
+
+    SA b;
+
+    for (Coord2D target { 0, 0 }; target != SA::end2D(); target.next())
+    {
+        const Coord2D source { (target.x + 3 * target.y) % 5, target.x };
+        b[target] = a[source];
+    }
+
+    return b;
+}
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+## Chi
+
+Na código abaixo, está implementada a função Chi:
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+// Copyright (c) 2016 Quenio Cesar Machado dos Santos. All rights reserved.
+
+#pragma once
+
+#include "state_array.h"
+
+template< size_t W >
+StateArray< W > chi(const StateArray< W > & a)
+{
+    using SA = StateArray< W >;
+    using Coord2D = typename SA::Coord2D;
+
+    SA b;
+
+    for (Coord2D target { 0, 0 }; target != SA::end2D(); target.next())
+    {
+        Coord2D plus_one = target;
+        plus_one.cycle_x();
+
+        Coord2D plus_two = plus_one;
+        plus_two.cycle_x();
+
+        b[target] = a[target] ^ (~a[plus_one] & a[plus_two]);
+    }
+
+    return b;
+}
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+## Iota
+
+Na código abaixo, está implementada a função Iota:
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+// Copyright (c) 2016 Quenio Cesar Machado dos Santos. All rights reserved.
+
+#pragma once
+
+#include <cassert>
+#include "state_array.h"
+
+bool rc_bit(int t)
+{
+    int n = t % 255;
+    if (n == 0) return 1;
+
+    BitString<9> r { "100000000" };
+    for (int i = 0; i < n; i++)
+    {
+        r >>= 1;
+        r.set(0, r[0] ^ r[8]);
+        r.set(4, r[4] ^ r[8]);
+        r.set(5, r[5] ^ r[8]);
+        r.set(6, r[6] ^ r[8]);
+    }
+
+    return r[0];
+}
+
+template< size_t W >
+BitString< W > rc(int round_index)
+{
+    BitString< W > word;
+
+    const int offset = 7 * round_index;
+    size_t i = 1;
+    for(int j = 0; i <= W; j++)
+    {
+        word.set(i - 1, rc_bit(j + offset));
+        i *= 2;
+    }
+
+    // Observe que na especificação não se fala desta reversão,
+    // porém é necessária de acordo com a implementação de referência,
+    // que utiliza left-shift para construir a round constant.
+    return word.reversed();
+};
+
+template< size_t W >
+StateArray< W > iota(const StateArray< W > & a, int round_index)
+{
+    assert(round_index >= 0 && round_index < 24);
+
+    using SA = StateArray< W >;
+    using Coord2D = typename SA::Coord2D;
+
+    const Coord2D target = { 0, 0 };
+
+    SA b = a;
+    b[target] = a[target] ^ rc< W >(round_index);
+
+    return b;
+}
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+## State Array
+
+Na código abaixo, está implementado o `state array`:
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+// Copyright (c) 2016 Quenio Cesar Machado dos Santos. All rights reserved.
+
+#pragma once
+
+#include "bit_string.h"
+
+using namespace std;
+
+#include <climits>
+
+template< size_t W >
+struct StateArray
+{
+    static constexpr size_t row_count = 5;
+    static constexpr size_t column_count = row_count;
+    static constexpr size_t lane_count = row_count * column_count;
+    static constexpr size_t lane_size = W;
+    static constexpr size_t string_size = lane_count * lane_size;
+
+    using Lane = BitString< lane_size >;
+
+    // A abstração das coordenadas do state array implementadas abaixo,
+    // facilitam a iteração sobre este e simplificam o código
+    // das funções de permutação.
+
+    struct Coord2D
+    {
+        int x, y;
+
+        Coord2D(int x, int y): x(x), y(y) {}
+
+        bool operator !=(const Coord2D & other) const
+        {
+            return x != other.x || y != other.y;
+        }
+
+        void p_cycle_x() { x = (x == 0 ? column_count : x) - 1; }
+        void p_cycle_y() { y = (y == 0 ? row_count : y) - 1; }
+
+        void previous()
+        {
+            p_cycle_x();
+            if (x == (column_count - 1)) y--;
+        }
+
+        void p_cycle()
+        {
+            p_cycle_x();
+            if (x == (column_count - 1)) p_cycle_y();
+        }
+
+        void cycle_x() { x = (x + 1) % column_count; }
+        void cycle_y() { y = (y + 1) % row_count; }
+
+        void next()
+        {
+            cycle_x();
+            if (x == 0) y++;
+        }
+
+        void cycle()
+        {
+            cycle_x();
+            if (x == 0) cycle_y();
+        }
+
+        int linear_index() const
+        {
+            return (y * column_count) + x;
+        }
+
+        friend inline ostream & operator << (ostream & os, const Coord2D & coord)
+        {
+            return os << "(" << coord.x << "," << coord.y << ")";
+        }
+
+    };
+
+    struct Coord3D
+    {
+        int x, y, z;
+
+        Coord3D(int x, int y, int z): x(x), y(y), z(z) {}
+
+        void p_cycle_x() { x = (x == 0 ? column_count : x) - 1; }
+        void p_cycle_y() { y = (y == 0 ? row_count : y) - 1; }
+        void p_cycle_z() { z = (z == 0 ? lane_size : z) - 1; }
+
+        void previous()
+        {
+            p_cycle_z();
+            if (z == (lane_size - 1)) p_cycle_x();
+            if (x == (column_count - 1) && z == (lane_size - 1)) y--;
+        }
+
+        void p_cycle()
+        {
+            p_cycle_z();
+            if (z == (lane_size - 1)) p_cycle_x();
+            if (x == (column_count - 1) && z == (lane_size - 1)) p_cycle_y();
+        }
+
+        void cycle_x() { x = (x + 1) % column_count; }
+        void cycle_y() { y = (y + 1) % row_count; }
+        void cycle_z() { z = (z + 1) % lane_size; }
+
+        void next()
+        {
+            cycle_z();
+            if (z == 0) cycle_x();
+            if (x == 0 && z == 0) y++;
+        }
+
+        void cycle()
+        {
+            cycle_z();
+            if (z == 0) cycle_x();
+            if (x == 0 && z == 0) cycle_y();
+        }
+
+        bool operator !=(const Coord3D & other) const
+        {
+            return x != other.x || y != other.y || z != other.z;
+        }
+
+        int linear_index() const
+        {
+            return lane_size * ((y * column_count) + x) + z;
+        }
+
+        friend inline ostream & operator << (ostream & os, const Coord3D & coord)
+        {
+            return os << "(" << coord.x << "," << coord.y << "," << coord.z << ")";
+        }
+
+    };
+
+    static Coord3D begin()
+    {
+        return { 0, 0, 0 };
+    }
+
+    static Coord3D end()
+    {
+        return { 0, row_count, 0 };
+    }
+
+    static Coord2D begin2D()
+    {
+        return { 0, 0 };
+    }
+
+    static Coord2D end2D()
+    {
+        return { 0, row_count };
+    }
+
+    StateArray() {}
+
+    StateArray(BitString< string_size > s)
+    {
+        for (Coord3D coord = begin(); coord != end(); coord.next())
+        {
+            this->set(coord, s[coord.linear_index()]);
+        }
+
+        swap_endian();
+    }
+
+    BitString< string_size > bs() const
+    {
+        StateArray st = *this;
+        st.swap_endian();
+
+        BitString< string_size > s;
+        for (Coord3D coord = begin(); coord != end(); coord.next())
+        {
+            s.set(coord.linear_index(), st[coord]);
+        }
+
+        return s;
+    }
+
+    bool operator [](const Coord3D & coord)
+    {
+        return matrix[coord.x][coord.y][coord.z];
+    }
+
+    const bool operator [](const Coord3D & coord) const
+    {
+        return matrix[coord.x][coord.y][coord.z];
+    }
+
+    Lane & operator [](const Coord2D & coord)
+    {
+        return matrix[coord.x][coord.y];
+    }
+
+    const Lane & operator [](const Coord2D & coord) const
+    {
+        return matrix[coord.x][coord.y];
+    }
+
+    void set(const Coord3D & coord, const bool & bit)
+    {
+        matrix[coord.x][coord.y].set(coord.z, bit);
+    }
+
+    void XOR(const Coord3D & left_coord, const Coord3D & right_coord)
+    {
+        set(left_coord, (*this)[left_coord] xor (*this)[right_coord]);
+    }
+
+    Lane column_xor(int column_index) const
+    {
+        Coord2D coord = { column_index, 0 };
+        Lane result = (*this)[coord];
+
+        while (++coord.y < row_count)
+        {
+            result ^= (*this)[coord];
+        }
+
+        return result;
+    }
+
+    std::string to_string() const
+    {
+        return bs().to_string();
+    }
+
+    std::string to_hex() const
+    {
+        StateArray st = *this;
+        st.swap_endian();
+
+        std::string str;
+        for (Coord2D coord = begin2D(); coord != end2D(); coord.next())
+        {
+            str += st[coord].to_hex();
+        }
+
+        return str;
+    }
+
+private:
+
+    // Na implementação de referência, se faz a troca de bytes mais significativos
+    // com os menos significativos.
+    // Porém, não há qualquer informação sobre isto na especificação da FIPS.
+    void swap_endian()
+    {
+        if (lane_size % BitString< W >::byte_size == 0)
+        {
+            for (Coord2D coord = begin2D(); coord != end2D(); coord.next())
+            {
+                (*this)[coord].swap_endian();
+            }
+        }
+    }
+
+    Lane matrix[column_count][row_count];
+};
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+## Bit String
+
+Na código abaixo, está implementado a `bit string`:
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+// Copyright (c) 2016 Quenio Cesar Machado dos Santos. All rights reserved.
+
+#pragma once
+
+#include <bitset>
+#include <string>
+#include <istream>
+#include <sstream>
+#include <iomanip>
+#include <cassert>
+
+// Neste arquivo, somente a implementação de swap_endian foi copiada do Stack Overflow:
+template < typename T >
+T swap_endian(T u)
+{
+    static_assert (CHAR_BIT == 8, "CHAR_BIT != 8");
+
+    union
+    {
+        T u;
+        unsigned char u8[sizeof(T)];
+    } source, dest;
+
+    source.u = u;
+
+    for (size_t k = 0; k < sizeof(T); k++)
+    dest.u8[k] = source.u8[sizeof(T) - k - 1];
+
+    return dest.u;
+}
+
+// Nota: classe BitString abstrai as operações
+// sobre sequencias de bits,
+// assim permitindo uma implementação de Keccak
+// para tamanhos arbitrários
+// de state array e capacidade.
+// Apesar disto, a performance é adequada,
+// pois utiliza a classe bitset da standard library,
+// que é implementada em memória e registradores
+// para state array de até 64 bits.
+
+template< size_t N >
+struct BitString
+{
+    static constexpr size_t byte_size = 8;
+
+    BitString() {}
+    BitString(uint64_t val): _bs(val) {}
+    BitString(const std::string & s): _bs(s.c_str()) {}
+    BitString(const char * s): _bs(s) {}
+    BitString(std::bitset< N > bs): _bs(bs) {}
+
+    std::string to_string() const { return _bs.to_string(); }
+
+    std::string to_hex() const
+    {
+        constexpr size_t block_size = 64;
+        const std::string bin_str = to_string();
+
+        std::stringstream ss;
+        for (int i = 0; i < size(); i += block_size)
+        {
+            std::bitset< block_size > bs64
+            {
+                bin_str.substr(i, block_size).c_str()
+            };
+            const size_t bit_width = (i + block_size) > size() ? size() - i : block_size;
+            ss << std::setfill('0')
+               << std::setw(bit_width/4)
+               << std::uppercase
+               << std::hex << bs64.to_ulong();
+        }
+
+        return ss.str();
+    }
+
+    size_t count() const { return _bs.count(); }
+    size_t size() const { return _bs.size(); }
+
+    BitString& operator &= (const BitString& rhs)
+    {
+        _bs &= rhs._bs; return *this;
+    }
+
+    BitString& operator |= (const BitString& rhs)
+    {
+        _bs |= rhs._bs; return *this;
+    }
+
+    BitString& operator ^= (const BitString& rhs)
+    {
+        _bs ^= rhs._bs; return *this;
+    }
+
+    BitString& operator <<= (size_t pos)
+    {
+        _bs <<= pos; return *this;
+    }
+
+    BitString& operator >>= (size_t pos)
+    {
+        _bs >>= pos; return *this;
+    }
+
+    BitString& set() { _bs.set(); return *this; }
+
+    BitString& set(size_t pos, bool val = true)
+    {
+        _bs.set(reversed(pos), val); return *this;
+    }
+
+    BitString& reset() { _bs.reset(); return *this; }
+    BitString& reset(size_t pos) { _bs.reset(reversed(pos)); return *this; }
+
+    BitString operator~() const { return BitString(~_bs); }
+
+    BitString& flip() { _bs.flip(); return *this; }
+    BitString& flip(size_t pos){ _bs.flip(reversed(pos)); return *this; }
+
+    bool operator [] (size_t pos) { return _bs[reversed(pos)]; }
+    const bool operator [] (size_t pos) const { return _bs[reversed(pos)]; }
+
+    bool operator == (const BitString& rhs) const { return _bs == rhs._bs; }
+    bool operator != (const BitString& rhs) const { return _bs != rhs._bs; }
+
+    bool test(size_t pos) const { return _bs.test(reversed(pos)); }
+    bool all() const { return _bs.all(); }
+    bool any() const { return _bs.any(); }
+    bool none() const { return _bs.none(); }
+
+    BitString operator << (size_t pos) const { return BitString(_bs << pos); }
+    BitString operator >> (size_t pos) const { return BitString(_bs >> pos); }
+
+    BitString reversed() const
+    {
+        std::string str = to_string();
+        std::reverse(str.begin(), str.end());
+        return BitString(str.c_str());
+    }
+
+    void swap_endian()
+    {
+        if (_bs.size() % byte_size == 0)
+        {
+            _bs = ::swap_endian(_bs.to_ullong());
+        }
+    }
+
+    friend inline BitString operator & (const BitString & lhs, const BitString & rhs)
+    {
+        return BitString(lhs._bs & rhs._bs);
+    }
+
+    friend inline BitString operator | (const BitString & lhs, const BitString & rhs)
+    {
+        return BitString(lhs._bs | rhs._bs);
+    }
+
+    friend inline BitString operator ^ (const BitString & lhs, const BitString & rhs)
+    {
+        return BitString(lhs._bs ^ rhs._bs);
+    }
+
+    template < size_t L, size_t R >
+    friend inline BitString< L+R > operator + (const BitString< L > & lhs, const BitString< R > & rhs)
+    {
+        return BitString< L+R >(lhs._bs.to_string() + rhs._bs.to_string());
+    }
+
+    template< size_t O, size_t I >
+    friend BitString< O > truncate(const BitString< I > & input);
+
+    friend inline std::istream & operator >> (std::istream & is, BitString & bstr)
+    {
+        constexpr size_t byte_size = 8;
+        constexpr size_t block_size = N / byte_size;
+
+        std::stringstream ss;
+
+        bstr._bits_read = 0;
+        for (size_t i = 0; i < block_size; i++)
+        {
+            unsigned char value;
+            is >> value;
+            if (is.eof())
+            {
+                ss << "00000000"; // one byte
+            }
+            else
+            {
+                std::bitset< byte_size > bs = value;
+                ss << bs.to_string();
+                bstr._bits_read += byte_size;
+            }
+        }
+
+        bstr._bs = std::bitset< N > { ss.str() };
+
+        return is;
+    }
+
+    size_t bits_read() { return _bits_read; }
+
+private:
+    // bitset tem indice zero no digit mais a direita,
+    // enquanto BitString precisa que este encontre-se na esquerda.
+    size_t reversed(size_t pos) const { return N - pos - 1; }
+
+    std::bitset< N > _bs;
+    size_t _bits_read;
+};
+
+template< size_t O, size_t I >
+inline BitString< O > truncate(const BitString< I > & input)
+{
+    return BitString< O >(input.to_string());
+}
+
+inline std::string hex_to_bin(std::string hex_str)
+{
+    constexpr int byte_size = 2;
+
+    assert(hex_str.size() % byte_size == 0);
+
+    std::string bin_str;
+    for (int i = 0; i < hex_str.size(); i += byte_size)
+    {
+        std::stringstream ss(hex_str.substr(i, byte_size));
+
+        unsigned int value;
+        ss >> std::hex >> value;
+        std::bitset<8> bs = value;
+
+        bin_str += bs.to_string();
+    }
+
+    return bin_str;
+}
+
+template< size_t N >
+inline BitString< N > hex_to_bs(std::string hex_str)
+{
+    return BitString< N >(hex_to_bin(hex_str).c_str());
+}
+
+template < size_t N >
+inline BitString< N > rotate(BitString< N > b, int n)
+{
+    return b << (n % N) | b >> ((N-n) % N);
 }
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
