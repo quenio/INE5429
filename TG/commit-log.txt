@@ -1,0 +1,869 @@
+commit 7f6997e255d53ca0769f593d80f6f740a805f9b1
+Author: Quenio dos Santos <quenio@me.com>
+Date:   Wed Jul 6 23:24:32 2016 -0300
+
+    Test for keccak function.
+
+commit 40c2d5237e6d557ff008ed744650b1e25cf18be2
+Author: Quenio dos Santos <quenio@me.com>
+Date:   Wed Jul 6 23:18:47 2016 -0300
+
+    Implemented keccak and SHA-3 functions.
+
+commit 1cb47cd988befc8f5b6fa59bf98b413474c78050
+Author: Quenio dos Santos <quenio@me.com>
+Date:   Wed Jul 6 23:00:41 2016 -0300
+
+    Implemented sponge and padding
+
+commit e746090c1f921467f2d9f9052f95c4836517eb1e
+Author: Quenio dos Santos <quenio@me.com>
+Date:   Wed Jul 6 22:44:57 2016 -0300
+
+    Implemented bits_read()
+
+commit b0879bc05a2df1f623818ec19f61459598078791
+Author: Quenio dos Santos <quenio@me.com>
+Date:   Wed Jul 6 22:10:48 2016 -0300
+
+    Implemented the sponge function.
+
+commit c2b5ecdc0f70437b9d713ac1cd7c8d85dc8e084c
+Author: Quenio dos Santos <quenio@me.com>
+Date:   Wed Jul 6 20:55:25 2016 -0300
+
+    Implemented the truncate() method.
+
+commit ce62451765e99f35eac7769266d14c8b02bf30ee
+Author: Quenio dos Santos <quenio@me.com>
+Date:   Wed Jul 6 20:29:09 2016 -0300
+
+    Verifying truncation.
+
+commit e6d5a713c482f7f2bd6320560c6968079ee034ab
+Author: Quenio dos Santos <quenio@me.com>
+Date:   Wed Jul 6 19:33:10 2016 -0300
+
+    Implemented the concatenation of bit strings.
+
+commit 9c8ac04e1f8c8bc18d6bb888cb424a061b6040b7
+Author: Quenio dos Santos <quenio@me.com>
+Date:   Wed Jul 6 19:11:46 2016 -0300
+
+    Padding last block of stream.
+
+commit a5667749ee7ea5ede5b85fe730dd72ab51334035
+Author: Quenio dos Santos <quenio@me.com>
+Date:   Wed Jul 6 18:44:50 2016 -0300
+
+    Reading raw bytes from a input stream into a BitString.
+
+commit a482da366fd393863666767da3341f80467da7f5
+Author: Quenio dos Santos <quenio@me.com>
+Date:   Wed Jul 6 11:03:49 2016 -0300
+
+    Implemented keccak_f()
+
+commit 8b76fd74320eb55c80a3b89b1a571f50cc42c085
+Author: Quenio dos Santos <quenio@me.com>
+Date:   Wed Jul 6 11:00:50 2016 -0300
+
+    Fixed BitString.to_hex() for strings longer than 64 bits.
+
+commit b8b359891d4289389a5c16271222bb40618b2cc9
+Author: Quenio dos Santos <quenio@me.com>
+Date:   Wed Jul 6 10:04:24 2016 -0300
+
+    Fixed BitString.to_hex() for strings longer than 64 bits.
+
+commit e9966150f118796fc601e1ff83a6768e9f980587
+Author: Quenio dos Santos <quenio@me.com>
+Date:   Wed Jul 6 09:30:52 2016 -0300
+
+    Renamed method s() to bs() as in bit string.
+
+commit ebc189bb9c430126d0f739d0b35cd7e52a11476e
+Author: Quenio dos Santos <quenio@me.com>
+Date:   Wed Jul 6 09:19:40 2016 -0300
+
+    Implemented the rnd() , the round function.
+
+commit ea61eb0fbc04bcb94975ec46a17495ecacc6710a
+Author: Quenio dos Santos <quenio@me.com>
+Date:   Wed Jul 6 09:09:56 2016 -0300
+
+    Improved reporting of unit tests.
+
+commit 8f26aa8d5260ddaa2d5286deaa12d60139318166
+Author: Quenio dos Santos <quenio@me.com>
+Date:   Wed Jul 6 09:00:51 2016 -0300
+
+    Verified iota permutations with 64-bit lanes.
+
+commit c53e2355b14eec0f043c530e507e3cdd9f037d9e
+Author: Quenio dos Santos <quenio@me.com>
+Date:   Wed Jul 6 08:21:40 2016 -0300
+
+    Verified chi permutations with 64-bit lanes.
+
+commit 25060fa80393c5ec00ed366868cbc71af2c2a963
+Author: Quenio dos Santos <quenio@me.com>
+Date:   Wed Jul 6 08:15:46 2016 -0300
+
+    Moved constants.
+
+commit 22cf7ebb3551f83e388493c827857b0c3d469105
+Author: Quenio dos Santos <quenio@me.com>
+Date:   Wed Jul 6 08:11:18 2016 -0300
+
+    Verified pi permutation with 64-bit lanes.
+
+commit ffd224de35eb073c8bc14e2d37357bf9fd4d89e3
+Author: Quenio dos Santos <quenio@me.com>
+Date:   Tue Jul 5 23:53:34 2016 -0300
+
+    Fixed rotate() routine to bit_string.h; using rotate() in rho permutation.
+
+commit ea17258ae96feb7e954f2c123b62c8b497fc79fc
+Author: Quenio dos Santos <quenio@me.com>
+Date:   Tue Jul 5 23:35:32 2016 -0300
+
+    Moved rotate routine to bit_string.h
+
+commit 6704291c6e27770d3a1f7e6a7f107ba13489282d
+Author: Quenio dos Santos <quenio@me.com>
+Date:   Tue Jul 5 23:26:32 2016 -0300
+
+    Verified rho permutation with 64-bit lanes.
+
+commit 6930a7b91f2ff9aec3fbe4c4fa585253d0eceb72
+Author: Quenio dos Santos <quenio@me.com>
+Date:   Tue Jul 5 22:38:02 2016 -0300
+
+    Samples for theta permutations.
+
+commit 6f2645771607d4a13af61cc35c8957cb10ecfb57
+Author: Quenio dos Santos <quenio@me.com>
+Date:   Tue Jul 5 22:37:28 2016 -0300
+
+    Fixed compilation issue on iota tests.
+
+commit f274f6241a7d15c4aeaa900fd6108867f169aef0
+Author: Quenio dos Santos <quenio@me.com>
+Date:   Tue Jul 5 22:36:06 2016 -0300
+
+    Verified 64-bit lanes.
+
+commit f128394c246c47f0feb773b2be69fb88fd4775b6
+Author: Quenio dos Santos <quenio@me.com>
+Date:   Tue Jul 5 22:35:18 2016 -0300
+
+    Implemented swap_endian() in StateArray; fixed iteration via coordinates.
+
+commit 48c05e4523f9732bd764641dbd355d44802f355b
+Author: Quenio dos Santos <quenio@me.com>
+Date:   Tue Jul 5 21:33:57 2016 -0300
+
+    Implemented swap_endian() in BitString
+
+commit 6ddfd7de6428f819b47350e0c9f6953f77da36c5
+Author: Quenio dos Santos <quenio@me.com>
+Date:   Tue Jul 5 21:04:05 2016 -0300
+
+    Reformatted
+
+commit 9ea29e8e0a0edf19d3f6991045eecccfd2779a86
+Author: Quenio dos Santos <quenio@me.com>
+Date:   Tue Jul 5 21:03:20 2016 -0300
+
+    Updated comment.
+
+commit acf1acf42d261e1e24af6a28b73b93fdb7b75a6f
+Author: Quenio dos Santos <quenio@me.com>
+Date:   Tue Jul 5 20:12:01 2016 -0300
+
+    Renaming function to reversed()
+
+commit dbd02ca719300e77b819ff9469b05c91b93c6672
+Author: Quenio dos Santos <quenio@me.com>
+Date:   Tue Jul 5 20:04:31 2016 -0300
+
+    Making StateArray param a const.
+
+commit 176d562df5b442587ec2f0ade0274681e768a09d
+Author: Quenio dos Santos <quenio@me.com>
+Date:   Tue Jul 5 16:53:03 2016 -0300
+
+    output_stream implementation for Coord2D and Coord3D.
+
+commit 3041e93597865b332309ecada726434299d70cc4
+Author: Quenio dos Santos <quenio@me.com>
+Date:   Tue Jul 5 16:01:50 2016 -0300
+
+    Implemented hex_to_bs()
+
+commit bf358dae6170b077e500f3a54e850d5b3c93f32c
+Author: Quenio dos Santos <quenio@me.com>
+Date:   Tue Jul 5 15:54:34 2016 -0300
+
+    Implemented hex_to_bin()
+
+commit 5954c2b64792f7d5792a105677cd47898991360c
+Author: Quenio dos Santos <quenio@me.com>
+Date:   Tue Jul 5 14:36:46 2016 -0300
+
+    Providing const subscription operator.
+
+commit 628a87c2edc69e25ec8eb16d04ace1e4efe8f3ab
+Author: Quenio dos Santos <quenio@me.com>
+Date:   Tue Jul 5 13:40:30 2016 -0300
+
+    Removed debugging output.
+
+commit b39b3fee5109fd7109938ce17da64721b443f19f
+Author: Quenio dos Santos <quenio@me.com>
+Date:   Tue Jul 5 13:39:22 2016 -0300
+
+    Verified iota.
+
+commit 9215d391ef3639ed638923422158d6043259c70a
+Author: Quenio dos Santos <quenio@me.com>
+Date:   Tue Jul 5 13:25:20 2016 -0300
+
+    Removed debugging messages.
+
+commit 1bb950da3224c42f37eafc904f3dc9cd4c70fd52
+Author: Quenio dos Santos <quenio@me.com>
+Date:   Tue Jul 5 13:24:13 2016 -0300
+
+    Verified the implementation of rc()
+
+commit 4f53fa16c6fbf4eb0e1408e9db5ac5d7e1ab27ea
+Author: Quenio dos Santos <quenio@me.com>
+Date:   Tue Jul 5 13:22:34 2016 -0300
+
+    Fixed formatting of to_hex()
+
+commit 857d1c0b313587edc340331505795e01fb2faad5
+Author: Quenio dos Santos <quenio@me.com>
+Date:   Tue Jul 5 12:59:57 2016 -0300
+
+    Implemented reverse()
+
+commit 81b845cb1c0eb3b14bca896cd7a91932e6982412
+Author: Quenio dos Santos <quenio@me.com>
+Date:   Tue Jul 5 12:50:27 2016 -0300
+
+    Initial implementation of the iota permutation.
+
+commit 5c7928d8bacb563e0ce04c6c65db84b69056c27b
+Author: Quenio dos Santos <quenio@me.com>
+Date:   Tue Jul 5 12:28:25 2016 -0300
+
+    Fixed shift operations.
+
+commit e108dff209dd9f0003a4e2ad76b150469c9ef970
+Author: Quenio dos Santos <quenio@me.com>
+Date:   Tue Jul 5 10:58:08 2016 -0300
+
+    Implemented to_hex()
+
+commit ea3ccc65026a39f1b6fd4b7f052f36f928d99817
+Author: Quenio dos Santos <quenio@me.com>
+Date:   Tue Jul 5 10:13:47 2016 -0300
+
+    Removed debugging output.
+
+commit 5fe17fd79ad230b1c1fa512fa5a742e36d6abd38
+Author: Quenio dos Santos <quenio@me.com>
+Date:   Tue Jul 5 10:12:54 2016 -0300
+
+    Fixed the not operator.
+
+commit d63f7c103a24fe25578d8e6f94a49db9e2e45b28
+Author: Quenio dos Santos <quenio@me.com>
+Date:   Tue Jul 5 10:04:59 2016 -0300
+
+    Friend operators.
+
+commit adf1db936ee3640311b906bc1aa1de8f5408be73
+Author: Quenio dos Santos <quenio@me.com>
+Date:   Tue Jul 5 09:52:44 2016 -0300
+
+    Implemented BitString in non-reversed order.
+
+commit 797d295c9ce7b626a44aac664be6f2edfa70d005
+Author: Quenio dos Santos <quenio@me.com>
+Date:   Mon Jul 4 16:59:50 2016 -0300
+
+    Implemented the chi transformation.
+
+commit af57ea7af00d4d9a8bc4f6ad6bfccc9ada8ad22c
+Author: Quenio dos Santos <quenio@me.com>
+Date:   Mon Jul 4 15:59:48 2016 -0300
+
+    Implemented the pi transformation.
+
+commit 9875fb193224109a993da6a85494246e0abe83f1
+Author: Quenio dos Santos <quenio@me.com>
+Date:   Mon Jul 4 11:09:45 2016 -0300
+
+    Implemented the rho transformation.
+
+commit 2f61a4aba2e4f9f5a6c9741c7399cb4e0fb1c881
+Author: Quenio dos Santos <quenio@me.com>
+Date:   Mon Jul 4 10:29:10 2016 -0300
+
+    x is now column; y is row.
+
+commit 94f6a567dc0ef5345f4774d43b38e6fdcd720fba
+Author: Quenio dos Santos <quenio@me.com>
+Date:   Mon Jul 4 10:25:03 2016 -0300
+
+    x is now column; y is row.
+
+commit a6657b6abb0a157ccb3e2e8b8e47e3418f21a381
+Author: Quenio dos Santos <quenio@me.com>
+Date:   Mon Jul 4 10:02:42 2016 -0300
+
+    Draft implementation of rho transformation.
+
+commit 8155513b87f38bfad42302d07aed02c03fa9cd4f
+Author: Quenio dos Santos <quenio@me.com>
+Date:   Mon Jul 4 10:02:13 2016 -0300
+
+    Using int as the type for coordinates.
+
+commit a4e79a487cedd5330a8e5cc264b9e80345e2c0df
+Author: Quenio dos Santos <quenio@me.com>
+Date:   Mon Jul 4 09:04:52 2016 -0300
+
+    Zero-init for StateArray.
+
+commit 55fa7d46939bcaed56a780297f9b12e4c5d22909
+Author: Quenio dos Santos <quenio@me.com>
+Date:   Mon Jul 4 08:47:43 2016 -0300
+
+    Theta transformation
+
+commit a1ef5d9d4a21c58ee4110a40f748ded2112ff347
+Author: Quenio dos Santos <quenio@me.com>
+Date:   Sun Jul 3 19:09:28 2016 -0300
+
+    Implemented column_xor()
+
+commit 8c43ac4c5db176d4492e2ef57daeac1a25cf66ce
+Author: Quenio dos Santos <quenio@me.com>
+Date:   Sun Jul 3 17:52:49 2016 -0300
+
+    Implemented Coord2D and Lane.
+
+commit d6de21fd9a94b87bcf761fb4bb38f0e7d80d3cde
+Author: Quenio dos Santos <quenio@me.com>
+Date:   Sun Jul 3 16:57:18 2016 -0300
+
+    Implemented StateArray:XOR
+
+commit e60ceea88ac9b8b1b1fe03ef5cfd8ebfd7b9beae
+Author: Quenio dos Santos <quenio@me.com>
+Date:   Sun Jul 3 15:59:54 2016 -0300
+
+    Introducing Coord3D
+
+commit 3545a9364f5127fcaab75db09d7ed37cb7dfbab8
+Author: Quenio dos Santos <quenio@me.com>
+Date:   Sun Jul 3 09:53:58 2016 -0300
+
+    Complete implementation of StateArray.
+
+commit ce578aec8afab2b74eada05c3087c20977125067
+Author: Quenio dos Santos <quenio@me.com>
+Date:   Sun Jul 3 00:41:21 2016 -0300
+
+    Initial implementation of state array.
+
+commit 6c321f9a0cc6fd8d1f3ac073ce22fd587dd0af50
+Author: Quenio dos Santos <quenio@me.com>
+Date:   Sat Jul 2 19:36:32 2016 -0300
+
+    State Array
+
+commit 0983a79fac1333ebd9ea77091e90b3ac8a51e067
+Author: Quenio dos Santos <quenio@me.com>
+Date:   Wed Jun 29 16:32:12 2016 -0300
+
+    PDF
+
+commit a1897e5a86affd06d93e8673aba1e124b0fb19f2
+Author: Quenio dos Santos <quenio@me.com>
+Date:   Tue Jun 28 17:49:33 2016 -0300
+
+    PDF
+
+commit c4dc7a1bd140505bb83881ab7be9c2131f4fb8fd
+Author: Quenio dos Santos <quenio@me.com>
+Date:   Tue Jun 28 17:39:11 2016 -0300
+
+    Iota
+
+commit 98948708194f223610544cf4a363d085d753b299
+Author: Quenio dos Santos <quenio@me.com>
+Date:   Tue Jun 28 17:23:02 2016 -0300
+
+    Rho
+
+commit f6791510e9c5e000da0a10f3b85539efbf9f269c
+Author: Quenio dos Santos <quenio@me.com>
+Date:   Tue Jun 28 16:58:03 2016 -0300
+
+    Theta
+
+commit 146f0f99cd58ec696b7ba581b1397ca79b5b6b52
+Author: Quenio dos Santos <quenio@me.com>
+Date:   Tue Jun 28 16:13:40 2016 -0300
+
+    Example
+
+commit 1cced7e0dd2204e15af4cceca21fb8a21f89e7b9
+Author: Quenio dos Santos <quenio@me.com>
+Date:   Tue Jun 28 16:12:41 2016 -0300
+
+    Example
+
+commit 6d4ec244c864fd2991a22532730945fa874045ba
+Author: Quenio dos Santos <quenio@me.com>
+Date:   Tue Jun 28 16:02:46 2016 -0300
+
+    security analysis
+
+commit 643be0e8f7ec2af1803013cfde26a451d10c2436
+Author: Quenio dos Santos <quenio@me.com>
+Date:   Tue Jun 28 15:38:57 2016 -0300
+
+    SHA-3 functions
+
+commit 020294e1a9a8a1734947c1fd0786452b30229cd9
+Author: Quenio dos Santos <quenio@me.com>
+Date:   Tue Jun 28 13:53:42 2016 -0300
+
+    Question 7.
+
+commit c80960ff654ff7271bdee6f29f9e1ce98c88119d
+Author: Quenio dos Santos <quenio@me.com>
+Date:   Tue Jun 28 12:59:42 2016 -0300
+
+    Question 6.
+
+commit 7dd45ce6a496cf4bf062c69facfd25995f727ca9
+Author: Quenio dos Santos <quenio@me.com>
+Date:   Tue Jun 28 12:53:44 2016 -0300
+
+    Question 6.
+
+commit dc4075f18ff0959f646c233ab20b6f60f37b97a4
+Author: Quenio dos Santos <quenio@me.com>
+Date:   Tue Jun 28 12:13:15 2016 -0300
+
+    Question 5.
+
+commit d3750eb41d4185f35920af861b32595b969f3630
+Author: Quenio dos Santos <quenio@me.com>
+Date:   Tue Jun 28 12:09:01 2016 -0300
+
+    Question 5.
+
+commit 232d935140f81be65bd935cb8be9b9c61b54e003
+Author: Quenio dos Santos <quenio@me.com>
+Date:   Tue Jun 28 10:44:05 2016 -0300
+
+    Question 4.
+
+commit 223db02385c3b340d33b7e039d043dd0f3e34536
+Author: Quenio dos Santos <quenio@me.com>
+Date:   Tue Jun 28 10:18:29 2016 -0300
+
+    Question 3.
+
+commit b8671c63a3e1be80f0561dd5868fb258e3473e52
+Author: Quenio dos Santos <quenio@me.com>
+Date:   Tue Jun 28 09:57:51 2016 -0300
+
+    Questions 1 & 2.
+
+commit cf2682cfe08c98b7a03f2497979ba1543b1af43d
+Author: Quenio dos Santos <quenio@me.com>
+Date:   Wed Jun 22 16:38:33 2016 -0300
+
+    Fixes.
+
+commit a44c86415933d78119d5dff507b71fa0cafc67af
+Author: Quenio dos Santos <quenio@me.com>
+Date:   Tue Jun 21 17:57:15 2016 -0300
+
+    Keccak diagram
+
+commit 19c6390583d6c081626ea6eaddf733996b1d1f76
+Author: Quenio dos Santos <quenio@me.com>
+Date:   Tue Jun 21 17:41:29 2016 -0300
+
+    Squeezing diagram
+
+commit 8bd60adcbc1fe7a9809c00248641adce27b9efc7
+Author: Quenio dos Santos <quenio@me.com>
+Date:   Tue Jun 21 17:40:16 2016 -0300
+
+    Squeezing diagram
+
+commit e404f7fc237b2d0e3878599c057d409405c7a4a2
+Author: Quenio dos Santos <quenio@me.com>
+Date:   Tue Jun 21 17:15:16 2016 -0300
+
+    Absorption diagram
+
+commit 46358dde740fb64d9e092a84c1c17745e1d6535d
+Author: Quenio dos Santos <quenio@me.com>
+Date:   Tue Jun 21 16:53:56 2016 -0300
+
+    Corrected word: Keccak
+
+commit b52b594cae4f27f2c551242c8277eff106bd8676
+Author: Quenio dos Santos <quenio@me.com>
+Date:   Tue Jun 21 16:04:18 2016 -0300
+
+    Text correction for first and second diagram.
+
+commit 65493b62c1ed06aabcd131429eb2e174550711ce
+Author: Quenio dos Santos <quenio@me.com>
+Date:   Mon Jun 20 17:57:57 2016 -0300
+
+    Second diagram.
+
+commit 02586ec7506a1b6e72956de05c8939af03253cc6
+Author: Quenio dos Santos <quenio@me.com>
+Date:   Mon Jun 20 17:27:20 2016 -0300
+
+    First diagram.
+
+commit de99ddbf7c3a4a9f0d1359a270698b5a5f56af1f
+Author: Quenio dos Santos <quenio@me.com>
+Date:   Mon Jun 20 15:24:40 2016 -0300
+
+    References
+
+commit 67d7910ce50b999d3fa9716f7d5c39b177fb8353
+Author: Quenio dos Santos <quenio@me.com>
+Date:   Mon Jun 20 15:21:24 2016 -0300
+
+    SHA-3 Parameters
+
+commit 396fb0cc3958f33fa526f34cd65cf2879c5558c4
+Author: Quenio dos Santos <quenio@me.com>
+Date:   Mon Jun 20 15:11:56 2016 -0300
+
+    SHA-3 Parameters
+
+commit 9915570fa27272b01af598801405463b365e5877
+Author: Quenio dos Santos <quenio@me.com>
+Date:   Mon Jun 20 15:05:38 2016 -0300
+
+    SHA-3 Parameters
+
+commit e58d27a228f4dec6bafdaaec6e8ba372d6fadc91
+Author: Quenio dos Santos <quenio@me.com>
+Date:   Mon Jun 20 14:44:20 2016 -0300
+
+    Keccaf
+
+commit 8e62934b006dbc1206f05bf737864ff59bd4b810
+Author: Quenio dos Santos <quenio@me.com>
+Date:   Mon Jun 20 14:40:58 2016 -0300
+
+    Keccaf
+
+commit 93f4a91dc7cb75f2cfea24a884c2142192cff529
+Author: Quenio dos Santos <quenio@me.com>
+Date:   Mon Jun 20 12:35:29 2016 -0300
+
+    Keccaf
+
+commit 56e1c15de1fa4c86d3c6237b105096bdf26743ad
+Author: Quenio dos Santos <quenio@me.com>
+Date:   Mon Jun 20 12:04:51 2016 -0300
+
+    Keccaf
+
+commit cc06d2fcea909c1569dc5172b6218270db4b921a
+Author: Quenio dos Santos <quenio@me.com>
+Date:   Mon Jun 20 11:39:20 2016 -0300
+
+    Squeezing phase.
+
+commit e276a5c56f9b2cea0cae3dc5c5164b874983ed90
+Author: Quenio dos Santos <quenio@me.com>
+Date:   Mon Jun 20 11:28:42 2016 -0300
+
+    Squeezing phase.
+
+commit edc2319931abba06c0b3b336664f923bb1db7f9e
+Author: Quenio dos Santos <quenio@me.com>
+Date:   Mon Jun 20 10:59:36 2016 -0300
+
+    Absorption phase.
+
+commit fcba552882fd2a2c850402dab60299f30b336f09
+Author: Quenio dos Santos <quenio@me.com>
+Date:   Mon Jun 20 09:41:51 2016 -0300
+
+    First part of chapter 2.
+
+commit 5a63f4036a1684ef08bfa5fd1e9651d69b8c61c1
+Author: Quenio dos Santos <quenio@me.com>
+Date:   Tue Jun 14 16:51:38 2016 -0300
+
+    Ajustes.
+
+commit aa7bb100099f10d0f143188548254b24c7a8d7cc
+Author: Quenio dos Santos <quenio@me.com>
+Date:   Mon Jun 13 13:33:35 2016 -0300
+
+    Final draft.
+
+commit aaffb120f3056fbb27951a6f9ec26db83ce59bff
+Author: Quenio dos Santos <quenio@me.com>
+Date:   Mon Jun 13 13:11:15 2016 -0300
+
+    All hash function properties.
+
+commit 99cee57cc52608ac8c7ab5cef3f6eb8273bfe252
+Author: Quenio dos Santos <quenio@me.com>
+Date:   Mon Jun 13 11:49:52 2016 -0300
+
+    Initial draft of chapter 1.
+
+commit 0baff00247ad6db4e4e54350692b2291a2a10848
+Author: Quenio dos Santos <quenio@me.com>
+Date:   Mon Jun 13 10:20:24 2016 -0300
+
+    Created TG project.
+
+commit 62dee51f64d7750d5ae5e90fbd4869619cc92216
+Author: Quenio dos Santos <quenio@me.com>
+Date:   Tue May 31 17:16:55 2016 -0300
+
+    Initial commit of TI-05 report
+
+commit 2514ccabbf83df2bf6d3473646520bc0c58b0230
+Author: Quenio dos Santos <quenio@me.com>
+Date:   Tue May 31 16:52:37 2016 -0300
+
+    Initial commit of TI-05
+
+commit 38c050aa0cd312acc7206feb14ca4a933b07b54c
+Author: Quenio dos Santos <quenio@me.com>
+Date:   Sun May 29 16:14:09 2016 -0300
+
+    Made bit_count the first parameter.
+
+commit 277c04935ff397c0333c2e9a2126cd634288d737
+Author: Quenio dos Santos <quenio@me.com>
+Date:   Sun May 29 16:07:57 2016 -0300
+
+    Testing rsa_encrypt() and rsa_decrypt()
+
+commit d8854d5e5d8e428f8883d3528ca69b76fead9b36
+Author: Quenio dos Santos <quenio@me.com>
+Date:   Sun May 29 15:36:05 2016 -0300
+
+    Testing up to 4096 bits
+
+commit 98b3aac582f15e7c7ad82c8ccf38a0d44d92186f
+Author: Quenio dos Santos <quenio@me.com>
+Date:   Sun May 29 15:32:47 2016 -0300
+
+    Taking time on unit tests.
+
+commit 9da1bdca8ebc8ddd48fb3ff308a93038fbce5023
+Author: Quenio dos Santos <quenio@me.com>
+Date:   Sun May 29 12:16:39 2016 -0300
+
+    Tested rsa_key_pair() function
+
+commit 9340c976b3b4a4dc156478ba30c1f973edfa5a4d
+Author: Quenio dos Santos <quenio@me.com>
+Date:   Sat May 28 18:34:34 2016 -0300
+
+    Tested most RSA functions
+
+commit 29f07ce22ece16d3e13e86269f6a96bb046c42ca
+Author: Quenio dos Santos <quenio@me.com>
+Date:   Sat May 28 18:33:35 2016 -0300
+
+    Implemented small_coprime()
+
+commit 4524c184556fa3593edbaff82dc5764b300cd378
+Author: Quenio dos Santos <quenio@me.com>
+Date:   Sat May 28 18:32:56 2016 -0300
+
+    Allow passing params to tests.
+
+commit 3a232ef3411b730f102d27758644246acea51c12
+Author: Quenio dos Santos <quenio@me.com>
+Date:   Fri May 27 11:41:02 2016 -0300
+
+    Initial implementation of RSA
+
+commit 8454dc6e2d9663b314163469f4fc20e212624334
+Author: Quenio dos Santos <quenio@me.com>
+Date:   Thu May 26 09:43:31 2016 -0300
+
+    Setting up TI-04
+
+commit a8835bf0bb8752cf3d54d4f8dd985dd162e0cea9
+Author: Quenio dos Santos <quenio@me.com>
+Date:   Thu May 26 09:43:10 2016 -0300
+
+    Setting up TI-04
+
+commit 97bf6887981ad4a1e98d64ba577c2aca7de74e7c
+Author: Quenio dos Santos <quenio@me.com>
+Date:   Sat May 21 21:59:39 2016 -0300
+
+    Implemented least_primitive_root()
+
+commit 0be2daf1a8b130593e32e5fac3e65f2d40c304a7
+Author: Quenio dos Santos <quenio@me.com>
+Date:   Sat May 21 20:12:37 2016 -0300
+
+    Implemented is_primitive_root()
+
+commit d1215b9b0cf6c910ad39fddcd84f0c7f8cf95479
+Author: Quenio dos Santos <quenio@me.com>
+Date:   Sat May 21 13:52:33 2016 -0300
+
+    Implemented next_prime_divisor()
+
+commit 214a413b320745c7698b17101fdd5c96cd93b230
+Author: Quenio dos Santos <quenio@me.com>
+Date:   Fri May 20 10:31:58 2016 -0300
+
+    Implemented next_dividend() - partial implementation of next_prime_factor()
+
+commit b9d1e1a2a8a9a6df0bf2036dedc8d5b2c951f893
+Author: Quenio dos Santos <quenio@me.com>
+Date:   Mon May 16 17:00:37 2016 -0300
+
+    Described the steps to find the primitive root.
+
+commit 5a8601a0cfb04944f6228c4e784ad4b486487d53
+Author: Quenio dos Santos <quenio@me.com>
+Date:   Fri May 13 12:29:07 2016 -0300
+
+    T02 & T03
+
+commit 800eddec72d70ea7a68e89b53530587d1abbd091
+Author: Quenio dos Santos <quenio@me.com>
+Date:   Mon May 9 18:42:50 2016 -0300
+
+    Final version of report.
+
+commit 1474c0098abce08151712115ab93d403d72bd55c
+Author: Quenio dos Santos <quenio@me.com>
+Date:   Mon May 9 17:36:35 2016 -0300
+
+    Executing prime numbers.
+
+commit 589103903a42800c470d20cd746a217978a3d19c
+Author: Quenio dos Santos <quenio@me.com>
+Date:   Mon May 9 17:29:56 2016 -0300
+
+    Executing prime numbers.
+
+commit 96540c9dc6e2460f0bfeceb31c73c06527542975
+Author: Quenio dos Santos <quenio@me.com>
+Date:   Mon May 9 17:23:55 2016 -0300
+
+    Primes section.
+
+commit c310d7df800526254ac2c7008b0dbfe143b714eb
+Author: Quenio dos Santos <quenio@me.com>
+Date:   Mon May 9 00:14:31 2016 -0300
+
+    Wrote section with source code. Adjusted the random function.
+
+commit bbacfa680a3b8623f041371bd22d0c91c4bfe78a
+Author: Quenio dos Santos <quenio@me.com>
+Date:   Sun May 8 22:34:20 2016 -0300
+
+    Initial report write-up
+
+commit 9fc88599bf96f089685b7491119b4bffb556acec
+Author: Quenio dos Santos <quenio@me.com>
+Date:   Sun May 8 10:19:00 2016 -0300
+
+    Generating prime numbers from 128 bits thru 4096 bits; optimized the algorithm.
+
+commit 025e68b7ee95cefea7f16769ad408f9684c2dc8b
+Author: Quenio dos Santos <quenio@me.com>
+Date:   Sat May 7 20:05:28 2016 -0300
+
+    Generating prime numbers.
+
+commit 96c22fa836203cdddf6efcb943328c9dca3fde33
+Author: Quenio dos Santos <quenio@me.com>
+Date:   Thu May 5 17:18:35 2016 -0300
+
+    Generating 2048-bit numbers.
+
+commit 5a63415b780ee3c207f90483196a883ebdfcfcac
+Author: Quenio dos Santos <quenio@me.com>
+Date:   Thu May 5 16:59:48 2016 -0300
+
+    random_mpz()
+
+commit 74b4567036626bc2dffeeb7a20c82ed815070fe9
+Author: Quenio dos Santos <quenio@me.com>
+Date:   Thu May 5 14:20:28 2016 -0300
+
+    Renamed directory.
+
+commit 412c1ec4f89a548f43efb7beccc2cb0d6a7bf53a
+Author: Quenio dos Santos <quenio@me.com>
+Date:   Thu Apr 28 17:21:22 2016 -0300
+
+    Using GMP.
+
+commit 4c7ed54268bce4d6e24120ebd7f885fd8d311a6a
+Author: Quenio dos Santos <quenio@me.com>
+Date:   Thu Apr 28 16:54:42 2016 -0300
+
+    Files of practice on 04-19
+
+commit ef170310af32f94fd6397645d0e36a1e15906060
+Author: Quenio dos Santos <quenio@me.com>
+Date:   Thu Apr 28 16:53:53 2016 -0300
+
+    Initial project for prime number generator.
+
+commit 189553af6169bee5e4a2c5a8a2b673f3d18fce00
+Author: Quenio dos Santos <quenio@me.com>
+Date:   Wed Apr 13 23:25:31 2016 -0300
+
+    Finished report.
+
+commit 716118b2701956ddba1c73b2412a2941ce174c9c
+Author: Quenio dos Santos <quenio@me.com>
+Date:   Wed Apr 13 16:35:42 2016 -0300
+
+    item c)
+
+commit 476e14b18036a38e9f978ac66c403c422e53f788
+Author: Quenio dos Santos <quenio@me.com>
+Date:   Tue Apr 12 17:58:20 2016 -0300
+
+    Pratica #3 - initial files...
+
+commit 5975fca5abfb803349e4aa8a59a2f25f0dcd23ec
+Author: Quenio dos Santos <quenio@me.com>
+Date:   Tue Apr 12 16:34:06 2016 -0300
+
+    Initial files...
