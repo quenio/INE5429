@@ -1542,6 +1542,25 @@ inline BitString< N > rotate(BitString< N > b, int n)
 }
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+# Crítica ao SHA-3
+
+Keccak, o design do SHA-3, é simples e elegante comparado a outros algoritmos de hash. Também é muito flexível nas opções de seus parâmetros e nas aplicações possíveis.
+
+Aqui vão algumas de suas vantagens:
+- _Aplicações_: o Keccak permite a configuração da taxa de vazão (`throughput`) para melhorar performance em detrimento da segurança, ou vice-versa. Ele também permite um tamanho variável do hash gerado, o que abre bastante o leque de aplicações, além das aplicações usuais de algoritmos de hash.
+- _Margem de Segurança_: comparado ao SHA-2, e a outros algoritmos, o Keccak tem uma margem de segurança bem alta, com menos vulnerabilidade em cripto-análise, porque:
+    - suas funções de permutação, inerentemente mais seguras, o tornam menos vulnerável a ataques do que algoritmos tradicionais de hash, como o SHA-2.
+    - quase 80 por cento das funções que fazem parte do Keccak ainda não foram quebradas, enquanto 40 por cento das funções do SHA-2 já foram.
+    - os autores provaram matematicamente que o Keccak é seguro contra pré-imagem, segunda pré-imagem e colisões até $2^n$, $2^n$ $2^{n/2}$ consultas, respectivamente.
+- _Performance_: implementado em software, a performance do SHA-3 é comparável ao SHA-2, mas sua performance em hardware, em termos de `thoughput`, é muito superior ao SHA-2.
+- Design: seu design simples, orientado a bits, torna sua especificação bem clara e, por consequência, facilita seu entendimento e implementação. Seu design baseado em permutações, e na função de esponja, também permitirá o surgimento de algoritmos alternativos, ou algoritmos para outras aplicações.
+
+Apesar de suas vantagens consideráveis, aqui estão algumas deficiências:
+- _Inversível_: como todos os passos do SHA-3 são inversíveis, sabendo-se os estados intermediários, é possível se chegar na mensagem original.
+- _Software Performance_: sua performance é razoável em software, mas existem outros algoritmos, como o BLAKE, quem tem performance muito melhor.
+
+Considerando que o SHA-2 já é utilizado por pelo menos uma década e ainda não foi quebrado, e também considerando a margem de segurança do SHA-3, quando comparado ao SHA-2, mesmo com os avanços de hardware da próxima década, espera-se que o SHA-3 seja seguro nos próximos 10 anos, ou mais. Porém, como ainda é um algoritmo novo, será interessante ver o que os trabalhos de pesquisa e cripto-análise irão dizer nos próximos anos.
+
 # Referências
 
 [#Stalling2014]: Cryptography and Network Security, Sixth International Edition, 2014.
@@ -1549,6 +1568,8 @@ inline BitString< N > rotate(BitString< N > b, int n)
 [#FIPS202]: FIPS PUB 202, 2015.
 
 [#Wikipedia2016]: Wikipedia, 2016.
+
+[#NISTIR7896]: Third-Round Report of the SHA-3, Cryptographic Hash Algorithm Competition, 2012.
 
 <!-- Markdeep: -->
 <style class="fallback">body{visibility:hidden}</style>
