@@ -47,9 +47,19 @@ const char * keccak_f_SA64()
     return NULL;
 }
 
+const char * keccak_test()
+{
+    stringstream message("12345");
+
+    keccak<32>(message, 16);
+
+    return NULL;
+}
+
 void all_tests()
 {
     mu_test(rnd_SA2);
     mu_test(rnd_SA64);
     mu_test(keccak_f_SA64);
+    mu_test(keccak_test);
 }
