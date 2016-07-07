@@ -7,6 +7,7 @@
 #include "pi.h"
 #include "chi.h"
 #include "iota.h"
+#include "sponge.h"
 
 template<size_t W>
 StateArray<W> rnd(StateArray<W> & a, int i)
@@ -25,4 +26,10 @@ BitString<B> keccak_f(BitString<B> bs)
     }
 
     return a.bs();
+}
+
+template<size_t C>
+std::string keccak(std::istream & message, size_t digest_bit_size)
+{
+    return sponge<1600, 1600-C, keccak_f>(message, digest_bit_size);
 }
