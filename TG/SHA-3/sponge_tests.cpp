@@ -24,7 +24,7 @@ const char * sponge_test()
 
     string hash = sponge<state_size, rate_size, identity>(message, digest_size);
 
-    mu_assert(hash == string("0101"));
+    mu_assert(hash == string("8080"));
 
     return NULL;
 }

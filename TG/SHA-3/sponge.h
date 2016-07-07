@@ -3,6 +3,7 @@
 #pragma once
 
 #include "bit_string.h"
+#include "padding.h"
 
 template<size_t B>
 using SpongeF = BitString<B>(*)(BitString<B>);
@@ -20,6 +21,7 @@ std::string sponge(std::istream & message, size_t digest_bit_size)
     while (!message.eof())
     {
         message >> block;
+        if (message.eof()) pad101(block, block.bits_read());
         state = F(state ^ (block + capacity));
     }
 
