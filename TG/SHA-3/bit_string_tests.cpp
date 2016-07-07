@@ -51,14 +51,17 @@ const char * bit_string__istream()
     // Reads first two bytes:
     ss >> bs;
     mu_assert(bs.to_hex() == string("3132"));
+    mu_assert(bs.bits_read() == 16);
 
     // Reads next two bytes:
     ss >> bs;
     mu_assert(bs.to_hex() == string("3334"));
+    mu_assert(bs.bits_read() == 16);
 
     // Reads last byte:
     ss >> bs;
     mu_assert(bs.to_hex() == string("3500")); // padded second byte of block since stream had only one byte
+    mu_assert(bs.bits_read() == 8);
 
     return NULL;
 }

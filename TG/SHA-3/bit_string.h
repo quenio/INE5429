@@ -35,12 +35,12 @@ struct BitString
     static constexpr size_t byte_size = 8;
 
     BitString() {}
-    BitString(uint64_t val): bs(val) {}
-    BitString(const std::string & s): bs(s.c_str()) {}
-    BitString(const char * s): bs(s) {}
-    BitString(std::bitset<N> bs): bs(bs) {}
+    BitString(uint64_t val): _bs(val) {}
+    BitString(const std::string & s): _bs(s.c_str()) {}
+    BitString(const char * s): _bs(s) {}
+    BitString(std::bitset<N> bs): _bs(bs) {}
 
-    std::string to_string() const { return bs.to_string(); }
+    std::string to_string() const { return _bs.to_string(); }
 
     std::string to_hex() const
     {
@@ -58,40 +58,40 @@ struct BitString
         return ss.str();
     }
 
-    size_t count() const { return bs.count(); }
-    size_t size() const { return bs.size(); }
+    size_t count() const { return _bs.count(); }
+    size_t size() const { return _bs.size(); }
 
-    BitString& operator &= (const BitString& rhs) { bs &= rhs.bs; return *this; }
-    BitString& operator |= (const BitString& rhs) { bs |= rhs.bs; return *this; }
-    BitString& operator ^= (const BitString& rhs) { bs ^= rhs.bs; return *this; }
+    BitString& operator &= (const BitString& rhs) { _bs &= rhs._bs; return *this; }
+    BitString& operator |= (const BitString& rhs) { _bs |= rhs._bs; return *this; }
+    BitString& operator ^= (const BitString& rhs) { _bs ^= rhs._bs; return *this; }
 
-    BitString& operator <<= (size_t pos) { bs <<= pos; return *this; }
-    BitString& operator >>= (size_t pos) { bs >>= pos; return *this; }
+    BitString& operator <<= (size_t pos) { _bs <<= pos; return *this; }
+    BitString& operator >>= (size_t pos) { _bs >>= pos; return *this; }
 
-    BitString& set() { bs.set(); return *this; }
-    BitString& set(size_t pos, bool val = true) { bs.set(reversed(pos), val); return *this; }
+    BitString& set() { _bs.set(); return *this; }
+    BitString& set(size_t pos, bool val = true) { _bs.set(reversed(pos), val); return *this; }
 
-    BitString& reset() { bs.reset(); return *this; }
-    BitString& reset(size_t pos) { bs.reset(reversed(pos)); return *this; }
+    BitString& reset() { _bs.reset(); return *this; }
+    BitString& reset(size_t pos) { _bs.reset(reversed(pos)); return *this; }
 
-    BitString operator~() const { return BitString(~bs); }
+    BitString operator~() const { return BitString(~_bs); }
 
-    BitString& flip() { bs.flip(); return *this; }
-    BitString& flip(size_t pos){ bs.flip(reversed(pos)); return *this; }
+    BitString& flip() { _bs.flip(); return *this; }
+    BitString& flip(size_t pos){ _bs.flip(reversed(pos)); return *this; }
 
-    bool operator [] (size_t pos) { return bs[reversed(pos)]; }
-    const bool operator [] (size_t pos) const { return bs[reversed(pos)]; }
+    bool operator [] (size_t pos) { return _bs[reversed(pos)]; }
+    const bool operator [] (size_t pos) const { return _bs[reversed(pos)]; }
 
-    bool operator == (const BitString& rhs) const { return bs == rhs.bs; }
-    bool operator != (const BitString& rhs) const { return bs != rhs.bs; }
+    bool operator == (const BitString& rhs) const { return _bs == rhs._bs; }
+    bool operator != (const BitString& rhs) const { return _bs != rhs._bs; }
 
-    bool test(size_t pos) const { return bs.test(reversed(pos)); }
-    bool all() const { return bs.all(); }
-    bool any() const { return bs.any(); }
-    bool none() const { return bs.none(); }
+    bool test(size_t pos) const { return _bs.test(reversed(pos)); }
+    bool all() const { return _bs.all(); }
+    bool any() const { return _bs.any(); }
+    bool none() const { return _bs.none(); }
 
-    BitString operator << (size_t pos) const { return BitString(bs << pos); }
-    BitString operator >> (size_t pos) const { return BitString(bs >> pos); }
+    BitString operator << (size_t pos) const { return BitString(_bs << pos); }
+    BitString operator >> (size_t pos) const { return BitString(_bs >> pos); }
 
     BitString reversed() const
     {
@@ -102,20 +102,20 @@ struct BitString
 
     void swap_endian()
     {
-        if (bs.size() % byte_size == 0)
+        if (_bs.size() % byte_size == 0)
         {
-            bs = ::swap_endian(bs.to_ullong());
+            _bs = ::swap_endian(_bs.to_ullong());
         }
     }
 
-    friend inline BitString operator & (const BitString & lhs, const BitString & rhs) { return BitString(lhs.bs & rhs.bs); }
-    friend inline BitString operator | (const BitString & lhs, const BitString & rhs) { return BitString(lhs.bs | rhs.bs); }
-    friend inline BitString operator ^ (const BitString & lhs, const BitString & rhs) { return BitString(lhs.bs ^ rhs.bs); }
+    friend inline BitString operator & (const BitString & lhs, const BitString & rhs) { return BitString(lhs._bs & rhs._bs); }
+    friend inline BitString operator | (const BitString & lhs, const BitString & rhs) { return BitString(lhs._bs | rhs._bs); }
+    friend inline BitString operator ^ (const BitString & lhs, const BitString & rhs) { return BitString(lhs._bs ^ rhs._bs); }
 
     template <size_t L, size_t R>
     friend inline BitString<L+R> operator + (const BitString<L> & lhs, const BitString<R> & rhs)
     {
-        return BitString<L+R>(lhs.bs.to_string() + rhs.bs.to_string());
+        return BitString<L+R>(lhs._bs.to_string() + rhs._bs.to_string());
     }
 
     template<size_t O, size_t I>
@@ -128,6 +128,7 @@ struct BitString
 
         std::stringstream ss;
 
+        bstr._bits_read = 0;
         for (size_t i = 0; i < block_size; i++)
         {
             unsigned char value;
@@ -140,18 +141,22 @@ struct BitString
             {
                 std::bitset<byte_size> bs = value;
                 ss << bs.to_string();
+                bstr._bits_read += byte_size;
             }
         }
 
-        bstr.bs = std::bitset<N> { ss.str() };
+        bstr._bs = std::bitset<N> { ss.str() };
 
         return is;
     }
 
+    size_t bits_read() { return _bits_read; }
+
 private:
     size_t reversed(size_t pos) const { return N - pos - 1; }
 
-    std::bitset<N> bs;
+    std::bitset<N> _bs;
+    size_t _bits_read;
 };
 
 template<size_t O, size_t I>
