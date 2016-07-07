@@ -15,7 +15,7 @@ StateArray<W> rnd(StateArray<W> & a, int i)
 }
 
 template<size_t B>
-BitString<B> keccak_f(BitString<B> & bs)
+BitString<B> keccak_f(BitString<B> bs)
 {
     StateArray<B/25> a { bs };
 
