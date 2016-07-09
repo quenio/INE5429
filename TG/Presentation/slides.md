@@ -83,10 +83,6 @@ layout: false
 ---
 layout: false
 .left-column[
-  ### Hash Criptográfico
-  ### Algoritmo Keccak
-  ### Função Esponja
-  ### Função Keccak-p
   ### Theta
 ]
 .right-column[
@@ -97,10 +93,6 @@ layout: false
 ---
 layout: false
 .left-column[
-  ### Hash Criptográfico
-  ### Algoritmo Keccak
-  ### Função Esponja
-  ### Função Keccak-p
   ### Theta
   ### Rho
 ]
@@ -112,10 +104,6 @@ layout: false
 ---
 layout: false
 .left-column[
-  ### Hash Criptográfico
-  ### Algoritmo Keccak
-  ### Função Esponja
-  ### Função Keccak-p
   ### Theta
   ### Rho
   ### Pi
@@ -128,10 +116,6 @@ layout: false
 ---
 layout: false
 .left-column[
-  ### Hash Criptográfico
-  ### Algoritmo Keccak
-  ### Função Esponja
-  ### Função Keccak-p
   ### Theta
   ### Rho
   ### Pi
@@ -145,10 +129,6 @@ layout: false
 ---
 layout: false
 .left-column[
-  ### Hash Criptográfico
-  ### Algoritmo Keccak
-  ### Função Esponja
-  ### Função Keccak-p
   ### Theta
   ### Rho
   ### Pi
