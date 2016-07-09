@@ -6,25 +6,21 @@ template: inverse
 # SHA-3
 .footnote[Quenio - Ranieri]
 ---
-template: inverse
-## Introdução
-SHA-3
----
 layout: false
 .left-column[
-  ### Hash Criptográfico
+## Hash Criptográfico
 ]
 .right-column[
-- Algoritmo de hash criptográfico adotado pelo NIST para complementar o SHA-2. 
+- Algoritmo de hash criptográfico adotado pelo NIST para complementar o SHA-2, seu predecessor. 
 ]
 ---
 layout: false
 .left-column[
-  ### Hash Criptográfico
-  ### Algoritmo Keccak
+## Hash Criptográfico
+## Algoritmo Keccak
 ]
 .right-column[
-- Algoritmo de hash criptográfico adotado pelo NIST para complementar o SHA-2. 
+- Algoritmo de hash criptográfico adotado pelo NIST para complementar o SHA-2, seu predecessor. 
 
 - SHA-3 é a aplicação da função Keccak.
 
@@ -33,11 +29,13 @@ layout: false
     - Vencedores da competição promovida pelo NIST para escolher o algoritmo do SHA-3.
 ]
 ---
+template: inverse
+## Estrutura
+SHA-3
+---
 layout: false
 .left-column[
-  ### Hash Criptográfico
-  ### Algoritmo Keccak
-  ### Função Esponja
+### Função Esponja
 ]
 .right-column[
 - A estrutura do algoritmo Keccak é definida pela função Esponja.
@@ -55,10 +53,8 @@ layout: false
 ---
 layout: false
 .left-column[
-  ### Hash Criptográfico
-  ### Algoritmo Keccak
-  ### Função Esponja
-  ### Função Keccak-p
+### Função Esponja
+### Função Keccak-p
 ]
 .right-column[
 - A função Keccak-p é executada pela função Esponja em cada bloco da mensagem de entrada. 
@@ -79,11 +75,14 @@ layout: false
          
         - Iota 
 ]
-    
+---
+template: inverse
+## Permutações & Substituições
+SHA-3
 ---
 layout: false
 .left-column[
-  ### Theta
+## Theta
 ]
 .right-column[
 - Theta é uma função de substituição que utiliza bits das colunas anteriores e posteriores, além dos bits da célula sendo substituída. 
@@ -93,8 +92,8 @@ layout: false
 ---
 layout: false
 .left-column[
-  ### Theta
-  ### Rho
+## Theta
+## Rho
 ]
 .right-column[
 - _Rho_ é uma função de permutação dos bits dentro de cada célula. 
@@ -104,9 +103,9 @@ layout: false
 ---
 layout: false
 .left-column[
-  ### Theta
-  ### Rho
-  ### Pi
+## Theta
+## Rho
+## Pi
 ]
 .right-column[
 - _Pi_ é também uma função de permutação, mas entre células. 
@@ -116,10 +115,10 @@ layout: false
 ---
 layout: false
 .left-column[
-  ### Theta
-  ### Rho
-  ### Pi
-  ### Chi
+## Theta
+## Rho
+## Pi
+## Chi
 ]
 .right-column[
 - _Chi_ é uma função de substituição baseada no valor do _bit_ corrente e dos _bits_ em posições correspondentes das duas próximas células.
@@ -129,11 +128,11 @@ layout: false
 ---
 layout: false
 .left-column[
-  ### Theta
-  ### Rho
-  ### Pi
-  ### Chi
-  ### Iota
+## Theta
+## Rho
+## Pi
+## Chi
+## Iota
 ]
 .right-column[
 - _Iota_ é uma função de substituição baseada numa tabela - chamada RC, ou seja, constantes de rodada.
