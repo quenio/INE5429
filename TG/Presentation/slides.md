@@ -418,3 +418,115 @@ layout: false
     - Ou algoritmos para outras aplicações.
 ]
 ---
+template: inverse
+## Deficiências 
+SHA-3
+---
+layout: false
+.left-column[
+## Inversível 
+]
+.right-column[
+- Como todos os passos do SHA-3 são inversíveis, sabendo-se os estados intermediários, é possível se chegar ao menos a partes da mensagem original.
+]
+---
+layout: false
+.left-column[
+## Inversível 
+## Software Performance 
+]
+.right-column[
+- Como todos os passos do SHA-3 são inversíveis, sabendo-se os estados intermediários, é possível se chegar ao menos a partes da mensagem original.
+
+- Sua performance é razoável em software, mas existem outros algoritmos, como o BLAKE, quem tem performance muito melhor.
+]
+---
+template: inverse
+## Concluindo 
+SHA-3
+---
+layout: false
+.left-column[
+## Keccak 
+]
+.right-column[
+- O design do SHA-3 é simples e elegante comparado a outros algoritmos de hash. 
+]
+---
+layout: false
+.left-column[
+## Keccak 
+]
+.right-column[
+- O design do SHA-3 é simples e elegante comparado a outros algoritmos de hash. 
+
+- Também é muito flexível nas opções de seus parâmetros e nas aplicações possíveis.
+]
+---
+layout: false
+.left-column[
+## Keccak
+## Longevidade 
+]
+.right-column[
+- O design do SHA-3 é simples e elegante comparado a outros algoritmos de hash. 
+
+- Também é muito flexível nas opções de seus parâmetros e nas aplicações possíveis.
+
+- O SHA-2 já é utilizado por pelo menos uma década e ainda não foi quebrado.
+]
+---
+layout: false
+.left-column[
+## Keccak
+## Longevidade 
+]
+.right-column[
+- O design do SHA-3 é simples e elegante comparado a outros algoritmos de hash. 
+
+- Também é muito flexível nas opções de seus parâmetros e nas aplicações possíveis.
+
+- O SHA-2 já é utilizado por pelo menos uma década e ainda não foi quebrado.
+
+- A margem de segurança do SHA-3, quando comparado ao SHA-2.
+]
+---
+layout: false
+.left-column[
+## Keccak
+## Longevidade 
+]
+.right-column[
+- O design do SHA-3 é simples e elegante comparado a outros algoritmos de hash. 
+
+- Também é muito flexível nas opções de seus parâmetros e nas aplicações possíveis.
+
+- O SHA-2 já é utilizado por pelo menos uma década e ainda não foi quebrado.
+
+- A margem de segurança do SHA-3, quando comparado ao SHA-2.
+
+- Mesmo com os avanços de hardware e cripto-análise da próxima década, espera-se que o SHA-3 seja seguro nos próximos 10 anos, ou mais.
+]
+---
+layout: false
+.left-column[
+## Keccak
+## Longevidade
+## Pesquisa
+]
+.right-column[
+- O design do SHA-3 é simples e elegante comparado a outros algoritmos de hash. 
+
+- Também é muito flexível nas opções de seus parâmetros e nas aplicações possíveis.
+
+- O SHA-2 já é utilizado por pelo menos uma década e ainda não foi quebrado.
+
+- A margem de segurança do SHA-3, quando comparado ao SHA-2.
+
+- Mesmo com os avanços de hardware e cripto-análise da próxima década, espera-se que o SHA-3 seja seguro nos próximos 10 anos, ou mais.
+
+- Será interessante ver o que os trabalhos de pesquisa e cripto-análise irão dizer nos próximos anos.
+]
+---
+template: inverse
+## Long live, SHA-3! 
