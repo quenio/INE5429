@@ -145,482 +145,137 @@ layout: false
 ]
 ---
 template: inverse
-## Tipos
-NoSQL
+## Funções Hash 
+SHA-3
 ---
 layout: false
 .left-column[
-## _Key-Value Stores_
+## SHA3-224 
 ]
 .right-column[
-- Baseadas em tabelas _hash_.
-    
-    - Para cada chave há um valor.
-    
-    - Tipos de valores: lists, sets, hashes, strings, numbers, object (em alguns)
-    
-    - Tipos de operações: range, diff, union, intersection
-]
-
----
-layout: false
-.left-column[
-## _Key-Value Stores_
-### Exemplos
-]
-.right-column[
-- Baseadas em tabelas _hash_
-
-    - Para cada chave há um valor.
-
-    - Tipos de valores: lists, sets, hashes, strings, numbers, object (em alguns)
-
-    - Tipos de operações: range, diff, union, intersection
-    
-- Exemplos:
-
-    - Redis
-
-    - Riak 
-
-    - BerkeleyDB
-
-    - DynamoDB
-
-    - Voldermot
-]
----
-layout: false
-.left-column[
-## _Key-Value Stores_
-### Exemplos
-### Terminologia
-]
-.right-column[
-| Relacional    |    | Key-Values Stores |
-|--------------:|----|:------------------|
-| Database      | -> | Cluster           |
-| Table         | -> | Bucket (Riak)     |
-| Row           | -> | Key-Value         |
-| Row Id        | -> | Key               |
-]
----
-layout: false
-.left-column[
-## _Key-Value Stores_
-### Exemplos
-### Terminologia
-### Casos de Uso 
-]
-.right-column[
-- Casos de uso típicos:
-
-    - _Session Data_
-    
-        - Pedidos
-
-    - _Caching_
-    
-        - Opções do Pedido
-]
----
-layout: false
-.left-column[
-## _Key-Value Stores_
-### Exemplos
-### Terminologia
-### Casos de Uso
-### Deficiências
-]
-.right-column[
-- Casos de uso típicos:
-
-    - _Session Data_
-    
-        - Pedidos
-
-    - _Caching_
-    
-        - Opções do Pedido
-- Deficiências:
-
-    - Dados com relacionamentos
-
-    - Transações
-    
-        - Aplicação precisa implementar _locking_.
-
-    - Consultas por valores ao invés de chaves
-]
----
-layout: false
-.left-column[
-## _Document Databases_
-]
-.right-column[
-- Baseados em documents XML, JSON, BSON, etc.
-
-    - Dados auto-descritivos
-    
-    - Hierárquicos 
-    
-    - Estruturados
-]
----
-layout: false
-.left-column[
-## _Document Databases_
-### Exemplos
-]
-.right-column[
-- Baseados em documents XML, JSON, BSON, etc.
-
-    - Dados auto-descritivos
-    
-    - Hierárquicos 
-    
-    - Estruturados
-    
-- Exemplos:
-    
-    - MongoDB
-    
-    - CouchDB
-    
-    - OrientDB
-    
-    - RavenDB
-]
----
-layout: false
-.left-column[
-## _Document Databases_
-### Exemplos
-### Terminologia
-]
-.right-column[
-| Relacional    |    | Document Databases |
-|--------------:|----|:-------------------|
-| Table         | -> | Collection         |
-| Row           | -> | Document           |
-| Row Id        | -> | _id                |
-| Join          | -> | DBRef (MongoDB)    |
-]
-
----
-layout: false
-.left-column[
-## _Document Databases_
-### Exemplos
-### Terminologia
-### Casos de Uso
-]
-.right-column[
-- Casos de uso típicos:
-
-    - _Content Management_
-    
-    - _Event Logging_
-    
-    - _Analytics_
-]
----
-layout: false
-.left-column[
-## _Document Databases_
-### Exemplos
-### Terminologia
-### Casos de Uso
-### Deficiências
-]
-.right-column[
-- Dificuldade de agregação de dados na consultas
-    - Porém, permitem fazer consultas no conteúdo de documentos.
-    - Alguns oferecem suporte a _MapReduce_.
-
-- Transações
-    - Atomicidade somente por documento.
-    - RavenDB permite transações em mais de uma operação.
-
-- Consistência
-    - Cliente pode escolher:
-        - O número de _slaves_ de uma escrita antes da operação sem considerada bem-sucedida.
-        - Se permite leitura dos _slaves_ ou não.
-
-]
----
-layout: false
-.left-column[
-## _Column Stores_
-]
-.right-column[
-- Armazena dicionários de tuplas.
-
-    - Cada tupla tem uma chave primária.
-
-    - Cada tupla pode ter campos diferentes.
-    
-    - Estrutura flexível; não é definida por _schema_.
-]
-
----
-layout: false
-.left-column[
-## _Column Stores_
-### Exemplos
-]
-.right-column[
-- Armazena dicionários de tuplas.
-
-    - Cada tupla pode ter campos diferentes.
-    
-    - Cada tupla pode ter campos diferentes.
-    
-    - Estrutura flexível; não é definida por _schema_.
-    
-- Exemplos:
-    
-    - Cassandra
-    
-    - HBase (Hadoop)
-    
-    - HyperTable
-    
-    - SimpleDB 
-]
----
-layout: false
-.left-column[
-## _Column Stores_
-### Exemplos
-### Terminologia
-]
-.right-column[
-| Relacional    |    | Column Stores |
-|--------------:|----|:---------------------|
-| Database      | -> | Keyspace             |
-| Table         | -> | Column Family        |
-| Row           | -> | Row                  |
-| Column        | -> | Column (pode variar em cada Row) |
-
-```sql
-SELECT user_id, top_places 
-    FROM users 
-    WHERE user_id = 'frodo';
-
-user_id | top_places
---------+----------------------------
-  frodo | ['the shire', 'rivendell']
+```
+SHA3-224(M) = KECCAK[448] (M || 01, 224)
 ```
 
-]
-
----
-layout: false
-.left-column[
-## _Column Stores_
-### Exemplos
-### Terminologia
-### Casos de Uso
-]
-.right-column[
-- Casos de uso típicos:
-
-    - _Sensor Data / IoT_ 
-
-    - _Analytics_
-
-    - _Statistics_ / _Data Analysis_
-
-    - Necessidade de Particionamento
-        
-        - A chave primária de cada tupla já define o particionamento no cluster.
-]
-    
----
-layout: false
-.left-column[
-## _Column Stores_
-### Exemplos
-### Terminologia
-### Casos de Uso
-### Deficiências
-]
-.right-column[
-- Deficiências:
-
-    - Dados com relacionamentos
-
-    - Transações
-        - No Cassandra, transação é atomica no nível de _rows_.
-        
-        - Possui vários níveis de consistência para leitura e escrita.
-
+|_Hash_|||Capacidade|||Bloco|||_State Array_|
+|:-:|-|-|:--:|-|-|:-:|-|-|:-:|
+|224|||448|||1152|||1600|
 ]
 ---
 layout: false
 .left-column[
-## _Graph Databases_
+## SHA3-224 
+## SHA3-256 
 ]
 .right-column[
-- Permitem armazenar entidades e seus relacionamentos mais complexos.
-
-    - São baseados grafos com nós e suas ligações.
-    
-    - Ambos os nodos e ligações podem ter propriedades associadas.
+```
+SHA3-224(M) = KECCAK[448] (M || 01, 224)
+SHA3-256(M) = KECCAK[512] (M || 01, 256)
+```
+|_Hash_|||Capacidade|||Bloco|||_State Array_|
+|:-:|-|-|:--:|-|-|:-:|-|-|:-:|
+|224|||448|||1152|||1600|
+|256|||512|||1088|||1600|
 ]
 ---
 layout: false
 .left-column[
-## _Graph Databases_
-### Exemplos
+## SHA3-224 
+## SHA3-256 
+## SHA3-384 
 ]
 .right-column[
-- Permitem armazenar entidades e seus relacionamentos mais complexos.
-
-    - São baseados grafos com nós e suas ligações.
-    
-    - Ambos os nodos e ligações podem ter propriedades associadas.
-    
-- Exemplos: 
-    
-    - Neo4J
-    
-    - Infinite Graph
-    
-    - FlockDB
-]
----
-layout: false
-.left-column[
-## _Graph Databases_
-### Exemplos
-### Terminologia
-]
-.right-column[
-| Relacional    |    | Graph Databases |
-|--------------:|----|:----------------|
-| Table Row     | -> | Node            |
-| Relation Row  | -> | Links           |
-| Column        | -> | Property        |
-]
----
-layout: false
-.left-column[
-## _Graph Databases_
-### Exemplos
-### Terminologia
-### Casos de Uso
-]
-.right-column[
-- Casos de uso típicos:
-
-    - Relacionamentos complexos de dados
-    
-    - Aplicações de roteamento
-        - Na área de transporte, por exemplo.
-        
-    - Logística
-        
-    - Localização
-        
-    - Serviços de recomendação    
-]
----
-layout: false
-.left-column[
-## _Graph Databases_
-### Exemplos
-### Terminologia
-### Casos de Uso
-### Deficiências
-]
-.right-column[
-- Deficiências:
-        
-    - _Bulk update_
-        
-    - _Bancos de dados muito grandes_
-        
-    - Transação / Consistência
-        - NeoJ oferece ACID no master e replicação para os slaves.
-        - Infinite Graph oferece distribuição de nós entre o cluster. 
-]
----
-layout: false
-.left-column[
-## _SQL + Documents_
-]
-.right-column[
-- Oracle suporta JSON and XML como tipos de dados nativos
-    
-    - Provê transações, indices, consultas, views.
-
-    - Permite fazer JOIN entre tabelas e JSON + XML.
-
-    - Também permite projetas dados JSON + XML como se fossem tabelas.
-
-    - Consultar JSON + XML armazenado fora do banco de dados.
-]
----
-layout: false
-.left-column[
-## _SQL + Documents_
-### Exemplos
-]
-.right-column[
-_Schema_:
-
-```sql
-CREATE TABLE j_purchaseorder
-   (id          RAW (16) NOT NULL,
-    date_loaded TIMESTAMP WITH TIME ZONE,
-    po_document CLOB
-    CONSTRAINT ensure_json CHECK (po_document IS JSON));
+```
+SHA3-224(M) = KECCAK[448] (M || 01, 224)
+SHA3-256(M) = KECCAK[512] (M || 01, 256)
+SHA3-384(M) = KECCAK[768] (M || 01, 384)
 ```
 
-Inserir _JSON_:
-
-```sql
-INSERT INTO j_purchaseorder
-  VALUES (SYS_GUID(),
-          SYSTIMESTAMP,
-          '{"PONumber"             : 1600,
-            "Reference"            : "ABULL-20140421",
-            "Requestor"            : "Alexis Bull",
-            "User"                 : "ABULL",
-            "CostCenter"           : "A50",
-            "ShippingInstructions" : {...},
-            "AllowPartialShipment" : true,
-            "LineItems"            : [...]}');
-```
-
-Consultar _JSON_:
-
-```sql
-SELECT po.po_document.PONumber 
-    FROM j_purchaseorder po;
-SELECT po.po_document.ShippingInstructions.Phone 
-    FROM j_purchaseorder po;
-```
+|_Hash_|||Capacidade|||Bloco|||_State Array_|
+|:-:|-|-|:--:|-|-|:-:|-|-|:-:|
+|224|||448|||1152|||1600|
+|256|||512|||1088|||1600|
+|384|||768|||832|||1600|
 ]
 ---
 layout: false
 .left-column[
-## _Referências_
+## SHA3-224 
+## SHA3-256 
+## SHA3-384 
+## SHA3-512 
 ]
 .right-column[
-- _NoSQL Distilled_
-    - Autores: Pramod J. Sadalage & Martin Fowler
+```
+SHA3-224(M) = KECCAK[448] (M || 01, 224)
+SHA3-256(M) = KECCAK[512] (M || 01, 256)
+SHA3-384(M) = KECCAK[768] (M || 01, 384)
+SHA3-512(M) = KECCAK[1024] (M || 01, 512)
+```
 
-- _Seven Databases in Seven Weeks_
-    - Autores: Eric Redmond & Jim R. Wilson
-    - Redis, Neo4J, CouchDB, MongoDB, HBase, Riak, and Postgres
-    
-- http://nosql-database.org
-    
-    - Lista bem completa dos bancos de dados NoSQL disponíveis. 
+|_Hash_|||Capacidade|||Bloco|||_State Array_|
+|:-:|-|-|:--:|-|-|:-:|-|-|:-:|
+|224|||448|||1152|||1600|
+|256|||512|||1088|||1600|
+|384|||768|||832|||1600|
+|512|||1024|||576|||1600|
 ]
 ---
 template: inverse
-# MongoDB & Redis
+## Funções de Saída Variável 
+SHA-3
+---
+layout: false
+.left-column[
+## SHAKE128 
+]
+.right-column[
+```
+SHAKE128(M, D) = KECCAK[256] (M || 1111, D)
+```
+
+|_Hash_|||Capacidade|||Bloco|||_State Array_|
+|:-:|-|-|:--:|-|-|:-:|-|-|:-:|
+|D|||256|||1344|||1600|
+]
+---
+layout: false
+.left-column[
+## SHAKE128 
+## SHAKE256 
+]
+.right-column[
+```
+SHAKE128(M, D) = KECCAK[256] (M || 1111, D)
+SHAKE256(M, D) = KECCAK[512] (M || 1111, D)
+```
+
+|_Hash_|||Capacidade|||Bloco|||_State Array_|
+|:-:|-|-|:--:|-|-|:-:|-|-|:-:|
+|D|||256|||1344|||1600|
+|D|||512|||1088|||1600|
+]
+---
+layout: false
+.left-column[
+## SHAKE128 
+## SHAKE256 
+## RawSHAKE
+]
+.right-column[
+```
+SHAKE128(M, D) = KECCAK[256] (M || 1111, D)
+SHAKE256(M, D) = KECCAK[512] (M || 1111, D)
+```
+
+|_Hash_|||Capacidade|||Bloco|||_State Array_|
+|:-:|-|-|:--:|-|-|:-:|-|-|:-:|
+|D|||256|||1344|||1600|
+|D|||512|||1088|||1600|
+
+```
+RawSHAKE128(M, D) = KECCAK[256] (M || 11, D)
+RawSHAKE256(M, D) = KECCAK[512] (M || 11, D)
+```
+]
+---
