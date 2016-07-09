@@ -279,3 +279,142 @@ RawSHAKE256(M, D) = KECCAK[512] (M || 11, D)
 ```
 ]
 ---
+template: inverse
+## Benefícios 
+SHA-3
+---
+layout: false
+.left-column[
+## Aplicações 
+]
+.right-column[
+- Keccak permite a configuração da taxa de vazão (throughput). 
+
+    - Melhorando _performance_ em detrimento da segurança.
+    
+    - Ou vice-versa. 
+]
+---
+layout: false
+.left-column[
+## Aplicações 
+]
+.right-column[
+- Keccak permite a configuração da taxa de vazão (throughput). 
+
+    - Melhorando _performance_ em detrimento da segurança.
+    
+    - Ou vice-versa. 
+
+- Ele também permite um tamanho variável do hash gerado.
+
+    - Abrindo o leque de aplicações além das aplicações usuais de algoritmos de hash.
+]
+---
+layout: false
+.left-column[
+## Aplicações 
+## Segurança 
+]
+.right-column[
+- Comparado ao SHA-2, e a outros algoritmos, Keccak tem uma margem de segurança bem alta.
+]
+---
+layout: false
+.left-column[
+## Aplicações 
+## Segurança 
+]
+.right-column[
+- Comparado ao SHA-2, e a outros algoritmos, Keccak tem uma margem de segurança bem alta.
+    
+    - Suas funções de permutação o tornam menos vulnerável a ataques do que algoritmos tradicionais de hash, como o SHA-2. 
+]
+---
+layout: false
+.left-column[
+## Aplicações 
+## Segurança 
+]
+.right-column[
+- Comparado ao SHA-2, e a outros algoritmos, Keccak tem uma margem de segurança bem alta.
+    
+    - Suas funções de permutação o tornam menos vulnerável a ataques do que algoritmos tradicionais de hash, como o SHA-2. 
+    
+    - Quase 80 por cento das funções que fazem parte do Keccak ainda não foram quebradas, enquanto 40 por cento das funções do SHA-2 já foram.
+]
+---
+layout: false
+.left-column[
+## Aplicações 
+## Segurança 
+]
+.right-column[
+- Comparado ao SHA-2, e a outros algoritmos, Keccak tem uma margem de segurança bem alta.
+    
+    - Suas funções de permutação o tornam menos vulnerável a ataques do que algoritmos tradicionais de hash, como o SHA-2. 
+    
+    - Quase 80 por cento das funções que fazem parte do Keccak ainda não foram quebradas, enquanto 40 por cento das funções do SHA-2 já foram.
+    
+    - Os autores provaram matematicamente que o Keccak é seguro contra pré-imagem, segunda pré-imagem e colisões.
+]
+---
+layout: false
+.left-column[
+## Aplicações 
+## Segurança 
+## Performance 
+]
+.right-column[
+ - Implementado em software, a performance do SHA-3 é comparável ao SHA-2.
+]
+---
+layout: false
+.left-column[
+## Aplicações 
+## Segurança 
+## Performance 
+]
+.right-column[
+- Implementado em software, a performance do SHA-3 é comparável ao SHA-2.
+  
+- Sua performance em hardware, em termos de thoughput, é muito superior ao SHA-2.
+]
+---
+layout: false
+.left-column[
+## Aplicações 
+## Segurança 
+## Performance 
+## Design 
+]
+.right-column[
+- Seu design simples, orientado a bits: 
+    
+    - Torna sua especificação bem clara.
+     
+    - Facilita seu entendimento e implementação. 
+        
+]
+---
+layout: false
+.left-column[
+## Aplicações 
+## Segurança 
+## Performance 
+## Design 
+]
+.right-column[
+- Seu design simples, orientado a bits: 
+    
+    - Torna sua especificação bem clara.
+     
+    - Facilita seu entendimento e implementação. 
+        
+- Seu design baseado em permutações, e na função de esponja, também permitirá:
+     
+    - O surgimento de algoritmos alternativos.
+         
+    - Ou algoritmos para outras aplicações.
+]
+---
