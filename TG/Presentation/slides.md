@@ -332,9 +332,25 @@ layout: false
 ## Pi
 ]
 .right-column[
-- _Pi_ é também uma função de permutação, mas entre células. 
+- _Pi_ é também uma função de permutação. 
 
-    - A permutação não se dá nos _bits_ de uma célula, mas entre as células da matriz.
+```
+    A′[x, y, z]= A[(x + 3y) mod 5, x, z]
+```
+]
+---
+layout: false
+.left-column[
+## Theta
+## Rho
+## Pi
+]
+.right-column[
+- _Pi_ é também uma função de permutação. 
+
+    - A permutação não se dá nos _bits_ de uma palavra, mas entre as palavras da matriz.
+
+    ![pi](pi.png)
 ]
 ---
 layout: false
