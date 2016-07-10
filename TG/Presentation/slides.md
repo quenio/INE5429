@@ -4,14 +4,20 @@ class: center, middle, inverse
 ---
 template: inverse
 # SHA-3
-.footnote[Quenio - Ranieri]
+.footnote[Quenio]
 ---
 layout: false
 .left-column[
 ## Hash Criptográfico
 ]
 .right-column[
-- Algoritmo de hash criptográfico adotado pelo NIST para complementar o SHA-2, seu predecessor. 
+- SHA-3: algoritmo de hash criptográfico. 
+
+    - Adotado pelo NIST - Instituto Nacional de Padrões e Tecnologia (EUA)
+     
+    - Complementa SHA-2, seu antecessor.
+
+        ![hashing](Hashing.pdf)
 ]
 ---
 layout: false
@@ -20,13 +26,22 @@ layout: false
 ## Algoritmo Keccak
 ]
 .right-column[
-- Algoritmo de hash criptográfico adotado pelo NIST para complementar o SHA-2, seu predecessor. 
+- SHA-3: aplicação da função Keccak.
 
-- SHA-3 é a aplicação da função Keccak.
+    - Usando parâmetros específicos.
 
     - Autores: Guido Bertoni, Joan Daemen, Michaël Peeters, Gilles Van Assche
     
-    - Vencedores da competição promovida pelo NIST para escolher o algoritmo do SHA-3.
+    - Vencedores da competição do NIST. 
+    
+    - Keccak: escolhido como o algoritmo SHA-3
+
+```
+
+
+
+KECCAK[c] = SPONGE[KECCAK-p[1600, 24], pad10*1, 1600 – c]
+```
 ]
 ---
 template: inverse
