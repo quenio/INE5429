@@ -262,9 +262,51 @@ layout: false
 ## Theta
 ]
 .right-column[
+- Theta é uma função de substituição que utiliza bits das colunas anteriores e posteriores, além dos bits da célula sendo substituída.
+ 
+![theta](theta.png)
+]
+---
+layout: false
+.left-column[
+## Theta
+]
+.right-column[
 - Theta é uma função de substituição que utiliza bits das colunas anteriores e posteriores, além dos bits da célula sendo substituída. 
 
     - Cada bit substituído depende de outros 11 bits, o que provê uma difusão de alto grau.
+
+![theta](theta.png)
+]
+---
+layout: false
+.left-column[
+## Theta
+## Rho
+]
+.right-column[
+- _Rho_ é uma função de permutação dos bits dentro de cada palavra do state array. 
+
+```
+    ...
+    For t from 0 to 23:
+        A′[x, y, z] = A[x, y, (z–(t+1)(t+2)/2) mod w]
+    Let (x, y) = (y, (2x+3y) mod 5).
+    ...    
+```
+]
+---
+layout: false
+.left-column[
+## Theta
+## Rho
+]
+.right-column[
+- _Rho_ é uma função de permutação dos bits dentro de cada palavra.
+ 
+    - O número de _shifts_ varia de acordo com a posição da palavra e seus bits no state array:
+
+    ![rho](rho.png)
 ]
 ---
 layout: false
@@ -275,7 +317,12 @@ layout: false
 .right-column[
 - _Rho_ é uma função de permutação dos bits dentro de cada célula. 
 
+    - O número de _shifts_ varia de acordo com a posição da palavra e seus bits no state array:
+
     - Sem esta função, a difusão entre as células, ocorreria de forma muito lenta.
+    
+        ![diffusion](diffusion.png)
+    
 ]
 ---
 layout: false
