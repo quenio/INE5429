@@ -54,17 +54,77 @@ layout: false
 ]
 .right-column[
 - A estrutura do algoritmo Keccak é definida pela função Esponja.
+
+```
+
+KECCAK[c] = SPONGE[KECCAK-p[1600, 24], pad10*1, 1600 – c]
+```
+
+![sponge](Sponge-1.jpg)
+
+]
+---
+layout: false
+.left-column[
+### Função Esponja
+]
+.right-column[
+- A estrutura do algoritmo Keccak é definida pela função Esponja.
+ 
+    - A função Esponja tem duas fases.
+    
+![sponge](Sponge-2.jpg)
+    
+]
+---
+layout: false
+.left-column[
+### Função Esponja
+]
+.right-column[
+- A estrutura do algoritmo Keccak é definida pela função Esponja.
  
     - A função Esponja tem duas fases.
      
     - Absorção: onde blocos da mensagem de entrada são "absorvidos" pela função.
-    
-    - Squeezing: onde o valor de _hash_ é gerado
-    
-    - Em ambas fases, ocorrem permutações e subsituições em cada bloco de entrada.
 
+![sponge](Sponge-3.jpg)
+    
 ]
+---
+layout: false
+.left-column[
+### Função Esponja
+]
+.right-column[
+- A estrutura do algoritmo Keccak é definida pela função Esponja.
+ 
+    - A função Esponja tem duas fases.
+     
+    - Absorção: onde blocos da mensagem de entrada M são "absorvidos" pela função.
+    
+    - Squeezing: onde o valor de _hash_ Z é gerado
 
+![sponge](Sponge-4.jpg)    
+]
+---
+layout: false
+.left-column[
+### Função Esponja
+]
+.right-column[
+- A estrutura do algoritmo Keccak é definida pela função Esponja.
+ 
+    - A função Esponja tem duas fases.
+     
+    - Absorção: onde blocos da mensagem de entrada M são "absorvidos" pela função.
+    
+    - Squeezing: onde o valor de _hash_ Z é gerado
+    
+    - Em ambas fases, ocorrem permutações e subsituições em cada bloco de entrada: f
+    
+![sponge](Sponge-5.jpg)
+]
 ---
 layout: false
 .left-column[
@@ -72,28 +132,36 @@ layout: false
 ### Função Keccak-p
 ]
 .right-column[
-- A função Keccak-p é executada pela função Esponja em cada bloco da mensagem de entrada. 
-
+- A função Keccak-p é executada pela função Esponja em cada bloco da mensagem de entrada M.
+ 
     - Para cada bloco, são executadas 24 rodadas das função de permutação e substituição.
     
-    - O estado destas rodadas vai sendo mantido numa estrutura chamada `state array`.
+    - O estado destas rodadas vai sendo mantido numa estrutura chamada `state array`:
     
-    - As função de permutação e substituição são executadas na seguinte sequência:
-    
-        - Theta
+        - Os primeiros r bits são um XOR entre:
+         
+            - Um bloco da mensagem de entrada 
+            
+            - E os primeiros r bits do estado da rodada anterior.
         
-        - Rho
-         
-        - Pi 
-         
-        - Chi 
-         
-        - Iota 
+        - Os c últimos bits são inicialmente zeros. 
+        
+            - Mas vão se alterando de acordo com as permutações e substitbuições de cada rodada.
 ]
 ---
 template: inverse
 ## Permutações & Substituições
 SHA-3
+---
+layout: false
+.left-column[
+## Permutações & Substituições
+]
+.right-column[
+    - As função de permutação e substituição são executadas na seguinte sequência:
+    
+    ![permutations](Permutations.pdf)
+]
 ---
 layout: false
 .left-column[
