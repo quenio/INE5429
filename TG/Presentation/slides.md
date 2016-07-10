@@ -133,6 +133,8 @@ layout: false
 ]
 .right-column[
 - Keccak-p é a função executada pela função Esponja em cada bloco da mensagem de entrada M.
+
+![sponge](Sponge-6.jpg)
 ]
 ---
 layout: false
@@ -143,7 +145,10 @@ layout: false
 .right-column[
 - Keccak-p é a função executada pela função Esponja em cada bloco da mensagem de entrada M.
  
-    - Para cada bloco, são executadas 24 rodadas das função de permutação e substituição.
+    - Para cada bloco, são executadas 24 rodadas das funções de permutação e substituição.
+    
+        ![permutations](Permutations24x.pdf)
+    
 ]
 ---
 layout: false
@@ -154,9 +159,11 @@ layout: false
 .right-column[
 - Keccak-p é a função executada pela função Esponja em cada bloco da mensagem de entrada M.
  
-    - Para cada bloco, são executadas 24 rodadas das função de permutação e substituição.
+    - Para cada bloco, são executadas 24 rodadas das funções de permutação e substituição.
     
     - O estado destas rodadas vai sendo mantido numa estrutura chamada _state array_:
+    
+        ![SA](SA-1.pdf)
 ]
 ---
 layout: false
@@ -167,7 +174,7 @@ layout: false
 .right-column[
 - Keccak-p é a função executada pela função Esponja em cada bloco da mensagem de entrada M.
  
-    - Para cada bloco, são executadas 24 rodadas das função de permutação e substituição.
+    - Para cada bloco, são executadas 24 rodadas das funções de permutação e substituição.
     
     - O estado destas rodadas vai sendo mantido numa estrutura chamada _state array_:
     
@@ -176,17 +183,20 @@ layout: false
             - Um bloco da mensagem de entrada 
             
             - E os primeiros r bits do estado da rodada anterior.
+
+                ![SA](SA-2.png)
 ]
 ---
 layout: false
 .left-column[
 ### Função Esponja
 ### Função Keccak-p
+![SA](SA-2.png)
 ]
 .right-column[
 - Keccak-p é a função executada pela função Esponja em cada bloco da mensagem de entrada M.
  
-    - Para cada bloco, são executadas 24 rodadas das função de permutação e substituição.
+    - Para cada bloco, são executadas 24 rodadas das funções de permutação e substituição.
     
     - O estado destas rodadas vai sendo mantido numa estrutura chamada _state array_:
     
@@ -196,6 +206,8 @@ layout: false
             
             - E os primeiros r bits do estado da rodada anterior.
         
+        - 10*1 padding ocorre no último bloco da mensagem para inteirar r bits.  
+
         - Os c últimos bits são inicialmente zeros. 
         
             - Mas vão se alterando de acordo com as permutações e substitbuições de cada rodada.
