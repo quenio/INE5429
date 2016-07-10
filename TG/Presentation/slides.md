@@ -361,9 +361,24 @@ layout: false
 ## Chi
 ]
 .right-column[
-- _Chi_ é uma função de substituição baseada no valor do _bit_ corrente e dos _bits_ em posições correspondentes das duas próximas células.
+- _Chi_ é uma função de substituição baseada no valor do _bit_ corrente e dos _bits_ em posições correspondentes das duas próximas palavras.
+
+    ![chi](chi.png)
+]
+---
+layout: false
+.left-column[
+## Theta
+## Rho
+## Pi
+## Chi
+]
+.right-column[
+- _Chi_ é uma função de substituição baseada no valor do _bit_ corrente e dos _bits_ em posições correspondentes das duas próximas palavras.
  
     - Sem esta função, SHA-3 seria completamente linear.    
+
+    ![chi](chi.png)
 ]
 ---
 layout: false
