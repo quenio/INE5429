@@ -391,12 +391,71 @@ layout: false
 ]
 .right-column[
 - _Iota_ é uma função de substituição baseada numa tabela - chamada RC, ou seja, constantes de rodada.
+
+    ![rc_table](rc_table.png)
+]
+---
+layout: false
+.left-column[
+## Theta
+## Rho
+## Pi
+## Chi
+## Iota
+]
+.right-column[
+- _Iota_ é uma função de substituição baseada numa tabela - chamada RC, ou seja, constantes de rodada.
+ 
+    - Usa um valor constante e diferente para cada rodada do SHA-3:
+    
+```
+            w = w ⊕ RC[i]
+```    
+]
+---
+layout: false
+.left-column[
+## Theta
+## Rho
+## Pi
+## Chi
+## Iota
+]
+.right-column[
+- _Iota_ é uma função de substituição baseada numa tabela - chamada RC, ou seja, constantes de rodada.
  
     - Usa um valor constante e diferente para cada rodada do SHA-3.
     
-    - As constantes são geradas num algoritmo de shift linear.
+    - As constantes são geradas por um algoritmo de shift linear:
     
-    - Somente a célula (0,0) da _state array_ é transformada por esta função.
+```
+        for j in range(7):
+            R = ((R << 1) ^ ((R >> 7)*0x71)) % 256
+            if (R & 2):
+                lanes[0][0] = lanes[0][0] ^ (1 << ((1<<j)-1))
+```    
+]
+---
+layout: false
+.left-column[
+## Theta
+## Rho
+## Pi
+## Chi
+## Iota
+]
+.right-column[
+- _Iota_ é uma função de substituição baseada numa tabela - chamada RC, ou seja, constantes de rodada.
+ 
+    - Usa um valor constante e diferente para cada rodada do SHA-3.
+    
+    - As constantes são geradas por um algoritmo de shift linear.
+    
+    - Somente a palavra (0,0) da _state array_ é transformada por esta função.
+    
+```
+            A[0,0] = A[0,0] ⊕ RC[i]
+```    
 ]
 ---
 template: inverse
