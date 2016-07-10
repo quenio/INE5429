@@ -132,11 +132,63 @@ layout: false
 ### Função Keccak-p
 ]
 .right-column[
-- A função Keccak-p é executada pela função Esponja em cada bloco da mensagem de entrada M.
+- Keccak-p é a função executada pela função Esponja em cada bloco da mensagem de entrada M.
+]
+---
+layout: false
+.left-column[
+### Função Esponja
+### Função Keccak-p
+]
+.right-column[
+- Keccak-p é a função executada pela função Esponja em cada bloco da mensagem de entrada M.
+ 
+    - Para cada bloco, são executadas 24 rodadas das função de permutação e substituição.
+]
+---
+layout: false
+.left-column[
+### Função Esponja
+### Função Keccak-p
+]
+.right-column[
+- Keccak-p é a função executada pela função Esponja em cada bloco da mensagem de entrada M.
  
     - Para cada bloco, são executadas 24 rodadas das função de permutação e substituição.
     
-    - O estado destas rodadas vai sendo mantido numa estrutura chamada `state array`:
+    - O estado destas rodadas vai sendo mantido numa estrutura chamada _state array_:
+]
+---
+layout: false
+.left-column[
+### Função Esponja
+### Função Keccak-p
+]
+.right-column[
+- Keccak-p é a função executada pela função Esponja em cada bloco da mensagem de entrada M.
+ 
+    - Para cada bloco, são executadas 24 rodadas das função de permutação e substituição.
+    
+    - O estado destas rodadas vai sendo mantido numa estrutura chamada _state array_:
+    
+        - Os primeiros r bits são um XOR entre:
+         
+            - Um bloco da mensagem de entrada 
+            
+            - E os primeiros r bits do estado da rodada anterior.
+]
+---
+layout: false
+.left-column[
+### Função Esponja
+### Função Keccak-p
+]
+.right-column[
+- Keccak-p é a função executada pela função Esponja em cada bloco da mensagem de entrada M.
+ 
+    - Para cada bloco, são executadas 24 rodadas das função de permutação e substituição.
+    
+    - O estado destas rodadas vai sendo mantido numa estrutura chamada _state array_:
     
         - Os primeiros r bits são um XOR entre:
          
@@ -155,12 +207,42 @@ SHA-3
 ---
 layout: false
 .left-column[
-## Permutações & Substituições
+## Step Mappings
 ]
 .right-column[
-    - As função de permutação e substituição são executadas na seguinte sequência:
-    
+- As funções de permutação e substituição (step mappings) são executadas na seguinte sequência:
+
     ![permutations](Permutations.pdf)
+]
+---
+layout: false
+.left-column[
+## Step Mappings
+## State Array 
+]
+.right-column[
+- Cada função de permutação e substituição vai manipular o State Array como uma matriz.    
+
+    - Uma matriz 5x5 onde cada célula é uma palavra de w bits.
+    
+    ![state_array](StateArray.png)
+]
+---
+layout: false
+.left-column[
+## Step Mappings
+## State Array 
+]
+.right-column[
+- Cada função de permutação e substituição vai manipular o State Array como uma matriz.    
+
+    - Uma matriz 5x5 onde cada célula é uma palavra de w bits.
+    
+    - Convertida com a seguinte fórmula:
+     
+        ```
+        A[x, y, z] = S[w(5y+x)+z]
+        ```
 ]
 ---
 layout: false
